@@ -1,30 +1,54 @@
-# BVG-7003-Devoir-3-FastTrackGWAS
+# BVG-7003-Assignment-3-FastTrackGWAS
 
-Voici un texte explicatif pour l'installation de R et RStudio :  
+## Introduction
 
-### Installation de R et RStudio  
+Genome-Wide Association Studies (GWAS) are a powerful tool for uncovering the genetic basis of traits, and their application in agricultural science is pivotal for crop improvement. This project focuses on analyzing the genetic basis of symbiotic nitrogen fixation in African soybean, using a publicly available dataset. The steps provided in this repository guide users through setting up the required tools and performing a GWAS analysis efficiently.
 
-Pour effectuer une analyse GWAS avec R, suivez les étapes ci-dessous pour installer R et RStudio sur votre ordinateur :  
+To enable reproducibility, this project employs **R** and **RStudio** as the core computational environment. R is renowned for its statistical computing capabilities and robust library ecosystem, making it a suitable choice for GWAS workflows. This repository demonstrates how to install and configure R and RStudio, manage dependencies, and execute the GWAS analysis pipeline.
 
-#### 1. **Installation de R**  
-R est le langage de programmation nécessaire pour effectuer les analyses :  
-1. Rendez-vous sur le site officiel de R : [https://cran.r-project.org/](https://cran.r-project.org/).  
-2. Cliquez sur **Download R for [votre système d'exploitation]** (Windows, macOS, ou Linux).  
-3. Téléchargez la version appropriée pour votre système :  
-   - Pour Windows : Cliquez sur *base* puis téléchargez l'installateur.  
-   - Pour macOS : Téléchargez la version compatible avec votre système.  
-   - Pour Linux : Suivez les instructions spécifiques à votre distribution.  
-4. Exécutez le fichier téléchargé et suivez les instructions pour installer R.  
+The guide is designed to help users of all experience levels successfully replicate the analysis and adapt it to other datasets or traits of interest.
 
-#### 2. **Installation de RStudio**  
-RStudio est une interface utilisateur qui facilite l'utilisation de R :  
-1. Allez sur le site de RStudio : [https://posit.co/download/rstudio-desktop/](https://posit.co/download/rstudio-desktop/).  
-2. Cliquez sur **RStudio Desktop** (version gratuite).  
-3. Téléchargez l'installateur correspondant à votre système d'exploitation.  
-4. Installez RStudio en exécutant le fichier téléchargé.  
+--- 
 
-#### 3. **Lancer RStudio**  
-1. Une fois installé, ouvrez RStudio.  
-2. Assurez-vous que R est bien configuré avec RStudio (RStudio le détecte automatiquement si R est installé).  
+## Installation of R and RStudio
 
-Votre environnement R et RStudio est maintenant prêt à être utilisé pour l’analyse GWAS et d'autres projets. Pour vérifier l'installation, tapez `R.version` dans la console de RStudio et validez qu'aucune erreur n’apparaît.  
+To perform a GWAS analysis using R, follow the steps below to install R and RStudio on your computer:
+
+### 1. **Installing R**
+R is the programming language required for the analysis:
+1. Visit the official R website: [https://cran.r-project.org/](https://cran.r-project.org/).
+2. Click on **Download R for [your operating system]** (Windows, macOS, or Linux).
+3. Download the appropriate version for your system:
+   - For Windows: Click on *base* and then download the installer.
+   - For macOS: Download the version compatible with your system.
+   - For Linux: Follow the instructions specific to your distribution.
+4. Run the downloaded file and follow the installation instructions.
+
+### 2. **Installing RStudio**
+RStudio is a user-friendly interface for R:
+1. Go to the RStudio website: [https://posit.co/download/rstudio-desktop/](https://posit.co/download/rstudio-desktop/).
+2. Click on **RStudio Desktop** (free version).
+3. Download the installer for your operating system.
+4. Install RStudio by running the downloaded file.
+
+### 3. **Launching RStudio**
+1. Once installed, open RStudio.
+2. Ensure that R is correctly configured with RStudio (RStudio automatically detects R if it is installed).
+
+--- 
+
+## Script execution
+### 1. Input and Output File Formats
+#### Input
+#### Output
+
+### 2. **Dependencies**
+This repository includes a script for GWAS analysis, which requires the following R packages:
+
+- **rMVP**: A memory-efficient, visualization-enhanced, and parallel-accelerated tool for GWAS.
+- **ggplot2**: For creating high-quality graphics.
+- **data.table**: For fast and flexible data manipulation.
+- **dplyr**: For data manipulation with a consistent grammar.
+- **mgsub**: For multiple, simultaneous string substitutions.
+
+Dependencies for these packages will be automatically installed when executing the script, ensuring a smooth setup process.
