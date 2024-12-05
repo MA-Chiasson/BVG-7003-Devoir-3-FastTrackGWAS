@@ -1,5 +1,13 @@
 # BVG-7003-Assignment-3-FastTrackGWAS
 
+## Introduction
+
+Genome-Wide Association Studies (GWAS) are a powerful tool for uncovering the genetic basis of traits, and their application in agricultural science is pivotal for crop improvement. This project focuses on analyzing the genetic basis of symbiotic nitrogen fixation in African soybean, using a publicly available dataset. The steps provided in this repository guide users through setting up the required tools and performing a GWAS analysis efficiently.
+
+To enable reproducibility, this project employs **R** and **RStudio** as the core computational environment. R is renowned for its statistical computing capabilities and robust library ecosystem, making it a suitable choice for GWAS workflows. This repository demonstrates how to install and configure R and RStudio, manage dependencies, and execute the GWAS analysis pipeline.
+
+The guide is designed to help users of all experience levels successfully replicate the analysis and adapt it to other datasets or traits of interest.
+
 ## Installation of R and RStudio
 
 To perform a GWAS analysis using R, follow the steps below to install R and RStudio on your computer:
@@ -25,4 +33,13 @@ RStudio is a user-friendly interface for R:
 1. Once installed, open RStudio.
 2. Ensure that R is correctly configured with RStudio (RStudio automatically detects R if it is installed).
 
-Your R and RStudio environment is now ready for GWAS analysis and other projects. To verify the installation, type `R.version` in the RStudio console and ensure no errors appear.
+### 4. **Dependencies**
+This repository includes a script for GWAS analysis, which requires the following R packages:
+
+- **rMVP**: A memory-efficient, visualization-enhanced, and parallel-accelerated tool for GWAS.
+- **ggplot2**: For creating high-quality graphics.
+- **data.table**: For fast and flexible data manipulation.
+- **dplyr**: For data manipulation with a consistent grammar.
+- **mgsub**: For multiple, simultaneous string substitutions.
+
+Dependencies for these packages will be automatically installed when executing the script, ensuring a smooth setup process.
