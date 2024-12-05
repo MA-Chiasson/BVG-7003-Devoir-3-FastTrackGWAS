@@ -33,7 +33,14 @@ RStudio is a user-friendly interface for R:
 1. Once installed, open RStudio.
 2. Ensure that R is correctly configured with RStudio (RStudio automatically detects R if it is installed).
 
-### 4. **Dependencies**
+--- 
+
+## Script execution
+### 1. Input and Output File Formats
+#### Input
+#### Output
+
+### 2. **Dependencies**
 This repository includes a script for GWAS analysis, which requires the following R packages:
 
 - **rMVP**: A memory-efficient, visualization-enhanced, and parallel-accelerated tool for GWAS.
