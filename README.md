@@ -28,5 +28,3 @@ RStudio est une interface utilisateur qui facilite l'utilisation de R :
 2. Assurez-vous que R est bien configuré avec RStudio (RStudio le détecte automatiquement si R est installé).  
 
 Votre environnement R et RStudio est maintenant prêt à être utilisé pour l’analyse GWAS et d'autres projets. Pour vérifier l'installation, tapez `R.version` dans la console de RStudio et validez qu'aucune erreur n’apparaît.  
-
-Besoin d’aide pour l’installation de dépendances spécifiques ? 😊
