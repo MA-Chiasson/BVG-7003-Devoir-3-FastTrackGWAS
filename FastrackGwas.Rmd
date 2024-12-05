@@ -1,0 +1,15 @@
+---
+title: "Analyse_MAC"
+author: "Marc-Antoine Chiasson, Edouard Reed-Métayer, Mehdi Babaei, Ladan Ajdanian"
+date: "05/12/2024"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r library, include=FALSE}
+
+library(dplyr)
+library(ggplot2)
+
+```
