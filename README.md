@@ -8,6 +8,8 @@ To enable reproducibility, this project employs **R** and **RStudio** as the cor
 
 The guide is designed to help users of all experience levels successfully replicate the analysis and adapt it to other datasets or traits of interest.
 
+--- 
+
 ## Installation of R and RStudio
 
 To perform a GWAS analysis using R, follow the steps below to install R and RStudio on your computer:
