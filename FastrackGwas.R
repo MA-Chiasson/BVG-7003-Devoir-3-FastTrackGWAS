@@ -1,20 +1,15 @@
----
-title: "Analyse_MAC"
-author: "Marc-Antoine Chiasson,  Edouard Reed-Métayer, Mehdi Babaei and Ladan Ajdanian "
-date: "`r Sys.Date()`"
-output: html_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
-```
+##############################################################
+# Analyse_MAC
+# Auteurs : Marc-Antoine Chiasson, Edouard Reed-Métayer, Mehdi Babaei, Ladan Ajdanian
+# Date    : Sys.Date()
+##############################################################
 
 # 1. Introduction
-Cette analyse GWAS utilise le package rMVP pour identifier des SNPs associés à un trait phénotypique donné. Les données utilisées sont issues du fichier data.
+# Cette analyse GWAS utilise le package rMVP pour identifier des SNPs
+# associés à un trait phénotypique donné. Les données utilisées sont issues
+# du fichier data.
 
 # 2. Chargement des Bibliothèques
-
-```{r library, include=FALSE}
 # Installer les bibliothèques si nécessaire
 if (!requireNamespace("rMVP", quietly = TRUE)) install.packages("rMVP")
 if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
@@ -28,86 +23,58 @@ library(ggplot2)
 library(data.table)
 library(dplyr)
 library(mgsub)
-```
 
-3. Loading datas
-```{r data loadint, include=FALSE}
-# Input file paths
+# 3. Chargement des données
 pheno_file <- "data/Phenotype_African.txt"
-
 hmp_file <- "data/African_SNPs.hmp.txt"
 
-
-# Charger les données phénotypes
+# Charger et modifier le phénotype
 pheno <- read.csv(pheno_file, sep = "\t", header = TRUE) %>% 
   mutate(Sample = mgsub(
-    pattern = c("TGx", " "), # Modifications à effectuer
-    replacement = c("", ""), # Valeurs correspondantes
-    string = Sample # Colonne à modifier
+    pattern = c("TGx", " "), 
+    replacement = c("", ""), 
+    string = Sample
   ))
 
-# Sauvegarder le tableau phénotype
+# Sauvegarder le tableau phénotype modifié
 write.table(pheno, "data/pheno_modified.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 
-
-# HapMap to MVP format
+# Conversion HapMap -> format MVP
 MVP.Data(
   fileHMP = hmp_file,
   filePhe = "data/pheno_modified.txt",
   out = "mvp_hmp"
 )
-```
 
-4. Exécution de l'Analyse GWAS
-```{r GWAS, include = FALSE}
-genotype <- attach.big.matrix("mvp_hmp.geno.desc") # Change to "mvp_hmp.geno.desc" if using HapMap
+# 4. Exécution de l'Analyse GWAS
+genotype <- attach.big.matrix("mvp_hmp.geno.desc")
 phenotype <- read.table("mvp_hmp.phe", header = TRUE)
 map <- read.table("mvp_hmp.geno.map", header = TRUE)
 
-
-
-# Run a simple GWAS using the GLM model
+# Lancement du GWAS simple avec GLM
 results <- MVP(
   phe = phenotype,
   geno = genotype,
   map = map,
   method = c("GLM"),
-  nPC.GLM = 3,  # Number of principal components for GLM
+  nPC.GLM = 3,  # Nombre de composantes principales pour GLM
   threshold = 0.05
 )
 
-```
-
-```{r}
-# Extract map and glm results
+# Extraction des résultats et sauvegarde
 map <- results$map
 glm_results <- as.data.frame(results$glm.results)
-
-# Ensure column names for glm_results
 colnames(glm_results) <- c("Effect", "SE", "P.value")
 
-# Combine SNP info with GWAS results
 combined_results <- cbind(map, glm_results)
-
-# Save to a tab-delimited file
 write.table(combined_results, "Test_GWAS_results.txt", sep = "\t", row.names = FALSE, col.names = TRUE)
 
-#### Preparing data for visualization ####
-
-# Extract necessary columns
+# Préparation des données pour la visualisation
 vis_data <- combined_results[, c("SNP", "CHROM", "POS", "P.value")]
-
-# Rename columns to match MVP.Report expectations
 colnames(vis_data) <- c("SNP", "Chromosome", "Position", "P.value")
 
-# Run visualization
 MVP.Report(
   vis_data,
-  plot.type = c("qq", "manhattan"),  # Generate QQ and Manhattan plots
-  threshold = 0.05 / nrow(vis_data)  # Bonferroni threshold
+  plot.type = c("qq", "manhattan"),
+  threshold = 0.05 / nrow(vis_data) # Seuil de Bonferroni
 )
-```
-
-
-
-
