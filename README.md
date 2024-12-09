@@ -59,8 +59,8 @@ RStudio is a user-friendly interface for R:
 #### 2Input
 #### Output
 
-### 2. **Dependencies**
-#### 2.1. Installation
+### 2.2. **Dependencies**
+#### 2.2.1. Installation
 Open the script and start to install the following R packages which are required to execute this analysis:
 
 - **rMVP**: A memory-efficient, visualization-enhanced, and parallel-accelerated tool for GWAS.
@@ -87,7 +87,7 @@ install.packages(c("rMVP", "ggplot2", "data.table", "dplyr", "mgsub", "bigmemory
 ```
 This would lead to the installation of packages every time the script is run, even if they are already installed, which is inefficient. The if condition ensures that packages are only installed when required, avoiding unnecessary installation.
 
-#### 2.2. Loading
+#### 2.2.2. Loading
 Once they've been installed, it's time to load them. To do this, use the library() command, inserting the package name between the brackets, as in the example below. 
 ```r
 library(rMVP)
