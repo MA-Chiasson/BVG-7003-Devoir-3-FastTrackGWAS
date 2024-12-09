@@ -43,6 +43,7 @@ RStudio is a user-friendly interface for R:
 #### Output
 
 ### 2. **Dependencies**
+#### 2.1. Installation
 Open the script and start to install the following R packages which are required to execute this analysis:
 
 - **rMVP**: A memory-efficient, visualization-enhanced, and parallel-accelerated tool for GWAS.
@@ -67,5 +68,38 @@ On the other hand, if a single line of code was used to install all the packages
 Copier le code
 install.packages(c("rMVP", "ggplot2", "data.table", "dplyr", "mgsub", "bigmemory"))
 ```
+This would lead to the installation of packages every time the script is run, even if they are already installed, which is inefficient. The if condition ensures that packages are only installed when required, avoiding unnecessary installation.
 
-This would lead to the installation of packages every time the script is run, even if they are already installed, which is inefficient. The if condition ensures that packages are only installed when required, avoiding unnecessary installations.
+#### 2.2. Loading
+Once they've been installed, it's time to load them. To do this, use the library() command, inserting the package name between the brackets, as in the example below. 
+```r
+library(rMVP)
+```
+### 3. Define working directory
+**Defining a working directory in R offers several key benefits:**
+
+- File Management: It helps centralize project files (data, scripts, results) in one location, avoiding confusion.
+
+- Simplified File Access: With a set working directory, you can use relative file paths (e.g., read.csv("data.csv")) instead of full paths.
+
+- Easier Data Import/Export: Files can be easily imported or exported without needing to specify full file paths.
+
+- Reduced Path Errors: Setting a working directory minimizes errors related to incorrect file paths, especially in team projects.
+
+- Project Organization: It encourages better project structure, making it easier to manage and maintain files.
+
+#### How to Set a Working Directory
+Usually, the WD is the folder where our script and data are stored, and where we want to add the results of our analyses.
+You can define a working directory using setwd():
+
+```r
+setwd("C:/Users/YourName/Documents/Project")
+Check the current working directory with getwd():
+```
+```r
+getwd()
+```
+#### Conclusion
+Defining a working directory streamlines file management, reduces errors, and helps organize your project efficiently.
+
+### 4. Loading the dada
