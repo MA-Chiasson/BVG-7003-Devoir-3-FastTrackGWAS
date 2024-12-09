@@ -53,7 +53,7 @@ Open the script and start to install the following R packages which are required
 
 
 Dependencies for these packages will be automatically installed when executing the script, ensuring a smooth setup process.
-In the script, the installation of packages is conditional using the following function:
+For this purpose, the installation of packages is conditional using the following function:
 
 ```r
 if (!requireNamespace("package", quietly = TRUE)) install.packages("package")
