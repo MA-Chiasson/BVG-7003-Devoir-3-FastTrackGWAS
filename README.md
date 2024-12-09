@@ -163,7 +163,7 @@ In summary:
 ### 3. Data Preprocessing
 In this section, we guide users through the following steps for data preprocessing:
 
-### 3.1. Formatting Genotype and Phenotype Files
+#### 3.1. Formatting Genotype and Phenotype Files
 
 It is important to ensure that the row names of the phenotype file correspond to the column names of the genotype file for the MVP analysis. To achieve this, we formatted the data by matching the sample names across both files. The following R code was used to adjust the sample names:
 
@@ -178,11 +178,11 @@ It is important to ensure that the row names of the phenotype file correspond to
 
 This step ensures consistency between the two datasets for further analysis.
 
-### 3.2. Quality Control
+#### 3.2. Quality Control
 
 The quality control step involves filtering SNPs (Single Nucleotide Polymorphisms) based on their Minor Allele Frequency (MAF). SNPs with a MAF less than 0.05 are removed to ensure that only common variations are included in the analysis.
 
-#### 3.2.1. SNP Filtering with MAF < 0.05
+##### 3.2.1. SNP Filtering with MAF < 0.05
 
 We calculate the MAF for each SNP and filter out those with a MAF below 0.05. Below is the R code used for this process:
 
@@ -205,7 +205,7 @@ filtered_genotype_data <- genotype_data[, maf_data >= 0.05]
 
 This code filters out SNPs with a MAF lower than 0.05, ensuring only those with a sufficient allele frequency are retained for further analysis.
 
-### 3.3. Generating Covariates
+#### 3.3. Generating Covariates
 
 To account for population structure or relatedness in the data, we may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness matrix. These covariates are used to adjust for potential confounding factors in the GWAS analysis.
 
