@@ -1,5 +1,21 @@
 # BVG-7003-Assignment-3-FastTrackGWAS
 
+# Table of Contents
+1. [Introduction](#introduction)
+2. [Installation of R and RStudio](#installation-of-r-and-rstudio)
+   1. [Installing R](#installing-r)
+   2. [Installing RStudio](#installing-rstudio)
+   3. [Launching RStudio](#launching-rstudio)
+3. [Script Execution](#script-execution)
+   1. [Input and Output File Formats](#input-and-output-file-formats)
+   2. [Dependencies](#dependencies)
+      1. [Installation](#installation)
+      2. [Loading](#loading)
+   3. [Define Working Directory](#define-working-directory)
+   4. [Loading Data in R](#loading-data-in-r)
+      1. [Loading Phenotypic Data](#loading-phenotypic-data)
+      2. [Loading Genotypic Data](#loading-genotypic-data)
+
 ## Introduction
 
 Genome-Wide Association Studies (GWAS) are a powerful tool for uncovering the genetic basis of traits, and their application in agricultural science is pivotal for crop improvement. This project focuses on analyzing the genetic basis of symbiotic nitrogen fixation in African soybean, using a publicly available dataset. The steps provided in this repository guide users through setting up the required tools and performing a GWAS analysis efficiently.
