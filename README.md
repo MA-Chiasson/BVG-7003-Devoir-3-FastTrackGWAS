@@ -13,8 +13,8 @@
       2. [Loading](#2-2-loading)
    3. [Define working directory](#3-define-working-directory)
 4. [Loading Data in R](#4-loading-data-in-r)
-   1. [Loading Phenotypic Data](#4-1-loading-phenotypic-data)
-   2. [Loading Genotypic Data](#4-2-loading-genotypic-data)
+   1. [Loading Phenotypic Data](#4.1.-loading-phenotypic-data)
+   2. [Loading Genotypic Data](#4.2.-loading-genotypic-data)
 
 ## Introduction
 
