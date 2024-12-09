@@ -43,7 +43,7 @@ RStudio is a user-friendly interface for R:
 #### Output
 
 ### 2. **Dependencies**
-This repository includes a script for GWAS analysis, which requires the following R packages:
+Open the script and start to install the following R packages which are required to execute this analysis:
 
 - **rMVP**: A memory-efficient, visualization-enhanced, and parallel-accelerated tool for GWAS.
 - **ggplot2**: For creating high-quality graphics.
@@ -51,4 +51,23 @@ This repository includes a script for GWAS analysis, which requires the followin
 - **dplyr**: For data manipulation with a consistent grammar.
 - **mgsub**: For multiple, simultaneous string substitutions.
 
+
 Dependencies for these packages will be automatically installed when executing the script, ensuring a smooth setup process.
+In the script, the installation of packages is conditional using the following function:
+
+```r
+if (!requireNamespace("package", quietly = TRUE)) install.packages("package")
+```
+
+This checks whether each package is already installed before attempting to install it. If the package is not found, it is installed. This approach ensures that packages are only installed when necessary, preventing redundant installations during each script iteration, which can slow down execution.
+
+On the other hand, if a single line of code was used to install all the packages at once, like this:
+
+```r
+Copier le code
+install.packages(c("rMVP", "ggplot2", "data.table", "dplyr", "mgsub", "bigmemory"))
+```
+
+This would lead to the installation of packages every time the script is run, even if they are already installed, which is inefficient. The if condition ensures that packages are only installed when required.
+
+ avoiding unnecessary installations.
