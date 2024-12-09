@@ -1,20 +1,21 @@
 # BVG-7003-Assignment-3-FastTrackGWAS
 
-# Table of Contents
+## Table of Contents
 1. [Introduction](#introduction)
 2. [Installation of R and RStudio](#installation-of-r-and-rstudio)
-   1. [Installing R](#installing-r)
-   2. [Installing RStudio](#installing-rstudio)
-   3. [Launching RStudio](#launching-rstudio)
-3. [Script Execution](#script-execution)
-   1. [Input and Output File Formats](#input-and-output-file-formats)
-   2. [Dependencies](#dependencies)
-      1. [Installation](#installation)
-      2. [Loading](#loading)
-   3. [Define Working Directory](#define-working-directory)
-   4. [Loading Data in R](#loading-data-in-r)
-      1. [Loading Phenotypic Data](#loading-phenotypic-data)
-      2. [Loading Genotypic Data](#loading-genotypic-data)
+   1. [Installing R](#1-installing-r)
+   2. [Installing RStudio](#2-installing-rstudio)
+   3. [Launching RStudio](#3-launching-rstudio)
+3. [Script execution](#script-execution)
+   1. [Input and Output File Formats](#1-input-and-output-file-formats)
+   2. [Dependencies](#2-dependencies)
+      1. [Installation](#2-1-installation)
+      2. [Loading](#2-2-loading)
+   3. [Define working directory](#3-define-working-directory)
+4. [Loading Data in R](#4-loading-data-in-r)
+   1. [Loading Phenotypic Data](#4-1-loading-phenotypic-data)
+   2. [Loading Genotypic Data](#4-2-loading-genotypic-data)
+5. [Conclusion](#conclusion)
 
 ## Introduction
 
