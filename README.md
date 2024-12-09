@@ -167,11 +167,11 @@ In summary:
 ---
 
 ### 5. Data Preprocessing
-In this section, we guide users through the following steps for data preprocessing:
+In this section, we guide users through the following steps for data preprocessing. These steps are crucial for ensuring the quality and integrity of the data used in the analysis. Preprocessing helps to clean, format, and structure the data properly, minimizing errors and biases in the final results.
 
 #### 5.1. Formatting Genotype and Phenotype Files
 
-It is important to ensure that the row names of the phenotype file correspond to the column names of the genotype file for the MVP analysis. To achieve this, we formatted the data by matching the sample names across both files. The following R code was used to adjust the sample names:
+It is important to ensure that the row names of the phenotype file correspond to the column names of the genotype file for the MVP analysis. To achieve this, we formatted the data by matching the sample names across both files. In our case, The following R code was used to adjust the sample names:
 
 ```r
 %>% 
@@ -181,6 +181,8 @@ It is important to ensure that the row names of the phenotype file correspond to
     string = Sample
   ))
 ```
+
+![image](https://github.com/user-attachments/assets/eb3511ab-2b10-4182-9645-abac278ffaa2)
 
 This step ensures consistency between the two datasets for further analysis.
 
