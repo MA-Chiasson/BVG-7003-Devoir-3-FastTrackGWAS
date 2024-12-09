@@ -113,8 +113,8 @@ You can define a working directory using setwd():
 ```r
 setwd("C:/Users/YourName/Documents/Project")
 ```
-```r
 Check the current working directory with getwd():
+```r
 getwd()
 ```
 #### Conclusion
