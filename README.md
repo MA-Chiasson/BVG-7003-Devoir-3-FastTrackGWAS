@@ -94,12 +94,53 @@ You can define a working directory using setwd():
 
 ```r
 setwd("C:/Users/YourName/Documents/Project")
-Check the current working directory with getwd():
 ```
 ```r
+Check the current working directory with getwd():
 getwd()
 ```
 #### Conclusion
 Defining a working directory streamlines file management, reduces errors, and helps organize your project efficiently.
 
-### 4. Loading the dada
+### 4. Loading Data in R
+There are several good ways to load data into R, depending on the data format. Below, we explain how to load both phenotypic and genotypic data using specific commands.
+
+#### 4.1. Loading Phenotypic Data
+For phenotypic data, we typically use `read.csv()` or `read.table()` to import the data. The key difference is that `read.csv()` is used when the data is separated by commas, while `read.table()` is more general and allows specifying different delimiters (e.g., tab-separated data).
+
+In our case, we use the following code to load the phenotypic data:
+
+```r
+pheno <- read.csv(pheno_file, sep = "\t", header = TRUE)
+```
+Explanation of the parameters:
+- `pheno_file`: The file path to the phenotypic data.
+- `sep = "\t"`: This specifies that the data is tab-separated.
+- `header = TRUE`: This indicates that the first row contains column names.
+
+#### 4.2. Loading Genotypic Data
+For genotypic data, we use the `MVP.Data()` function from the rMVP package. There are two types of genotypic data commonly used: HapMap and VCF. We load each type of data with different parameters.
+
+1. **Loading VCF Data**: If the genotypic data is in VCF (Variant Call Format), we use the following command:
+
+```r
+MVP.Data(fileVCF = vcf_file, filePhe = pheno_file, out = "mvp_vcf")
+```
+- `fileVCF`: The file path to the VCF file.
+- `filePhe`: The file path to the phenotypic data.
+- `out` = "mvp_vcf": The output file name (the data will be saved in this format).
+
+2. **Loading HapMap Data**: If the genotypic data is in HapMap format, we use the following command:
+
+``` r
+MVP.Data(fileHMP = hmp_file, filePhe = pheno_file, out = "mvp_hmp")
+```
+- `fileHMP`: The file path to the HapMap file.
+- `filePhe`: The file path to the phenotypic data.
+- `out` = "mvp_hmp": The output file name.
+
+#### Conclusion
+In summary:
+
+- **Phenotypic data** is loaded using `read.csv()` (or `read.table()`) with parameters like `sep` (separator) and `header` (column names).
+- **Genotypic data** is loaded using the `MVP.Data()` function, which handles different formats (VCF or HapMap) by specifying the appropriate file parameter (`fileVCF` or `fileHMP`). The output can be saved in the specified format using the `out` parameter.
