@@ -15,7 +15,8 @@
 4. [Loading Data in R](#4-loading-data-in-r)
    1. [Loading Phenotypic Data](#4.1.-loading-phenotypic-data)
    2. [Loading Genotypic Data](#4.2.-loading-genotypic-data)
-5. 
+
+---
 ## Introduction
 
 Genome-Wide Association Studies (GWAS) are a powerful tool for uncovering the genetic basis of traits, and their application in agricultural science is pivotal for crop improvement. This project focuses on analyzing the genetic basis of symbiotic nitrogen fixation in African soybean, using a publicly available dataset. The steps provided in this repository guide users through setting up the required tools and performing a GWAS analysis efficiently.
@@ -91,6 +92,7 @@ Once they've been installed, it's time to load them. To do this, use the library
 ```r
 library(rMVP)
 ```
+---
 ### 3. Define working directory
 **Defining a working directory in R offers several key benefits:**
 
@@ -117,6 +119,8 @@ getwd()
 ```
 #### Conclusion
 Defining a working directory streamlines file management, reduces errors, and helps organize your project efficiently.
+
+---
 
 ### 4. Loading Data in R
 There are several good ways to load data into R, depending on the data format. Below, we explain how to load both phenotypic and genotypic data using specific commands.
@@ -160,10 +164,12 @@ In summary:
 - **Phenotypic data** is loaded using `read.csv()` (or `read.table()`) with parameters like `sep` (separator) and `header` (column names).
 - **Genotypic data** is loaded using the `MVP.Data()` function, which handles different formats (VCF or HapMap) by specifying the appropriate file parameter (`fileVCF` or `fileHMP`). The output can be saved in the specified format using the `out` parameter.
 
-### 3. Data Preprocessing
+---
+
+### 5. Data Preprocessing
 In this section, we guide users through the following steps for data preprocessing:
 
-#### 3.1. Formatting Genotype and Phenotype Files
+#### 5.1. Formatting Genotype and Phenotype Files
 
 It is important to ensure that the row names of the phenotype file correspond to the column names of the genotype file for the MVP analysis. To achieve this, we formatted the data by matching the sample names across both files. The following R code was used to adjust the sample names:
 
@@ -178,11 +184,11 @@ It is important to ensure that the row names of the phenotype file correspond to
 
 This step ensures consistency between the two datasets for further analysis.
 
-#### 3.2. Quality Control
+#### 5.2. Quality Control
 
 The quality control step involves filtering SNPs (Single Nucleotide Polymorphisms) based on their Minor Allele Frequency (MAF). SNPs with a MAF less than 0.05 are removed to ensure that only common variations are included in the analysis.
 
-##### 3.2.1. SNP Filtering with MAF < 0.05
+##### 5.2.1. SNP Filtering with MAF < 0.05
 
 We calculate the MAF for each SNP and filter out those with a MAF below 0.05. Below is the R code used for this process:
 
@@ -205,7 +211,7 @@ filtered_genotype_data <- genotype_data[, maf_data >= 0.05]
 
 This code filters out SNPs with a MAF lower than 0.05, ensuring only those with a sufficient allele frequency are retained for further analysis.
 
-#### 3.3. Generating Covariates
+#### 5.3. Generating Covariates
 
 To account for population structure or relatedness in the data, we may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness matrix. These covariates are used to adjust for potential confounding factors in the GWAS analysis.
 
