@@ -161,7 +161,7 @@ MVP.Data(fileHMP = hmp_file, filePhe = pheno_file, out = "mvp_hmp")
 - `fileHMP`: The file path to the HapMap file.
 - `filePhe`: The file path to the phenotypic data.
 - `out` = "mvp_hmp": The output file name.
-- 
+  
 **However, in many cases the MVP function won't work perfectly the first time, as you need to ensure that the data is formatted in the right way (see section 5).**
 
 #### Conclusion
