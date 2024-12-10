@@ -9,18 +9,18 @@
 3. [Script execution](#script-execution)
    1. [Input and Output File Formats](#1-input-and-output-file-formats)
    2. [Dependencies](#2-dependencies)
-      1. [Installation](#2-1-installation)
-      2. [Loading](#2-2-loading)
+      1. [Installation of the packages](#2-1-installation-of-the-packages)
+      2. [Loading the packages](#2-2-loading-the-packages)
    3. [Define working directory](#3-define-working-directory)
 4. [Loading Data in R](#4-loading-data-in-r)
-   1. [Loading Phenotypic Data](#4.1-loading-phenotypic-data)
-   2. [Loading Genotypic Data](#4.2-loading-genotypic-data)
+   1. [Loading phenotypic data](#4-1-loading-phenotypic-data)
+   2. [Loading Genotypic Data](#4-2-loading-genotypic-data)
 5. [Data Preprocessing](#5-data-preprocessing)
-   1. [Formatting Genotype and Phenotype Files](#5.1-formatting-genotype-and-phenotype-files)
-   2. [Quality Control](#5.2-quality-control)
-      1. [SNP Filtering with MAF < 0.05](#5.2.1-snp-filtering-with-maf-005)
-   3. [Generating Covariates](#5.3-generating-covariates)
-6. [Conclusion](#conclusion)
+   1. [Formatting Genotype and Phenotype Files](#5-1-formatting-genotype-and-phenotype-files)
+   2. [Quality Control](#5-2-quality-control)
+      1. [SNP Filtering with MAF < 0.05](#5-2-1-snp-filtering-with-maf-005)
+   3. [Generating Covariates](#5-3-generating-covariates)
+
 
 ---
 ## Introduction
@@ -228,7 +228,7 @@ pheno$Sample <- gsub("TGx ", "", pheno$Sample)
 ```
 Although the genotypic data uses a different naming convention, where it includes an "X" and replaces "-" with ".", it may seem intuitive to make similar changes in the phenotypic data for consistency. However, this step is unnecessary because RStudio automatically modifies column names when loading the data. Specifically, it prepends an "X" to column names starting with a number and replaces "-" with ".", ensuring compatibility with R’s column naming rules. As a result, if we run the MVP function now, we will have 281 matching samples between the two datasets.
 
-**MVP after modifications**
+**MVP after modifications**  
 ![image](https://github.com/user-attachments/assets/6b18b186-145f-4939-8d67-4b8352ea95d1)
 
 
