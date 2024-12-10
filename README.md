@@ -135,9 +135,8 @@ There are several good ways to load data into R, depending on the data format. B
 For phenotypic data, we typically use `read.csv()` or `read.table()` to import the data. The key difference is that `read.csv()` is used when the data is separated by commas, while `read.table()` is more general and allows specifying different delimiters (e.g., tab-separated data).
 
 In our case, we use the following code to load the phenotypic data:
-
 ```r
-pheno <- read.csv(pheno_file, sep = "\t", header = TRUE)
+pheno <- read.table(pheno_file, sep = "\t", header = TRUE)
 ```
 Explanation of the parameters:
 - `pheno_file`: The file path to the phenotypic data.
@@ -162,9 +161,10 @@ MVP.Data(fileHMP = hmp_file, filePhe = pheno_file, out = "mvp_hmp")
 - `fileHMP`: The file path to the HapMap file.
 - `filePhe`: The file path to the phenotypic data.
 - `out` = "mvp_hmp": The output file name.
+- 
+**However, in many cases the MVP function won't work perfectly the first time, as you need to ensure that the data is formatted in the right way (see section 5).**
 
 #### Conclusion
-In summary:
 - **Phenotypic data** is loaded using `read.csv()` (or `read.table()`) with parameters like `sep` (separator) and `header` (column names).
 - **Genotypic data** is loaded using the `MVP.Data()` function, which handles different formats (VCF or HapMap) by specifying the appropriate file parameter (`fileVCF` or `fileHMP`). The output can be saved in the specified format using the `out` parameter.
 
@@ -212,7 +212,6 @@ This allows you to view the first few rows of the phenotype data and check every
 These two commands are essential tools for quickly inspecting the structure and content of your data. They help identify potential errors early in the analysis process, saving a lot of time and effort upfront. Using str() and head() before starting any detailed analysis ensures that the data is properly formatted and ready to be processed.
 
 ##### 5.1.3. Exemple of formating
-
 It is important to ensure that the row names of the phenotype file correspond to the column names of the genotype file for the MVP analysis. To achieve this, we formatted the data by matching the sample names across both files. 
 
 ![image](https://github.com/user-attachments/assets/3e01bf96-879e-4a7c-90ad-50e8acc23228)
