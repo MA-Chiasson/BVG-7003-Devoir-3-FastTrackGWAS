@@ -170,11 +170,11 @@ In summary:
 In this section, we guide users through the following steps for data preprocessing. These steps are crucial for ensuring the quality and integrity of the data used in the analysis. Preprocessing helps to clean, format, and structure the data properly, minimizing errors and biases in the final results.
 
 #### 5.1. Formatting Genotype and Phenotype Files
-**IMPORTANT NOTE** Before starting, it is important to note that the genotype data file cannot be modified directly in R, as it is a special file format. Therefore, any necessary modifications should be made to the phenotype data file, as we will see below.
+**IMPORTANT NOTE:** Before starting, it is important to note that the genotype data file cannot be modified directly in R, as it is a special file format. Therefore, any necessary modifications should be made to the phenotype data file, as we will see below.
 
 To check if the format of our data is correct, we can use two commonly used commands in R: `str()` and `head()`. These functions are useful for quickly exploring the structure and content of our data before proceeding with more complex analyses.
 
-5.1.1. `str()`
+##### 5.1.1. `str()`
 The str() (structure) function is used to display the internal structure of an object in R. It provides a quick overview of the data structure, including the type of each column (e.g., numeric, factor, etc.), the number of missing values, and a sample of the first few values in each column.
 
 **Usefulness of `str()`:**
@@ -189,7 +189,7 @@ str(pheno)
 ```
 This allows you to check that the phenotype data is in the correct format before using it in the analysis.
 
-5.1.2. `head()`
+##### 5.1.2. `head()`
 The `head()` function displays the first few rows of a dataset. By default, it shows the first six rows, but this number can be adjusted. This function gives a quick look at the actual values in the first rows, which is useful for checking the quality of the data and ensuring that they have been imported correctly.
 
 **Usefulness of `head()`**:
@@ -199,7 +199,6 @@ It provides a quick check for missing values or incorrect data in the first few 
 It is particularly useful for large files, as it allows you to examine a subset of the data without loading the entire file.
 
 **Example:**
-
 ```r
 head(pheno)
 ```
@@ -208,8 +207,10 @@ This allows you to view the first few rows of the phenotype data and check every
 **Conclusion**
 These two commands are essential tools for quickly inspecting the structure and content of your data. They help identify potential errors early in the analysis process, saving a lot of time and effort upfront. Using str() and head() before starting any detailed analysis ensures that the data is properly formatted and ready to be processed.
 
+##### 5.1.3. Exemple of formating
 
 It is important to ensure that the row names of the phenotype file correspond to the column names of the genotype file for the MVP analysis. To achieve this, we formatted the data by matching the sample names across both files. 
+
 ![image](https://github.com/user-attachments/assets/3e01bf96-879e-4a7c-90ad-50e8acc23228)
 
 ![image](https://github.com/user-attachments/assets/eb3511ab-2b10-4182-9645-abac278ffaa2)
@@ -217,12 +218,7 @@ It is important to ensure that the row names of the phenotype file correspond to
 In our case, The following R code was used to adjust the sample names:
 
 ```r
-%>% 
-  mutate(Sample = mgsub(
-    pattern = c("TGx", " "), 
-    replacement = c("", ""), 
-    string = Sample
-  ))
+pheno$Sample <- gsub("TGx ", "", pheno$Sample)
 ```
 
 
