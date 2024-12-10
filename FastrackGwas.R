@@ -16,6 +16,7 @@ if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
 if (!requireNamespace("data.table", quietly = TRUE)) install.packages("data.table")
 if (!requireNamespace("dplyr", quietly = TRUE)) install.packages("dplyr")
 if (!requireNamespace("mgsub", quietly = TRUE)) install.packages("mgsub")
+if (!requireNamespace("bigmemory", quietly = TRUE)) install.packages("bigmemory")
 
 # Charger les bibliothèques
 library(rMVP)
@@ -23,6 +24,8 @@ library(ggplot2)
 library(data.table)
 library(dplyr)
 library(mgsub)
+library(bigmemory)
+
 
 # 3. Chargement des données
 pheno_file <- "data/Phenotype_African.txt"
@@ -46,7 +49,27 @@ MVP.Data(
   out = "mvp_hmp"
 )
 
-# 4. Exécution de l'Analyse GWAS
+# 4. Filtrage des SNPs avec un MAF < 0,05
+# Charger les données de génotype
+genotype_data <- attach.big.matrix("mvp_hmp.geno.desc")
+
+# Calculer la fréquence de chaque allèle pour chaque SNP
+# Chaque colonne représente un SNP, et chaque ligne un individu
+maf_data <- apply(genotype_data, 2, function(x) {
+  # Calculer la fréquence des allèles
+  table_x <- table(x)  # Compter les allèles
+  maf <- min(table_x) / sum(table_x)  # Calculer la fréquence de l'allèle minoritaire
+  return(maf)
+})
+
+# Filtrer les SNPs avec MAF < 0.05
+filtered_genotype_data <- genotype_data[, maf_data >= 0.05]
+
+# Vérifier la taille des données après filtrage
+print(dim(filtered_genotype_data))
+
+
+# 5. Exécution de l'Analyse GWAS
 genotype <- attach.big.matrix("mvp_hmp.geno.desc")
 phenotype <- read.table("mvp_hmp.phe", header = TRUE)
 map <- read.table("mvp_hmp.geno.map", header = TRUE)
