@@ -212,18 +212,25 @@ This allows you to view the first few rows of the phenotype data and check every
 These two commands are essential tools for quickly inspecting the structure and content of your data. They help identify potential errors early in the analysis process, saving a lot of time and effort upfront. Using str() and head() before starting any detailed analysis ensures that the data is properly formatted and ready to be processed.
 
 ##### 5.1.3. Exemple of formating
-It is important to ensure that the row names of the phenotype file correspond to the column names of the genotype file for the MVP analysis. To achieve this, we formatted the data by matching the sample names across both files. 
-
+As observed in the phenotypic data (Figure 1), sample names often begin with "TGx," whereas this is not the case in the genotypic data (Figure 2). If we were to run the MVP function as is, only 18 matching samples would be identified between the two datasets, as shown in Figure 3 below.
+**Name of the sample in the phenotypics datas:**
 ![image](https://github.com/user-attachments/assets/3e01bf96-879e-4a7c-90ad-50e8acc23228)
 
+**Name of the sample in the genotypics datas:**
 ![image](https://github.com/user-attachments/assets/eb3511ab-2b10-4182-9645-abac278ffaa2)
 
-In our case, The following R code was used to adjust the sample names:
+**MVP without modifications:**
+![image](https://github.com/user-attachments/assets/9220e96c-394f-4423-acf8-e065da1cb288)
 
+To address this, we will remove the "TGx" prefix from the phenotypic data using the following command:
 ```r
 pheno$Sample <- gsub("TGx ", "", pheno$Sample)
 ```
-This step ensures consistency between the two datasets for further analysis.
+Although the genotypic data uses a different naming convention, where it includes an "X" and replaces "-" with ".", it may seem intuitive to make similar changes in the phenotypic data for consistency. However, this step is unnecessary because RStudio automatically modifies column names when loading the data. Specifically, it prepends an "X" to column names starting with a number and replaces "-" with ".", ensuring compatibility with R’s column naming rules. As a result, if we run the MVP function now, we will have 281 matching samples between the two datasets.
+
+**MVP after modifications**
+![image](https://github.com/user-attachments/assets/6b18b186-145f-4939-8d67-4b8352ea95d1)
+
 
 #### 5.2. Quality Control
 
