@@ -213,13 +213,13 @@ These two commands are essential tools for quickly inspecting the structure and 
 
 ##### 5.1.3. Exemple of formating
 As observed in the phenotypic data (Figure 1), sample names often begin with "TGx," whereas this is not the case in the genotypic data (Figure 2). If we were to run the MVP function as is, only 18 matching samples would be identified between the two datasets, as shown in Figure 3 below.
-**Name of the sample in the phenotypics datas:**
+**Name of the sample in the phenotypics datas:**  
 ![image](https://github.com/user-attachments/assets/3e01bf96-879e-4a7c-90ad-50e8acc23228)
 
-**Name of the sample in the genotypics datas:**
+**Name of the sample in the genotypics datas:**  
 ![image](https://github.com/user-attachments/assets/eb3511ab-2b10-4182-9645-abac278ffaa2)
 
-**MVP without modifications:**
+**MVP without modifications:**  
 ![image](https://github.com/user-attachments/assets/9220e96c-394f-4423-acf8-e065da1cb288)
 
 To address this, we will remove the "TGx" prefix from the phenotypic data using the following command:
