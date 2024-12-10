@@ -1,6 +1,6 @@
 # BVG-7003-Assignment-3-FastTrackGWAS
 
-## Table of Contents
+# Table of Contents
 1. [Introduction](#introduction)
 2. [Installation of R and RStudio](#installation-of-r-and-rstudio)
    1. [Installing R](#1-installing-r)
@@ -9,12 +9,18 @@
 3. [Script execution](#script-execution)
    1. [Input and Output File Formats](#1-input-and-output-file-formats)
    2. [Dependencies](#2-dependencies)
-      1. [Installation](#2-1-installation)
-      2. [Loading](#2-2-loading)
+      1. [Installation of the packages](#2-1-installation-of-the-packages)
+      2. [Loading the packages](#2-2-loading-the-packages)
    3. [Define working directory](#3-define-working-directory)
 4. [Loading Data in R](#4-loading-data-in-r)
-   1. [Loading Phenotypic Data](#4.1.-loading-phenotypic-data)
-   2. [Loading Genotypic Data](#4.2.-loading-genotypic-data)
+   1. [Loading phenotypic data](#4-1-loading-phenotypic-data)
+   2. [Loading Genotypic Data](#4-2-loading-genotypic-data)
+5. [Data Preprocessing](#5-data-preprocessing)
+   1. [Formatting Genotype and Phenotype Files](#5-1-formatting-genotype-and-phenotype-files)
+   2. [Quality Control](#5-2-quality-control)
+      1. [SNP Filtering with MAF < 0.05](#5-2-1-snp-filtering-with-maf-005)
+   3. [Generating Covariates](#5-3-generating-covariates)
+
 
 ---
 ## Introduction
@@ -56,19 +62,18 @@ RStudio is a user-friendly interface for R:
 
 ## 2. Script execution
 ### 2.1. Input and Output File Formats
-#### 2Input
-#### Output
+#### 2.1.1. Input
+#### 2.1.2. Output
+**REPLACE BY THE RESULT THE USER SHOULD HAVE**
 
 ### 2.2. **Dependencies**
-#### 2.2.1. Installation
+#### 2.2.1. Installation of the packages
 Open the script and start to install the following R packages which are required to execute this analysis:
-
 - **rMVP**: A memory-efficient, visualization-enhanced, and parallel-accelerated tool for GWAS.
 - **ggplot2**: For creating high-quality graphics.
 - **data.table**: For fast and flexible data manipulation.
 - **dplyr**: For data manipulation with a consistent grammar.
 - **mgsub**: For multiple, simultaneous string substitutions.
-
 
 Dependencies for these packages will be automatically installed when executing the script, ensuring a smooth setup process.
 For this purpose, the installation of packages is conditional using the following function:
@@ -82,12 +87,11 @@ This checks whether each package is already installed before attempting to insta
 On the other hand, if a single line of code was used to install all the packages at once, like this:
 
 ```r
-Copier le code
 install.packages(c("rMVP", "ggplot2", "data.table", "dplyr", "mgsub", "bigmemory"))
 ```
 This would lead to the installation of packages every time the script is run, even if they are already installed, which is inefficient. The if condition ensures that packages are only installed when required, avoiding unnecessary installation.
 
-#### 2.2.2. Loading
+#### 2.2.2. Loading the packages
 Once they've been installed, it's time to load them. To do this, use the library() command, inserting the package name between the brackets, as in the example below. 
 ```r
 library(rMVP)
@@ -98,13 +102,13 @@ library(rMVP)
 
 - File Management: It helps centralize project files (data, scripts, results) in one location, avoiding confusion.
 
-- Simplified File Access: With a set working directory, you can use relative file paths (e.g., read.csv("data.csv")) instead of full paths.
+- **Simplified File Access**: With a set working directory, you can use relative file paths (e.g., read.csv("data.csv")) instead of full paths.
 
-- Easier Data Import/Export: Files can be easily imported or exported without needing to specify full file paths.
+- **Easier Data Import/Export**: Files can be easily imported or exported without needing to specify full file paths.
 
-- Reduced Path Errors: Setting a working directory minimizes errors related to incorrect file paths, especially in team projects.
+- **Reduced Path Errors**: Setting a working directory minimizes errors related to incorrect file paths, especially in team projects.
 
-- Project Organization: It encourages better project structure, making it easier to manage and maintain files.
+- **Project Organization**: It encourages better project structure, making it easier to manage and maintain files.
 
 #### How to Set a Working Directory
 Usually, the WD is the folder where our script and data are stored, and where we want to add the results of our analyses.
@@ -117,21 +121,22 @@ Check the current working directory with getwd():
 ```r
 getwd()
 ```
+**Do we want to do something more like Adrian exemple?**
+
 #### Conclusion
 Defining a working directory streamlines file management, reduces errors, and helps organize your project efficiently.
 
 ---
 
-### 4. Loading Data in R
+### 4. Loading data in R
 There are several good ways to load data into R, depending on the data format. Below, we explain how to load both phenotypic and genotypic data using specific commands.
 
-#### 4.1. Loading Phenotypic Data
+#### 4.1. Loading phenotypic data
 For phenotypic data, we typically use `read.csv()` or `read.table()` to import the data. The key difference is that `read.csv()` is used when the data is separated by commas, while `read.table()` is more general and allows specifying different delimiters (e.g., tab-separated data).
 
 In our case, we use the following code to load the phenotypic data:
-
 ```r
-pheno <- read.csv(pheno_file, sep = "\t", header = TRUE)
+pheno <- read.table(pheno_file, sep = "\t", header = TRUE)
 ```
 Explanation of the parameters:
 - `pheno_file`: The file path to the phenotypic data.
@@ -142,7 +147,6 @@ Explanation of the parameters:
 For genotypic data, we use the `MVP.Data()` function from the rMVP package. There are two types of genotypic data commonly used: HapMap and VCF. We load each type of data with different parameters.
 
 1. **Loading VCF Data**: If the genotypic data is in VCF (Variant Call Format), we use the following command:
-
 ```r
 MVP.Data(fileVCF = vcf_file, filePhe = pheno_file, out = "mvp_vcf")
 ```
@@ -151,16 +155,16 @@ MVP.Data(fileVCF = vcf_file, filePhe = pheno_file, out = "mvp_vcf")
 - `out` = "mvp_vcf": The output file name (the data will be saved in this format).
 
 2. **Loading HapMap Data**: If the genotypic data is in HapMap format, we use the following command:
-
 ``` r
 MVP.Data(fileHMP = hmp_file, filePhe = pheno_file, out = "mvp_hmp")
 ```
 - `fileHMP`: The file path to the HapMap file.
 - `filePhe`: The file path to the phenotypic data.
 - `out` = "mvp_hmp": The output file name.
+  
+**However, in many cases the MVP function won't work perfectly the first time, as you need to ensure that the data is formatted in the right way (see section 5).**
 
 #### Conclusion
-In summary:
 - **Phenotypic data** is loaded using `read.csv()` (or `read.table()`) with parameters like `sep` (separator) and `header` (column names).
 - **Genotypic data** is loaded using the `MVP.Data()` function, which handles different formats (VCF or HapMap) by specifying the appropriate file parameter (`fileVCF` or `fileHMP`). The output can be saved in the specified format using the `out` parameter.
 
@@ -208,21 +212,25 @@ This allows you to view the first few rows of the phenotype data and check every
 These two commands are essential tools for quickly inspecting the structure and content of your data. They help identify potential errors early in the analysis process, saving a lot of time and effort upfront. Using str() and head() before starting any detailed analysis ensures that the data is properly formatted and ready to be processed.
 
 ##### 5.1.3. Exemple of formating
-
-It is important to ensure that the row names of the phenotype file correspond to the column names of the genotype file for the MVP analysis. To achieve this, we formatted the data by matching the sample names across both files. 
-
+As observed in the phenotypic data (Figure 1), sample names often begin with "TGx," whereas this is not the case in the genotypic data (Figure 2). If we were to run the MVP function as is, only 18 matching samples would be identified between the two datasets, as shown in Figure 3 below.
+**Name of the sample in the phenotypics datas:**  
 ![image](https://github.com/user-attachments/assets/3e01bf96-879e-4a7c-90ad-50e8acc23228)
 
+**Name of the sample in the genotypics datas:**  
 ![image](https://github.com/user-attachments/assets/eb3511ab-2b10-4182-9645-abac278ffaa2)
 
-In our case, The following R code was used to adjust the sample names:
+**MVP without modifications:**  
+![image](https://github.com/user-attachments/assets/9220e96c-394f-4423-acf8-e065da1cb288)
 
+To address this, we will remove the "TGx" prefix from the phenotypic data using the following command:
 ```r
 pheno$Sample <- gsub("TGx ", "", pheno$Sample)
 ```
+Although the genotypic data uses a different naming convention, where it includes an "X" and replaces "-" with ".", it may seem intuitive to make similar changes in the phenotypic data for consistency. However, this step is unnecessary because RStudio automatically modifies column names when loading the data. Specifically, it prepends an "X" to column names starting with a number and replaces "-" with ".", ensuring compatibility with R’s column naming rules. As a result, if we run the MVP function now, we will have 281 matching samples between the two datasets.
 
+**MVP after modifications**  
+![image](https://github.com/user-attachments/assets/6b18b186-145f-4939-8d67-4b8352ea95d1)
 
-This step ensures consistency between the two datasets for further analysis.
 
 #### 5.2. Quality Control
 
