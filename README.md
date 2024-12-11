@@ -121,7 +121,7 @@ Check the current working directory with getwd():
 ```r
 getwd()
 ```
-**Do we want to do something more like Adrian exemple?**
+**Do we want to do something more like Adrian exemple?** My take is we don't need to, and it is more steps where the user has to change info in the script. I'd leave it as you did up here ! -Edouard
 
 #### Conclusion
 Defining a working directory streamlines file management, reduces errors, and helps organize your project efficiently.
@@ -261,8 +261,46 @@ This code filters out SNPs with a MAF lower than 0.05, ensuring only those with 
 
 #### 5.3. Generating Covariates
 
-To account for population structure or relatedness in the data, we may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness matrix. These covariates are used to adjust for potential confounding factors in the GWAS analysis.
+To account for population structure or relatedness in the data, you may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness matrix. These covariates are used to adjust for potential confounding factors in the GWAS analysis such as kinship or population structure.
 
 ```
 
 This section explains how we preprocess the data, including formatting the files, performing quality control, and generating covariates for the analysis.
+
+```
+---
+
+### 6. Execution of the GWAS analysis
+
+#### 6.1. Loading genotype and phenotype data in rMVP function
+
+#### 6.2. Loading covariates in rMVP function (optional)
+
+---
+
+### 7. Example of results obtained from rMVP
+
+#### 7.1. QQ plots 
+
+#### 7.2. Manhattan plots (association strength between individual loci and the studied phenotype)
+
+#### 7.3. Filtering significant SNPs from the analysis
+
+---
+
+### 8. Interpretation of results
+
+#### 8.1. Interpreting QQ plots
+
+#### 8.2. Identifying significant SNPs from Manhattan plots
+
+#### 8.3. Linking significant loci to candidate genes (bonus)
+
+
+
+
+
+
+
+
+
