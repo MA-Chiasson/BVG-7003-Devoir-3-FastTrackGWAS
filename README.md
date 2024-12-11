@@ -1,6 +1,6 @@
 # BVG-7003-Assignment-3-FastTrackGWAS
 
-# Table of Contents
+## Table of Contents
 1. [Introduction](#introduction)
 2. [Installation of R and RStudio](#installation-of-r-and-rstudio)
    1. [Installing R](#1-installing-r)
