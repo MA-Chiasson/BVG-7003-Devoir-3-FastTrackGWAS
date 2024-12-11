@@ -129,7 +129,7 @@ Defining a working directory streamlines file management, reduces errors, and he
 ---
 
 ### 4. Loading data in R
-There are several good ways to load data into R, depending on the data format. Below, we explain how to load both phenotypic and genotypic data using specific commands.
+There are several good ways to load data into R, depending on the data format. Below, we explain how to load both phenotypic and genotypic data in the R environment using specific commands.
 
 #### 4.1. Loading phenotypic data
 For phenotypic data, we typically use `read.csv()` or `read.table()` to import the data. The key difference is that `read.csv()` is used when the data is separated by commas, while `read.table()` is more general and allows specifying different delimiters (e.g., tab-separated data).
@@ -234,9 +234,11 @@ Although the genotypic data uses a different naming convention, where it include
 
 #### 5.2. Quality Control
 
-The quality control step involves filtering SNPs (Single Nucleotide Polymorphisms) based on their Minor Allele Frequency (MAF). SNPs with a MAF less than 0.05 are removed to ensure that only common variations are included in the analysis.
+The quality control step involves filtering SNPs (Single Nucleotide Polymorphisms) based on their Minor Allele Frequency (MAF). We suggest removing SNPs with a MAF lower than 0.05 to ensure that only common variations are included in the analysis. 
 
-##### 5.2.1. SNP Filtering with MAF < 0.05
+SNPs with MAF lower than 0.05 carry an elevated risk of having genotyping errors (i.e. the minor allele may be a genotyping error and not even exist in reality). Further, alleles present at very low frequencies are more prone to statistical errors, whether false positives or false negatives. Therefore, including them doesn't contribute significantly to the discovery of meaningful associations.
+
+##### 5.2.1. Filtering out SNPs with MAF < 0.05
 
 We calculate the MAF for each SNP and filter out those with a MAF below 0.05. Below is the R code used for this process:
 
@@ -253,11 +255,11 @@ maf_data <- apply(genotype_data, 2, function(x) {
   return(maf)
 })
 
-# Filter SNPs with MAF < 0.05
+# Filter out SNPs with MAF < 0.05
 filtered_genotype_data <- genotype_data[, maf_data >= 0.05]
 ```
 
-This code filters out SNPs with a MAF lower than 0.05, ensuring only those with a sufficient allele frequency are retained for further analysis.
+This code filters out SNPs with a MAF lower than 0.05, ensuring only those with a sufficient minor allele frequency are retained for further analysis.
 
 #### 5.3. Generating Covariates
 
@@ -272,9 +274,23 @@ This section explains how we preprocess the data, including formatting the files
 
 ### 6. Execution of the GWAS analysis
 
-#### 6.1. Loading genotype and phenotype data in rMVP function
+#### 6.1. Loading genotype and phenotype data in the rMVP environment 
+The first step of running the GWAS analysis is to load properly the genotypic and phenotypic data
 
+Once you have correctly imported your data in the R environment (see step 4) and preprocessed it (see step 5), you are ready to load it in the rMVP environment.
+The sample code below shows a simple way to load hmp format genotypic data, using the attach.big.matrix() function.
+If you have a genotype map, you can also add it here.
+
+```
+genotype <- attach.big.matrix("mvp_hmp.geno.desc")
+phenotype <- read.table("mvp_hmp.phe", header = TRUE)
+map <- read.table("mvp_hmp.geno.map", header = TRUE)
+
+```
 #### 6.2. Loading covariates in rMVP function (optional)
+
+#### 6.3. Running rMVP function
+
 
 ---
 
@@ -294,9 +310,21 @@ This section explains how we preprocess the data, including formatting the files
 
 #### 8.2. Identifying significant SNPs from Manhattan plots
 
+Manhattan plots display the p-values of SNPs across the genome:
+
+Peaks: Tall peaks indicate SNPs with low p-values, suggesting significant associations.
+
+Threshold Line: The horizontal line represents the significance threshold set by the user (e.g., ( p < 0.000000005 )). Due to multiple testing increasing the probability of false positives idscoveries, the significance threshold is generally adjusted using a multiple comparison p-value adjustment method, such as Bonferonni's. SNPs above this significant threshold line are considered significant.
+
 #### 8.3. Linking significant loci to candidate genes (bonus)
 
+To link significant loci to candidate genes:
 
+Identify Significant SNPs: Extract the SNPs that surpass the significance threshold.
+
+Gene Annotation: Use gene annotation tools or databases (e.g., Ensembl, NCBI) to find genes located near these SNPs.
+
+Biological Relevance: Investigate the biological functions of these genes to understand their potential role in the trait of interest.
 
 
 
