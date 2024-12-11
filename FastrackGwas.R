@@ -22,6 +22,11 @@ library(bigmemory)
 
 # Define the working directory
 setwd("C:/Users/tony7*OneDrive/Git/BVG-7003-Devoir-3-FastTrackGWAS") # To modify
+# setwd("C:/path/to/your/data") # Replace with your actual path # I don't know if you'll want to change it only as a finishing touch up...
+
+# cat("Please set your working directory to the folder containing your data files.\n") # Alternative interactive way to set working directory
+# setwd(readline(prompt = "Enter the path to your working directory: "))
+
 
 # 3. Loading data
 pheno_file <- "data/Phenotype_African.txt"
@@ -29,8 +34,8 @@ hmp_file <- "data/African_SNPs.hmp.txt"
 
 # Load and modify the phenotype
 
-#3.1 Charger le phénotype
-pheno <- read.table(pheno_file, eader = TRUE) 
+#3.1 Loading phenotypic data
+pheno <- read.table(pheno_file, header = TRUE) 
 str(pheno)
 head(pheno)
 
@@ -41,7 +46,7 @@ head(geno)
 
 pheno$Sample <- gsub("TGx ", "", pheno$Sample)
 
-# Sauvegarder le tableau phénotype modifié
+# Saving modified phenotype table
 write.table(pheno, "data/pheno_modified.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 
 # Conversion HapMap -> format MVP
@@ -64,7 +69,7 @@ maf_data <- apply(genotype_data, 2, function(x) {
   return(maf)
 })
 
-# Filter the SNPs with MAF < 0.05
+# Filter out the SNPs with MAF < 0.05
 filtered_genotype_data <- genotype_data[, maf_data >= 0.05]
 
 # Check the size of the data after filtering
