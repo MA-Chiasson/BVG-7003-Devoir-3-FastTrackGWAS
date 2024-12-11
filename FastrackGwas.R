@@ -35,7 +35,7 @@ hmp_file <- "data/African_SNPs.hmp.txt"
 # Load and modify the phenotype
 
 #3.1 Loading phenotypic data
-pheno <- read.table(pheno_file, header = TRUE) 
+pheno <- read.table(pheno_file, , sep = "\t", header = TRUE) 
 str(pheno)
 head(pheno)
 
