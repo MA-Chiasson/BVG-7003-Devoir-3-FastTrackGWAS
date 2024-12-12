@@ -240,8 +240,9 @@ SNPs with MAF lower than 0.05 carry an elevated risk of having genotyping errors
 
 ##### 5.2.1. Filtering out SNPs with MAF < 0.05
 
-We calculate the MAF for each SNP and filter out those with a MAF below 0.05. Below is the R code used for this process:
+We calculate the MAF for each SNP and filter out those with a MAF below 0.05. At the same time, this is filtering out monomorphic loci that would not be useful for a GWAS analysis. Below is the R code used for this process:
 
+**** THIS PART OF THE CODE DOESN'T WORK FOR ME, I AM CURRENTLY TRYING TO IMPLEMENT A NEW VERSION FROM PACKAGE HARDY-WEINBERG -ED ****
 ```r
 # Load genotype data
 genotype_data <- attach.big.matrix("mvp_hmp.geno.desc")
