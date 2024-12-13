@@ -20,7 +20,8 @@
    2. [Quality Control](#5-2-quality-control)
       1. [SNP Filtering with MAF < 0.05](#5-2-1-snp-filtering-with-maf-005)
    3. [Generating Covariates](#5-3-generating-covariates)
-
+[!NOTE]
+Complete table of contents once readme has its final structure
 
 ---
 ## Introduction
