@@ -288,7 +288,7 @@ This code filters out SNPs with a MAF lower than 0.05, ensuring only those with 
 
 #### 5.3. Generating Covariates
 
-To account for population structure or relatedness in the data, you may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness matrix. These covariates are used to adjust for potential confounding factors in the GWAS analysis such as kinship or population structure.
+To account for population structure or relatedness in the data, you may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness (kinship) matrix. These covariates are used to adjust for the potential confounding factors in the GWAS analysis that are kinship or population structure. Indeed, population structure and relatedness may induce non-random distribution of alleles in the sampling pool. GWAS analysis over phenotypes that happen to covary with the population structure would then result in non-relevant associations with these non-randomly distributed alleles. Including a kinship matrix or a a PCA can help reduce this risk.
 
 ```
 
@@ -312,14 +312,46 @@ phenotype <- read.table("mvp_hmp.phe", header = TRUE)
 map <- read.table("mvp_hmp.geno.map", header = TRUE)
 
 ```
-#### 6.2. Loading covariates in rMVP function (optional)
+#### 6.2. Loading covariates in MVP function (optional)
+***see 6.3.?***
+#### 6.3. Running MVP function
 
-#### 6.3. Running rMVP function
+Executing the GWAS analysis is done with the MVP() function. In addition to handling the genotype, phenotype, and mapping data, the MVP() function allows to :
 
+1. Include covariates
+       If you do not provide your own kinship matrix, population structure data, or other covariates, the MVP() function can compute them for you while running its analysis. See parameters K, CV.GLM, CV.MLM, CV.FarmCPU, nPC.GLM, nPC.MLM=3, nPC.FarmCPU
+2. Choose the analytical method and the significance threshold
+       Three analytical methods can be used for the GWAS analysis, each with their pros ans cons. They are the following : "GLM", "MLM", "FarmCPU". Not that you execute the function with all three methods and examine the quality of each.
+       The defualt singificance threshold (before p-value adjustment for multiple testing) is set at 0.05 
+3. And others
+
+***The chunk of code and its comments below comes from rMVP github. Not sure how much we should change this as it is already pretty clear and straigthforward... Or how we should notify that it is directly from rMVP github***
+```
+imMVP <- MVP(
+  phe=phenotype,          #NA is acceptable in phenotype
+  geno=genotype,
+  map=map,
+  #K=Kinship,             #if you have pre-computed GRM, please keep there open, otherwise rMVP will compute it automatically
+  #CV.GLM=Covariates,     #if you have environmental covariates, please keep all 'CV.*' open
+  #CV.MLM=Covariates,
+  #CV.FarmCPU=Covariates,
+  nPC.GLM=5,              #if you have added PCs into covariates, please keep there closed
+  nPC.MLM=3,              #if you don't want to add PCs as covariates, please comment out the parameter instead of setting it to 0.
+  nPC.FarmCPU=3,
+  maxLine=10000,          #smaller value would reduce the memory cost
+  #ncpus=10,
+  vc.method="BRENT",      #only works for MLM
+  method.bin="static",    # "FaST-LMM", "static" (#only works for FarmCPU)
+  threshold=0.05,
+  method=c("GLM", "MLM", "FarmCPU"),
+  file.output=c("pmap", "pmap.signal", "plot", "log")
+)
+
+```
 
 ---
 
-### 7. Example of results obtained from rMVP
+### 7. Example of results obtained from MVP
 
 #### 7.1. QQ plots 
 
@@ -333,13 +365,18 @@ map <- read.table("mvp_hmp.geno.map", header = TRUE)
 
 #### 8.1. Interpreting QQ plots
 
+QQ plots are generally produced to help assess the quality of the GWAS analysis. They can help identify if there are deviations from the expected distribution, which can indicate potential issues such as population stratification, genotyping errors, or true genetic associations.
+
+If the points on the QQ plot follow the diagonal line, it suggests that the observed p-values match the expected distribution, indicating no systematic bias.
+Deviations above the line, especially at the tail, suggest an excess of small p-values, which could indicate true associations or potential confounding factors.
+
 #### 8.2. Identifying significant SNPs from Manhattan plots
 
 Manhattan plots display the p-values of SNPs across the genome:
 
 Peaks: Tall peaks indicate SNPs with low p-values, suggesting significant associations.
 
-Threshold Line: The horizontal line represents the significance threshold set by the user (e.g., ( p < 0.000000005 )). Due to multiple testing increasing the probability of false positive discoveries, the significance threshold is generally adjusted using multiple comparison p-value adjustment methods, such as Bonferonni's. SNPs above this significant threshold line are considered significant.
+Threshold Line: The horizontal line represents the significance threshold set by the user (e.g., ( p < 0.05 )) that is usually adjusted for multiple testing. Due to the fact multiple testing increases the probability of false positive discoveries, the significance threshold is generally adjusted using multiple comparison p-value adjustment methods, such as Bonferonni's. SNPs above this significant threshold line are considered significant.
 
 #### 8.3. Linking significant loci to candidate genes (bonus)
 
