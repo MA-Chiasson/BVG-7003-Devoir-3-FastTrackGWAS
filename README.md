@@ -78,14 +78,14 @@ For the test data in this analysis, the following were selected:
 - **Phenotypic data:** The trait SDWi/SDWf (SDW ratio) represents shoot dry weight in inoculated (SDWi) and fertilized (SDWf) samples.
 --- 
 
-## 2. Script execution
-### 2.1. Input and Output File Formats
-#### 2.1.1. Input
-#### 2.1.2. Output
+## 3. Script execution
+### 3.1. Input and Output File Formats
+#### 3.1.1. Input
+#### 3.1.2. Output
 **REPLACE BY THE RESULT THE USER SHOULD HAVE**
 
-### 2.2. **Dependencies**
-#### 2.2.1. Installation of the packages
+### 3.2. **Dependencies**
+#### 3.2.1. Installation of the packages
 Open the script and start to install the following R packages which are required to execute this analysis:
 - **rMVP**: A memory-efficient, visualization-enhanced, and parallel-accelerated tool for GWAS.
 - **ggplot2**: For creating high-quality graphics.
@@ -109,13 +109,13 @@ install.packages(c("rMVP", "ggplot2", "data.table", "dplyr", "mgsub", "bigmemory
 ```
 This would lead to the installation of packages every time the script is run, even if they are already installed, which is inefficient. The if condition ensures that packages are only installed when required, avoiding unnecessary installation.
 
-#### 2.2.2. Loading the packages
+#### 3.2.2. Loading the packages
 Once they've been installed, it's time to load them. To do this, use the library() command, inserting the package name between the brackets, as in the example below. 
 ```r
 library(rMVP)
 ```
 ---
-### 3. Define working directory
+### 4. Define working directory
 **Defining a working directory in R offers several key benefits:**
 
 - File Management: It helps centralize project files (data, scripts, results) in one location, avoiding confusion.
@@ -147,10 +147,10 @@ Defining a working directory streamlines file management reduces errors, and hel
 
 ---
 
-### 4. Loading data in R
+### 5. Loading data in R
 There are several good ways to load data into R, depending on the data format. Below, we explain how to load both phenotypic and genotypic data in the R environment using specific commands.
 
-#### 4.1. Loading phenotypic data
+#### 5.1. Loading phenotypic data
 For phenotypic data, we typically use `read.csv()` or `read.table()` to import the data. The key difference is that `read.csv()` is used when the data is separated by commas, while `read.table()` is more general and allows specifying different delimiters (e.g., tab-separated data).
 
 In our case, we use the following code to load the phenotypic data:
@@ -162,7 +162,7 @@ Explanation of the parameters:
 - `sep = "\t"`: This specifies that the data is tab-separated.
 - `header = TRUE`: This indicates that the first row contains column names.
 
-#### 4.2. Loading Genotypic Data
+#### 5.2. Loading Genotypic Data
 For genotypic data, we use the `MVP.Data()` function from the rMVP package. There are two types of genotypic data commonly used: HapMap and VCF. We load each type of data with different parameters.
 
 1. **Loading VCF Data**: If the genotypic data is in VCF (Variant Call Format), we use the following command:
@@ -189,7 +189,7 @@ MVP.Data(fileHMP = hmp_file, filePhe = pheno_file, out = "mvp_hmp")
 
 ---
 
-### 5. Data Preprocessing
+### 6. Data Preprocessing
 In this section, we guide users through the following steps for data preprocessing. These steps are crucial for ensuring the quality and integrity of the data used in the analysis. Preprocessing helps to clean, format, and structure the data properly, minimizing errors and biases in the final results.
 
 #### 5.1. Formatting Genotype and Phenotype Files
