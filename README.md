@@ -35,7 +35,7 @@ The steps provided in this repository guide users through setting up the require
 
 This project employs **R** and **RStudio** as the core computational environment to enable reproducibility. R is renowned for its statistical computing capabilities and robust library ecosystem, making it suitable for GWAS workflows. This repository demonstrates how to install and configure R and RStudio, manage dependencies, and execute the GWAS analysis pipeline.
 
-The guide is designed to help users of all experience levels successfully replicate the analysis and adapt it to other datasets or traits of interest.
+The guide is designed to help users of all experience levels replicate the analysis and adapt it to other datasets or traits of interest.
 
 --- 
 
@@ -65,7 +65,19 @@ RStudio is a user-friendly interface for R:
 2. Ensure that R is correctly configured with RStudio (RStudio automatically detects R if it is installed).
 ---
 ## 2. **Data Download and Preparation**
+## Analysis Overview
 
+This analysis is based on the dataset provided in the paper:
+**"Genome-Wide Association Analyses Reveal the Genetic Basis of Symbiotic Nitrogen Fixation in African Soybean"**
+- **DOI:** 10.1007/s00122-019-03499-7
+- **Data link:** Figshare Dataset
+
+### Test Data Used
+
+For the test data in this analysis, the following were selected:
+
+- **Genotypic data:** Information for all chromosomes.
+- **Phenotypic data:** The trait SDWi/SDWf (SDW ratio) represents shoot dry weight in inoculated (SDWi) and fertilized (SDWf) samples.
 --- 
 
 ## 2. Script execution
