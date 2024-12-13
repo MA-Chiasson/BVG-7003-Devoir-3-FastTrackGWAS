@@ -63,6 +63,8 @@ RStudio is a user-friendly interface for R:
 ### 1.3. **Launching RStudio**
 1. Once installed, open RStudio.
 2. Ensure that R is correctly configured with RStudio (RStudio automatically detects R if it is installed).
+---
+## 2. **Data Download and Preparation**
 
 --- 
 
