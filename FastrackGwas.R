@@ -47,14 +47,68 @@ pheno$Sample <- gsub("TGx ", "", pheno$Sample)
 # Saving modified phenotype table
 write.table(pheno, "data/pheno_modified.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 
+
+# 4. Filtering SNPs with too low MAF (default <5%), as well as rows containing too many NAs (default >10%)
+# 4.1. For hapmap genotype file format
+filter_hapmap <- function(hapmap_data, freq_threshold = 5, na_threshold = 10) {
+   # Function to calculate the frequency of each letter
+   calculate_frequencies <- function(genotypes) {
+     # Remove NA values
+     genotypes <- genotypes[!is.na(genotypes)]
+     # Calculate the frequency of each letter
+     freq_table <- table(genotypes)
+     # Sort frequencies in descending order
+     sorted_freq <- sort(freq_table, decreasing = TRUE)
+     return(sorted_freq)
+   }
+   
+   # Apply the frequency calculation function to each row
+   hapmap_data <- hapmap_data %>%
+     rowwise() %>%
+     mutate(freq = list(calculate_frequencies(c_across(12:ncol(hapmap_data)))),
+            na_count = sum(is.na(c_across(12:ncol(hapmap_data)))),
+            total_count = ncol(hapmap_data) - 11,
+            na_percentage = (na_count / total_count) * 100) %>%
+     ungroup()
+   
+   # Filter rows based on the frequency of the second most frequent genotype and NA percentage
+   filtered_hmp <- hapmap_data %>%
+     filter(na_percentage < na_threshold) %>%
+     filter(map_lgl(freq, ~ {
+       if (length(.x) > 1) {
+         second_most_freq <- .x[2]
+         second_most_freq_value <- as.numeric(second_most_freq)
+         total_genotypes <- sum(.x)
+         freq_percentage <- (second_most_freq_value / total_genotypes) * 100
+         return(freq_percentage > freq_threshold)
+       } else {
+         return(FALSE)
+       }
+     })) %>%
+     select(-freq, -na_count, -total_count, -na_percentage)
+   
+   return(filtered_hmp)
+ }
+
+# Apply the function to hmp formatted genotype file
+
+filter_hapmap(geno)
+
+# 4.2. Should we create a MAF filtering function for other formats as well ?
+# There is already an existing function for calculating MAF from VCF format files (in vcfR package) that we could use.
+# For PLINK and binary formats however this would mean building entirely new functions which may not be necessary for the assignment
+# However if we do not provide any function for other formats, we simply need to specify that this pipeline only supports hmp (and maybe vcf ?) formats
+
+
+
 # Conversion HapMap -> format MVP
 MVP.Data(
-  fileHMP = hmp_file,
+  fileHMP = filtered_hmp,
   filePhe = "data/Phenotype_African.txt",
   out = "mvp_hmp"
 )
 
-# 4. Filtering SNPs with MAF < 0.05
+# 4. Filtering SNPs with MAF < 0.05  
 # Load the genotype data
 genotype_data <- attach.big.matrix("mvp_hmp.geno.desc")
 
