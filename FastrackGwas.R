@@ -58,10 +58,8 @@ MVP.Data(
 # Load the genotype data
 genotype_data <- attach.big.matrix("mvp_hmp.geno.desc")
 
-# Calculate the allele frequency for each SNP
-# Each column represents a SNP, and each row represents an individual
-maf_data <- apply(genotype_data, 2, function(x) {
-  # Count the alleles
+# Calculate MAF using the bigmemory object
+maf_data <- apply(as.matrix(genotype_data), 2, function(x) {
   table_x <- table(x)  # Count the alleles
   maf <- min(table_x) / sum(table_x)  # Calculate the minor allele frequency
   return(maf)
