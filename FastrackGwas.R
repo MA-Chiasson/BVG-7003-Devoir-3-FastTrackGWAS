@@ -65,6 +65,9 @@ maf_data <- apply(as.matrix(genotype_data), 2, function(x) {
   return(maf)
 })
 
+# Print the first few values of maf_data to inspect
+print(head(maf_data))
+
 # Filter out the SNPs with MAF < 0.05
 filtered_genotype_data <- genotype_data[, maf_data >= 0.05]
 
