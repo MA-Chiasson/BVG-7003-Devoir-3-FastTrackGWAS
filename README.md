@@ -67,9 +67,8 @@ RStudio is a user-friendly interface for R:
 ## 2. **Data Download and Preparation**
 This analysis is based on the dataset provided in the paper:
 **"Genome-Wide Association Analyses Reveal the Genetic Basis of Symbiotic Nitrogen Fixation in African Soybean"**
-- **DOI:** 10.1007/s00122-019-03499-7
-- **Data link:** Figshare Dataset
-
+- **DOI:** [10.1007/s00122-019-03499-7](https://link.springer.com/article/10.1007/s00122-019-03499-7)
+- **Data link:** [Figshare Dataset](https://figshare.com/projects/GenomeWide_Association_Analyses_Reveal_the_Genetic_Basis_of_Symbiotic_Nitrogen_Fixation_in_African_Soybean/65885)
 ### Test Data Used
 
 For the test data in this analysis, the following were selected:
