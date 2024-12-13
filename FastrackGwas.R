@@ -10,6 +10,7 @@ if (!requireNamespace("dplyr", quietly = TRUE)) install.packages("dplyr")
 if (!requireNamespace("purrr", quietly = TRUE)) install.packages("purrr")
 if (!requireNamespace("mgsub", quietly = TRUE)) install.packages("mgsub")
 if (!requireNamespace("bigmemory", quietly = TRUE)) install.packages("bigmemory")
+if (!requireNamespace("vcfR", quietly = TRUE)) install.packages("vcfR")
 
 # 1.2. Load the libraries
 library(rMVP)
@@ -19,6 +20,7 @@ library(dplyr)
 library(purrr)
 library(mgsub)
 library(bigmemory)
+library(vcfR)
 
 # Define the working directory
 setwd("C:/Users/tony7*OneDrive/Git/BVG-7003-Devoir-3-FastTrackGWAS") # To modify
@@ -96,10 +98,49 @@ filter_hapmap <- function(hapmap_data, freq_threshold = 5, na_threshold = 10) {
 
 filter_hapmap(geno)
 
-# 4.2. Should we create a MAF filtering function for other formats as well ?
-# There is already an existing function for calculating MAF from VCF format files (in vcfR package) that we could use.
+# 4.2. For VCF genotype file format
+
+filter_vcf <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
+  # Calculate the MAF for each variant
+  maf_values <- maf(geno_vcf)
+  
+  # Convert the MAF result to a data frame
+  maf_df <- as.data.frame(maf_values)
+  
+  # Add variant IDs (CHROM and POS) to the MAF data frame
+  maf_df <- maf_df %>%
+    mutate(CHROM = geno_vcf@fix[, "CHROM"],
+           POS = as.numeric(geno_vcf@fix[, "POS"]))
+  
+  # Calculate the percentage of NA values for each row
+  maf_df <- maf_df %>%
+    rowwise() %>%
+    mutate(na_percentage = (`NA` / nAllele) * 100) %>%
+    ungroup()
+  
+  # Filter rows based on the MAF and NA percentage
+  filtered_data <- maf_df %>%
+    filter(na_percentage < na_threshold) %>%
+    filter(Frequency > (freq_threshold / 100))
+  
+  # Get the CHROM and POS of the filtered rows
+  filtered_variants <- filtered_data %>%
+    select(CHROM, POS)
+  
+  # Subset the original VCF object to keep only the filtered rows
+  filtered_vcf <- geno_vcf[geno_vcf@fix[, "CHROM"] %in% filtered_variants$CHROM & 
+                           as.numeric(geno_vcf@fix[, "POS"]) %in% filtered_variants$POS, ]
+  
+  return(filtered_vcf)
+}
+
+# Example usage
+# Assuming geno_vcf is your VCF object
+# filtered_vcf <- filter_vcf(geno_vcf, freq_threshold = 5, na_threshold = 10)
+
+# 4.3. Should we create a MAF filtering function for other formats as well ?
 # For PLINK and binary formats however this would mean building entirely new functions which may not be necessary for the assignment
-# However if we do not provide any function for other formats, we simply need to specify that this pipeline only supports hmp (and maybe vcf ?) formats
+# However if we do not provide any function for other formats, we simply need to specify that this pipeline only supports hmp and maybe vcf formats, (which would seem fine to me, as they are the most common anyway).
 
 
 
