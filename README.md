@@ -239,9 +239,15 @@ Although the genotypic data uses a different naming convention, where it include
 
 #### 5.2. Quality Control
 
-The quality control step involves filtering SNPs (Single Nucleotide Polymorphisms) based on their Minor Allele Frequency (MAF). We suggest removing SNPs with a MAF lower than 0.05 to ensure that only common variations are included in the analysis. 
+The quality control step involves filtering SNPs (Single Nucleotide Polymorphisms) based on their Minor Allele Frequency (MAF). We suggest removing SNPs with a MAF lower than 0.05 to ensure that only common variations are included in the analysis, but other tresholds may be used. 
 
-SNPs with MAF lower than 0.05 carry an elevated risk of having genotyping errors (i.e. the minor allele may be a genotyping error and not even exist in reality). Further, alleles present at very low frequencies are more prone to statistical errors, whether false positives or false negatives. Therefore, including them doesn't contribute significantly to the discovery of meaningful associations.
+Loci with low MAF (for example, lower than 0.05) carry an elevated risk of having genotyping errors (i.e. the minor allele may be a genotyping error and not even exist in reality). Further, loci with alleles present at very low frequencies are more prone to statistical errors, whether false positives or false negatives. Therefore, including them doesn't contribute significantly to the discovery of meaningful associations.
+
+A second quality control step is also to eliminate loci with an important proportion of missing data. We suggest removing loci with 10% or more missing data, but other thresholds may be used.
+
+Loci with too much missing data can potentially induce statistical errors.
+
+The final quality control step implemented in this pipeline is that of missing data imputation. We recommend the users to impute missing data before importing their data into the pipeline, for example using LD-kNNi, FILLIN, FSHAP or BEAGLE software.  **MAYBE THIS SHOULD BE MOVED TO THE DATA PREPROCESSING PART
 
 ##### 5.2.1. Filtering out SNPs with MAF < 0.05
 
