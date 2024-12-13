@@ -141,7 +141,7 @@ filter_vcf <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
 # 4.3. Should we create a MAF filtering function for other formats as well ?
 # For PLINK and binary formats however this would mean building entirely new functions which may not be necessary for the assignment
 # However if we do not provide any function for other formats, we simply need to specify that this pipeline only supports hmp and maybe vcf formats, (which would seem fine to me, as they are the most common anyway).
-
+# I tried combining the functions in 4.1 and 4.2, but I get persistent errors which me and copilot aren't able to solve, so I'll leave it like in 2 separate function for now, but if you guys feel it would be necessary to merge them, feel free to try !
 
 
 # Conversion HapMap -> format MVP
