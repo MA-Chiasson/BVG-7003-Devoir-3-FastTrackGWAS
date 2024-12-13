@@ -91,6 +91,8 @@ Open the script and start to install the following R packages which are required
 - **data.table**: For fast and flexible data manipulation.
 - **dplyr**: For data manipulation with a consistent grammar.
 - **mgsub**: For multiple, simultaneous string substitutions.
+- **vcfR** : For pre-treatment of VCF format genotype data
+- **Adjust the remainder of this list once code is final**
 
 Dependencies for these packages will be automatically installed when executing the script, ensuring a smooth setup process.
 For this purpose, the installation of packages is conditional using the following function:
@@ -139,7 +141,7 @@ Check the current working directory with getwd():
 getwd()
 ```
 **Do we want to do something more like Adrian exemple?** 
-My take is we don't need to, and it is more steps where the user has to change info in the script. I'd leave it as you did up here ! -Edouard
+***My take is we don't need to, and it is more steps where the user has to change info in the script. I'd leave it as you did up here ! -Edouard***
 
 #### Conclusion
 Defining a working directory streamlines file management reduces errors, and helps organize your project efficiently.
@@ -192,7 +194,7 @@ MVP.Data(fileHMP = hmp_file, filePhe = pheno_file, out = "mvp_hmp")
 In this section, we guide users through the following steps for data preprocessing. These steps are crucial for ensuring the quality and integrity of the data used in the analysis. Preprocessing helps to clean, format, and structure the data properly, minimizing errors and biases in the final results.
 
 #### 6.1. Formatting Genotype and Phenotype Files
-**IMPORTANT NOTE:** Before starting, it is important to note that the genotype data file cannot be modified directly in R, as it is a special file format. Therefore, any necessary modifications should be made to the phenotype data file, as we will see below.
+**IMPORTANT NOTE:** Before starting, it is important to note that a genotype data file cannot be easily modified directly in R, as it is a special file format. Therefore, any necessary modifications to harmonize the datasets should be made to the phenotype data file, as we will see below.
 
 To check if the format of our data is correct, we can use two commonly used commands in R: `str()` and `head()`. These functions are useful for quickly exploring the structure and content of our data before proceeding with more complex analyses.
 
@@ -201,9 +203,9 @@ The str() (structure) function is used to display the internal structure of an o
 
 **Usefulness of `str()`:**
 
-It checks the data types in each column (e.g., whether it's a factor, character, numeric value).
-It helps detect any formatting errors, such as a numeric column being incorrectly read as a factor.
-It provides a summary of the data object, which is useful for verifying everything is in order before applying transformations or analyses.
+Chcking the data types in each column (e.g., whether it's a factor, character, numeric value).
+Helping detect any formatting errors, such as a numeric column being incorrectly read as a factor.
+Providing a summary of the data object, which is useful for verifying everything is in order before applying transformations or analyses.
 Example:
 
 ```r
@@ -227,7 +229,7 @@ head(pheno)
 This allows you to view the first few rows of the phenotype data and check everything is in order before continuing with the analysis.
 
 **Conclusion**
-These two commands are essential tools for quickly inspecting the structure and content of your data. They help identify potential errors early in the analysis process, saving a lot of time and effort upfront. Using str() and head() before starting any detailed analysis ensures that the data is properly formatted and ready to be processed.
+These two commands are essential tools for quickly inspecting the structure and content of your data. They help identify potential problems before the analysis process, saving a lot of time and effort upfront. Using str() and head() before starting any detailed analysis ensures that the data is properly formatted and ready to be processed.
 
 ##### 5.1.3. Example of formatting
 As observed in the phenotypic data (Figure 1), sample names often begin with "TGx," whereas this is not the case in the genotypic data (Figure 2). If we were to run the MVP function as is, only 18 matching samples would be identified between the two datasets, as shown in Figure 3 below.
@@ -252,7 +254,7 @@ Although the genotypic data uses a different naming convention, where it include
 
 #### 5.2. Quality Control
 
-The quality control step involves filtering SNPs (Single Nucleotide Polymorphisms) based on their Minor Allele Frequency (MAF). We suggest removing SNPs with a MAF lower than 0.05 to ensure that only common variations are included in the analysis, but other tresholds may be used. 
+The quality control step involves filtering loci, for instance SNPs (Single Nucleotide Polymorphisms), based on their Minor Allele Frequency (MAF). We suggest removing loci with a MAF lower than 0.05 to ensure that only common variants are included in the analysis, but other tresholds may be used. 
 
 Loci with low MAF (for example, lower than 0.05) carry an elevated risk of having genotyping errors (i.e. the minor allele may be a genotyping error and not even exist in reality). Further, loci with alleles present at very low frequencies are more prone to statistical errors, whether false positives or false negatives. Therefore, including them doesn't contribute significantly to the discovery of meaningful associations.
 
@@ -267,6 +269,7 @@ The final quality control step implemented in this pipeline is that of missing d
 We calculate the MAF for each SNP and filter out those with a MAF below 0.05. At the same time, this is filtering out monomorphic loci that would not be useful for a GWAS analysis. Below is the R code used for this process:
 
 ***THIS PART OF THE CODE DOESN'T WORK FOR ME, I have created a new function to do this MAF filtering (as well as data completeness filtering) for hapmap format, I think it is better to do this filtering step before moving on to the MVP format which is quite complex.***
+***NOTE TO NOT FORGET TO UPDATE THIS PART OF CODE ONCE THE FILTERING FUNCTION IS DONE***
 ```r
 # Load genotype data
 genotype_data <- attach.big.matrix("mvp_hmp.geno.desc")
@@ -287,7 +290,7 @@ filtered_genotype_data <- genotype_data[, maf_data >= 0.05]
 This code filters out SNPs with a MAF lower than 0.05, ensuring only those with a sufficient minor allele frequency are retained for further analysis.
 
 #### 5.3. Generating Covariates
-
+***This step can be done automatically when doing the gwas analysis (see 6.3. below). It can also be done separately with other functions from the rMVP package but it seems to me less efficient to do so. Maybe we can still document this as a separate step, but otherwise this section should go in the 6.2. or 6.3. sections below for better consistency I think.***
 To account for population structure or relatedness in the data, you may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness (kinship) matrix. These covariates are used to adjust for the potential confounding factors in the GWAS analysis that are kinship or population structure. Indeed, population structure and relatedness may induce non-random distribution of alleles in the sampling pool. GWAS analysis over phenotypes that happen to covary with the population structure would then result in non-relevant associations with these non-randomly distributed alleles. Including a kinship matrix or a a PCA can help reduce this risk.
 
 ```
@@ -318,11 +321,11 @@ map <- read.table("mvp_hmp.geno.map", header = TRUE)
 
 Executing the GWAS analysis is done with the MVP() function. In addition to handling the genotype, phenotype, and mapping data, the MVP() function allows to :
 
-1. Include covariates
-       If you do not provide your own kinship matrix, population structure data, or other covariates, the MVP() function can compute them for you while running its analysis. See parameters K, CV.GLM, CV.MLM, CV.FarmCPU, nPC.GLM, nPC.MLM=3, nPC.FarmCPU
-2. Choose the analytical method and the significance threshold
+1. Include covariates.
+       If you do not provide your own kinship matrix, population structure data, or other covariates, the MVP() function can compute them for you while running its analysis. See parameters K, CV.GLM, CV.MLM, CV.FarmCPU, nPC.GLM, nPC.MLM=3, nPC.FarmCPU.
+2. Choose the analytical method and the significance threshold.
        Three analytical methods can be used for the GWAS analysis, each with their pros ans cons. They are the following : "GLM", "MLM", "FarmCPU". Not that you execute the function with all three methods and examine the quality of each.
-       The defualt singificance threshold (before p-value adjustment for multiple testing) is set at 0.05 
+       The default singificance threshold (before p-value adjustment for multiple testing) is set at 0.05 
 3. And others
 
 ***The chunk of code and its comments below comes from rMVP github. Not sure how much we should change this as it is already pretty clear and straigthforward... Or how we should notify that it is directly from rMVP github***
