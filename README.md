@@ -27,7 +27,7 @@
 
 Genome-wide association Studies (GWAS) are a powerful tool for uncovering the genetic basis of traits, and their application in agricultural science is pivotal for crop improvement. This project analyzes the genetic basis of symbiotic nitrogen fixation in African soybean, using a publicly available dataset. The steps provided in this repository guide users through setting up the required tools and performing a GWAS analysis efficiently.
 
-This project employs **R** and **RStudio** as the core computational environment to enable reproducibility. R is renowned for its statistical computing capabilities and robust library ecosystem, making it a suitable choice for GWAS workflows. This repository demonstrates how to install and configure R and RStudio, manage dependencies, and execute the GWAS analysis pipeline.
+This project employs **R** and **RStudio** as the core computational environment to enable reproducibility. R is renowned for its statistical computing capabilities and robust library ecosystem, making it suitable for GWAS workflows. This repository demonstrates how to install and configure R and RStudio, manage dependencies, and execute the GWAS analysis pipeline.
 
 The guide is designed to help users of all experience levels successfully replicate the analysis and adapt it to other datasets or traits of interest.
 
@@ -315,7 +315,7 @@ Manhattan plots display the p-values of SNPs across the genome:
 
 Peaks: Tall peaks indicate SNPs with low p-values, suggesting significant associations.
 
-Threshold Line: The horizontal line represents the significance threshold set by the user (e.g., ( p < 0.000000005 )). Due to multiple testing increasing the probability of false positives idscoveries, the significance threshold is generally adjusted using a multiple comparison p-value adjustment method, such as Bonferonni's. SNPs above this significant threshold line are considered significant.
+Threshold Line: The horizontal line represents the significance threshold set by the user (e.g., ( p < 0.000000005 )). Due to multiple testing increasing the probability of false positives idscoveries, the significance threshold is generally adjusted using a multiple comparison p-value adjustment methods, such as Bonferonni's. SNPs above this significant threshold line are considered significant.
 
 #### 8.3. Linking significant loci to candidate genes (bonus)
 
