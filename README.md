@@ -74,7 +74,7 @@ This analysis is based on the dataset provided in the paper:
 For the test data in this analysis, the following were selected:
 
 - **Genotypic data:** Information for all chromosomes.
-- **Phenotypic data:** The trait SDWi/SDWf (SDW ratio) represents shoot dry weight in inoculated (SDWi) and fertilized (SDWf) samples.
+- **Phenotypic data:** The trait SDWi/SDWf (SDW ratio) represents shoot dry weight in inoculated (SDWi) and fertilized (SDWf).
 --- 
 
 ## 3. Script execution
