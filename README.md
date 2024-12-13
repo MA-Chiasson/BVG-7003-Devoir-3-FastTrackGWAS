@@ -65,8 +65,6 @@ RStudio is a user-friendly interface for R:
 2. Ensure that R is correctly configured with RStudio (RStudio automatically detects R if it is installed).
 ---
 ## 2. **Data Download and Preparation**
-## Analysis Overview
-
 This analysis is based on the dataset provided in the paper:
 **"Genome-Wide Association Analyses Reveal the Genetic Basis of Symbiotic Nitrogen Fixation in African Soybean"**
 - **DOI:** 10.1007/s00122-019-03499-7
