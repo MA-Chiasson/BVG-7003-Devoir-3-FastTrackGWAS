@@ -26,8 +26,7 @@
 ## Introduction
 
 Genome-wide association Studies (GWAS) are a powerful tool for uncovering the genetic basis of traits, and their application in agricultural science is pivotal for crop improvement.
-
-                            ![Explainer-close-up](https://github.com/user-attachments/assets/1965728a-1785-4737-a31e-d069dc53623a)
+![Explainer-close-up](https://github.com/user-attachments/assets/cd9c6e19-db32-427a-a9ea-43a81169bb9a)
 
 This project analyzes the genetic basis of symbiotic nitrogen fixation in African soybean, using a publicly available dataset. The steps provided in this repository guide users through setting up the required tools and performing a GWAS analysis efficiently.
 
