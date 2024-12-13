@@ -1,5 +1,7 @@
 # Introduction
-# This GWAS analysis uses the rMVP package to identify SNPs associated with a given phenotypic trait. 
+# This GWAS analysis uses the rMVP package to identify SNPs
+# associated with a given phenotypic trait. The data used comes from
+# the data file.
 
 # 1. Installation and loading of libraries
 # 1.1. Install the libraries if necessary
