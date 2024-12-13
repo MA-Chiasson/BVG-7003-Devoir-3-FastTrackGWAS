@@ -25,9 +25,9 @@
 ---
 ## Introduction
 
-Genome-Wide Association Studies (GWAS) are a powerful tool for uncovering the genetic basis of traits, and their application in agricultural science is pivotal for crop improvement. This project focuses on analyzing the genetic basis of symbiotic nitrogen fixation in African soybean, using a publicly available dataset. The steps provided in this repository guide users through setting up the required tools and performing a GWAS analysis efficiently.
+Genome-wide association Studies (GWAS) are a powerful tool for uncovering the genetic basis of traits, and their application in agricultural science is pivotal for crop improvement. This project analyzes the genetic basis of symbiotic nitrogen fixation in African soybean, using a publicly available dataset. The steps provided in this repository guide users through setting up the required tools and performing a GWAS analysis efficiently.
 
-To enable reproducibility, this project employs **R** and **RStudio** as the core computational environment. R is renowned for its statistical computing capabilities and robust library ecosystem, making it a suitable choice for GWAS workflows. This repository demonstrates how to install and configure R and RStudio, manage dependencies, and execute the GWAS analysis pipeline.
+This project employs **R** and **RStudio** as the core computational environment to enable reproducibility. R is renowned for its statistical computing capabilities and robust library ecosystem, making it suitable for GWAS workflows. This repository demonstrates how to install and configure R and RStudio, manage dependencies, and execute the GWAS analysis pipeline.
 
 The guide is designed to help users of all experience levels successfully replicate the analysis and adapt it to other datasets or traits of interest.
 
@@ -124,7 +124,7 @@ getwd()
 **Do we want to do something more like Adrian exemple?** My take is we don't need to, and it is more steps where the user has to change info in the script. I'd leave it as you did up here ! -Edouard
 
 #### Conclusion
-Defining a working directory streamlines file management, reduces errors, and helps organize your project efficiently.
+Defining a working directory streamlines file management reduces errors, and helps organize your project efficiently.
 
 ---
 
@@ -211,12 +211,12 @@ This allows you to view the first few rows of the phenotype data and check every
 **Conclusion**
 These two commands are essential tools for quickly inspecting the structure and content of your data. They help identify potential errors early in the analysis process, saving a lot of time and effort upfront. Using str() and head() before starting any detailed analysis ensures that the data is properly formatted and ready to be processed.
 
-##### 5.1.3. Exemple of formating
+##### 5.1.3. Example of formatting
 As observed in the phenotypic data (Figure 1), sample names often begin with "TGx," whereas this is not the case in the genotypic data (Figure 2). If we were to run the MVP function as is, only 18 matching samples would be identified between the two datasets, as shown in Figure 3 below.
-**Name of the sample in the phenotypics datas:**  
+**Name of the sample in the phenotypic data:**  
 ![image](https://github.com/user-attachments/assets/3e01bf96-879e-4a7c-90ad-50e8acc23228)
 
-**Name of the sample in the genotypics datas:**  
+**Name of the sample in the genotypic data:**  
 ![image](https://github.com/user-attachments/assets/eb3511ab-2b10-4182-9645-abac278ffaa2)
 
 **MVP without modifications:**  
@@ -315,7 +315,7 @@ Manhattan plots display the p-values of SNPs across the genome:
 
 Peaks: Tall peaks indicate SNPs with low p-values, suggesting significant associations.
 
-Threshold Line: The horizontal line represents the significance threshold set by the user (e.g., ( p < 0.000000005 )). Due to multiple testing increasing the probability of false positives idscoveries, the significance threshold is generally adjusted using a multiple comparison p-value adjustment method, such as Bonferonni's. SNPs above this significant threshold line are considered significant.
+Threshold Line: The horizontal line represents the significance threshold set by the user (e.g., ( p < 0.000000005 )). Due to multiple testing increasing the probability of false positive discoveries, the significance threshold is generally adjusted using multiple comparison p-value adjustment methods, such as Bonferonni's. SNPs above this significant threshold line are considered significant.
 
 #### 8.3. Linking significant loci to candidate genes (bonus)
 
