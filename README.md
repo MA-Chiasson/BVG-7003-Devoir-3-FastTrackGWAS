@@ -192,7 +192,7 @@ MVP.Data(fileHMP = hmp_file, filePhe = pheno_file, out = "mvp_hmp")
 ### 6. Data Preprocessing
 In this section, we guide users through the following steps for data preprocessing. These steps are crucial for ensuring the quality and integrity of the data used in the analysis. Preprocessing helps to clean, format, and structure the data properly, minimizing errors and biases in the final results.
 
-#### 5.1. Formatting Genotype and Phenotype Files
+#### 6.1. Formatting Genotype and Phenotype Files
 **IMPORTANT NOTE:** Before starting, it is important to note that the genotype data file cannot be modified directly in R, as it is a special file format. Therefore, any necessary modifications should be made to the phenotype data file, as we will see below.
 
 To check if the format of our data is correct, we can use two commonly used commands in R: `str()` and `head()`. These functions are useful for quickly exploring the structure and content of our data before proceeding with more complex analyses.
