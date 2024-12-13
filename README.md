@@ -20,8 +20,8 @@
    2. [Quality Control](#5-2-quality-control)
       1. [SNP Filtering with MAF < 0.05](#5-2-1-snp-filtering-with-maf-005)
    3. [Generating Covariates](#5-3-generating-covariates)
-[!NOTE]
-Complete table of contents once readme has its final structure
+
+***Complete table of contents once readme has its final structure***
 
 ---
 ## Introduction
@@ -127,7 +127,8 @@ Check the current working directory with getwd():
 ```r
 getwd()
 ```
-**Do we want to do something more like Adrian exemple?** My take is we don't need to, and it is more steps where the user has to change info in the script. I'd leave it as you did up here ! -Edouard
+**Do we want to do something more like Adrian exemple?** 
+My take is we don't need to, and it is more steps where the user has to change info in the script. I'd leave it as you did up here ! -Edouard
 
 #### Conclusion
 Defining a working directory streamlines file management reduces errors, and helps organize your project efficiently.
@@ -248,13 +249,13 @@ A second quality control step is also to eliminate loci with an important propor
 
 Loci with too much missing data can potentially induce statistical errors.
 
-The final quality control step implemented in this pipeline is that of missing data imputation. We recommend the users to impute missing data before importing their data into the pipeline, for example using LD-kNNi, FILLIN, FSHAP or BEAGLE software.  **MAYBE THIS SHOULD BE MOVED TO THE DATA PREPROCESSING PART
+The final quality control step implemented in this pipeline is that of missing data imputation. We recommend the users to impute missing data before importing their data into the pipeline, for example using LD-kNNi, FILLIN, FSHAP or BEAGLE software.  ***MAYBE THIS SHOULD BE MOVED TO THE DATA PREPROCESSING PART***
 
 ##### 5.2.1. Filtering out SNPs with MAF < 0.05
 
 We calculate the MAF for each SNP and filter out those with a MAF below 0.05. At the same time, this is filtering out monomorphic loci that would not be useful for a GWAS analysis. Below is the R code used for this process:
 
-**** THIS PART OF THE CODE DOESN'T WORK FOR ME, I AM CURRENTLY TRYING TO IMPLEMENT A NEW VERSION FROM PACKAGE HARDY-WEINBERG -ED ****
+***THIS PART OF THE CODE DOESN'T WORK FOR ME, I have created a new function to do this MAF filtering (as well as data completeness filtering) for hapmap format, I think it is better to do this filtering step before moving on to the MVP format which is quite complex.***
 ```r
 # Load genotype data
 genotype_data <- attach.big.matrix("mvp_hmp.geno.desc")
