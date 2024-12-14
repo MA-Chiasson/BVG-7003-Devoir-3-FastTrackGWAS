@@ -348,7 +348,7 @@ Executing the GWAS analysis is done with the MVP() function. In addition to hand
 1. Include covariates.
        If you do not provide your own kinship matrix, population structure data, or other covariates, the MVP() function can compute them for you while running its analysis. See parameters K, CV.GLM, CV.MLM, CV.FarmCPU, nPC.GLM, nPC.MLM=3, nPC.FarmCPU.
 2. Choose the analytical method and the significance threshold.
-       Three analytical methods can be used for the GWAS analysis, each with their pros ans cons. They are the following : "GLM", "MLM", "FarmCPU". Not that you execute the function with all three methods and examine the quality of each.
+       Three analytical methods can be used for the GWAS analysis, each with their pros ans cons. They are the following : "GLM", "MLM", "FarmCPU". Note that you can execute the function with all three methods and examine the quality of each.
        The default singificance threshold (before p-value adjustment for multiple testing) is set at 0.05 
 3. And others
 
