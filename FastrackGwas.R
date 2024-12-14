@@ -99,6 +99,11 @@ filter_hapmap <- function(hapmap_data, freq_threshold = 5, na_threshold = 10) {
 # Apply the function to your hapmap genotype file
 filtered_hmp <- filter_hapmap(geno)
 
+write.table(filtered_hmp, "data/filtered_hmp.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+
+
+
+#OR
 # 4.2. For VCF genotype file format
 
 filter_vcf <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
@@ -147,11 +152,11 @@ filter_vcf <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
 
 # Conversion HapMap -> format MVP
 MVP.Data(
-  fileHMP = filtered_hmp,
+  fileHMP = "data/filtered_hmp.txt",
   filePhe = "data/Phenotype_African.txt",
   fileKin=TRUE,
   filePC=TRUE,
-  out = "mvp_hmp"
+  out = "data/mvp_hmp"
 )
 
 # 4. Filtering SNPs with MAF < 0.05  
