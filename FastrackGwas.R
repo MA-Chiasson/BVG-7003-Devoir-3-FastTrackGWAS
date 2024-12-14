@@ -55,48 +55,49 @@ write.table(pheno, "data/pheno_modified.txt", sep = "\t", row.names = FALSE, quo
 # 4. Filtering SNPs with too low MAF (default <5%), as well as rows containing too many NAs (default >10%)
 # 4.1. For hapmap genotype file format
 filter_hapmap <- function(hapmap_data, freq_threshold = 5, na_threshold = 10) {
-   # Function to calculate the frequency of each letter
-   calculate_frequencies <- function(genotypes) {
-     # Remove NA values
-     genotypes <- genotypes[!is.na(genotypes)]
-     # Calculate the frequency of each letter
-     freq_table <- table(genotypes)
-     # Sort frequencies in descending order
-     sorted_freq <- sort(freq_table, decreasing = TRUE)
-     return(sorted_freq)
-   }
-   
-   # Apply the frequency calculation function to each row
-   hapmap_data <- hapmap_data %>%
-     rowwise() %>%
-     mutate(freq = list(calculate_frequencies(c_across(12:ncol(hapmap_data)))),
-            na_count = sum(is.na(c_across(12:ncol(hapmap_data)))),
-            total_count = ncol(hapmap_data) - 11,
-            na_percentage = (na_count / total_count) * 100) %>%
-     ungroup()
-   
-   # Filter rows based on the frequency of the second most frequent genotype and NA percentage
-   filtered_hmp <- hapmap_data %>%
-     filter(na_percentage < na_threshold) %>%
-     filter(map_lgl(freq, ~ {
-       if (length(.x) > 1) {
-         second_most_freq <- .x[2]
-         second_most_freq_value <- as.numeric(second_most_freq)
-         total_genotypes <- sum(.x)
-         freq_percentage <- (second_most_freq_value / total_genotypes) * 100
-         return(freq_percentage > freq_threshold)
-       } else {
-         return(FALSE)
-       }
-     })) %>%
-     select(-freq, -na_count, -total_count, -na_percentage)
-   
-   return(filtered_hmp)
- }
+  # Function to calculate the frequency of each letter
+  calculate_frequencies <- function(genotypes) {
+    # Remove NA values
+    genotypes <- genotypes[!is.na(genotypes)]
+    # Calculate the frequency of each genotype
+    freq_table <- table(genotypes)
+    # Sort frequencies in descending order
+    sorted_freq <- sort(freq_table, decreasing = TRUE)
+    return(sorted_freq)
+  }
+  
+  # Apply the frequency calculation function to each row
+  hapmap_data <- hapmap_data %>%
+    rowwise() %>%
+    mutate(
+      freq = list(calculate_frequencies(c_across(12:ncol(hapmap_data)))),  # Apply frequency calculation across relevant columns
+      na_count = sum(is.na(c_across(12:ncol(hapmap_data)))),  # Count NAs in the relevant columns
+      total_count = ncol(hapmap_data) - 11,  # Calculate the total count of genotypes (after column 11)
+      na_percentage = (na_count / total_count) * 100  # Calculate NA percentage
+    ) %>%
+    ungroup()  # Ungroup the data to avoid issues with rowwise()
+  
+  # Filter rows based on the NA percentage and the frequency of the second most frequent genotype
+  filtered_hmp <- hapmap_data %>%
+    filter(na_percentage < na_threshold) %>%  # Filter rows where NA percentage is less than threshold
+    filter(map_lgl(freq, ~ {
+      if (length(.x) > 1) {  # Ensure there is more than one genotype to check the second most frequent
+        second_most_freq <- .x[2]  # Get the second most frequent genotype
+        second_most_freq_value <- as.numeric(second_most_freq)  # Convert it to numeric
+        total_genotypes <- sum(.x)  # Get the total number of genotypes
+        freq_percentage <- (second_most_freq_value / total_genotypes) * 100  # Calculate the percentage
+        return(freq_percentage > freq_threshold)  # Return TRUE if the percentage is above the threshold
+      } else {
+        return(FALSE)  # If only one genotype is present, return FALSE
+      }
+    })) %>%
+    select(-freq, -na_count, -total_count, -na_percentage)  # Drop temporary columns used for filtering
+  
+  return(filtered_hmp)
+}
 
-# Apply the function to hmp formatted genotype file
-
-filter_hapmap(geno)
+# Apply the function to your hapmap genotype file
+filtered_hmp <- filter_hapmap(geno)
 
 # 4.2. For VCF genotype file format
 
@@ -148,6 +149,8 @@ filter_vcf <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
 MVP.Data(
   fileHMP = filtered_hmp,
   filePhe = "data/Phenotype_African.txt",
+  fileKin=TRUE,
+  filePC=TRUE,
   out = "mvp_hmp"
 )
 
