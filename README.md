@@ -292,6 +292,29 @@ This code filters out SNPs with a MAF lower than 0.05, ensuring only those with 
 To account for population structure or relatedness in the data, you may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness (kinship) matrix. These covariates are used to adjust for the potential confounding factors in the GWAS analysis that are kinship or population structure. Indeed, population structure and relatedness may induce non-random distribution of alleles in the sampling pool. GWAS analysis over phenotypes that happen to covary with the population structure would then result in non-relevant associations with these non-randomly distributed alleles. Including a kinship matrix or a a PCA can help reduce this risk.
 
 ```
+# generating a kinship matrix on its own
+MVP.K.VanRaden(
+M,
+maxLine = 5000,
+ind_idx = NULL,
+cpu = 1,
+verbose = TRUE,
+checkNA = TRUE
+)
+#generating a pca for population structure on its own
+MVP.PCA(
+M = NULL,
+K = NULL,
+maxLine = 10000,
+ind_idx = NULL,
+pcs.keep = 5,
+cpu = 1,
+verbose = TRUE
+)
+
+# or generating both as part of the MVP.DATA() function at the same time as when generating MVP compatible genotype and phenotype files
+
+MVP.DATA(fileKin=TRUE, filePC=TRUE)
 
 This section explains how we preprocess the data, including formatting the files, performing quality control, and generating covariates for the analysis.
 
@@ -315,6 +338,9 @@ map <- read.table("mvp_hmp.geno.map", header = TRUE)
 ```
 #### 6.2. Loading covariates in MVP function (optional)
 ***see 6.3.?***
+
+Although not covered in the example code, it is possible to also include other environmental variables or covariates as fixed effects to account for various experimental designs (for example, breed, sex, weight, age, diet, socioeconomic status, batch effects, genotyping platform, etc.). The inclusion of such factors is done through the arguments CV.GLM, CV.MLM, CV.FarmCPU. See [https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#advanced](url) for more details.
+
 #### 6.3. Running MVP function
 
 Executing the GWAS analysis is done with the MVP() function. In addition to handling the genotype, phenotype, and mapping data, the MVP() function allows to :
