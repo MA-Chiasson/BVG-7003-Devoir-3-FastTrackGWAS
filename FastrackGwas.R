@@ -41,7 +41,7 @@ pheno <- read.table(pheno_file, , sep = "\t", header = TRUE)
 str(pheno)
 head(pheno)
 
-geno <- read.csv(hmp_file, sep = "\t", header = TRUE)
+geno <- read.csv(hmp_file, sep = "\t", header = TRUE, check.names = FALSE)
 str(geno)
 head(geno)
 
