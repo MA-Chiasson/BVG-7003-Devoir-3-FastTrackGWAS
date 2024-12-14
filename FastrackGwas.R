@@ -46,11 +46,6 @@ str(geno)
 head(geno)
 
 
-pheno$Sample <- gsub("TGx ", "", pheno$Sample)
-
-# Saving modified phenotype table
-write.table(pheno, "data/pheno_modified.txt", sep = "\t", row.names = FALSE, quote = FALSE)
-
 
 # 4. Filtering SNPs with too low MAF (default <5%), as well as rows containing too many NAs (default >10%)
 # 4.1. For hapmap genotype file format
@@ -159,31 +154,12 @@ MVP.Data(
   out = "data/mvp_hmp"
 )
 
-# 4. Filtering SNPs with MAF < 0.05  
-# Load the genotype data
-genotype_data <- attach.big.matrix("mvp_hmp.geno.desc")
-
-# Calculate MAF using the bigmemory object
-maf_data <- apply(as.matrix(genotype_data), 2, function(x) {
-  table_x <- table(x)  # Count the alleles
-  maf <- min(table_x) / sum(table_x)  # Calculate the minor allele frequency
-  return(maf)
-})
-
-# Print the first few values of maf_data to inspect
-print(head(maf_data))
-
-# Filter out the SNPs with MAF < 0.05
-filtered_genotype_data <- genotype_data[, maf_data >= 0.05]
-
-# Check the size of the data after filtering
-print(dim(filtered_genotype_data))
 
 
 # 5. Running the GWAS analysis
-genotype <- attach.big.matrix("mvp_hmp.geno.desc")
-phenotype <- read.table("mvp_hmp.phe", header = TRUE)
-map <- read.table("mvp_hmp.geno.map", header = TRUE)
+genotype <- attach.big.matrix("data/mvp_hmp.geno.desc")
+phenotype <- read.table("data/mvp_hmp.phe", header = TRUE)
+map <- read.table("data/mvp_hmp.geno.map", header = TRUE)
 
 # Running a simple GWAS with GLM
 results <- MVP(
