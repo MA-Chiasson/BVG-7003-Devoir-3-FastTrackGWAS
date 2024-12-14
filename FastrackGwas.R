@@ -22,12 +22,12 @@ library(mgsub)
 library(bigmemory)
 library(vcfR)
 
-# Define the working directory
-setwd("C:/Users/tony7*OneDrive/Git/BVG-7003-Devoir-3-FastTrackGWAS") # To modify
-# setwd("C:/path/to/your/data") # Replace with your actual path # I don't know if you'll want to change it only as a finishing touch up...
+# Set the working directory to the directory where the script is located
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
-# cat("Please set your working directory to the folder containing your data files.\n") # Alternative interactive way to set working directory
-# setwd(readline(prompt = "Enter the path to your working directory: "))
+# Print the working directory to confirm it's set correctly
+cat("Working directory has been set to:\n")
+cat(getwd(), "\n")
 
 
 # 3. Loading data
@@ -134,15 +134,6 @@ filter_vcf <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
   
   return(filtered_vcf)
 }
-
-# Example usage
-# Assuming geno_vcf is your VCF object
-# filtered_vcf <- filter_vcf(geno_vcf, freq_threshold = 5, na_threshold = 10)
-
-# 4.3. Should we create a MAF filtering function for other formats as well ?
-# For PLINK and binary formats however this would mean building entirely new functions which may not be necessary for the assignment
-# However if we do not provide any function for other formats, we simply need to specify that this pipeline only supports hmp and maybe vcf formats, (which would seem fine to me, as they are the most common anyway).
-# I tried combining the functions in 4.1 and 4.2, but I get persistent errors which me and copilot aren't able to solve, so I'll leave it like in 2 separate function for now, but if you guys feel it would be necessary to merge them, feel free to try !
 
 
 # Conversion HapMap -> format MVP
