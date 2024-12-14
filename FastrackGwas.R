@@ -22,30 +22,39 @@ library(mgsub)
 library(bigmemory)
 library(vcfR)
 
-# Set the working directory to the directory where the script is located
+# 2. Set the working directory to the directory where the script is located
+# This automatically sets the working directory to the folder where the script is located, no need for modification.
+
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
-# Print the working directory to confirm it's set correctly
+# 2.1. Print the working directory to confirm it's set correctly
 cat("Working directory has been set to:\n")
 cat(getwd(), "\n")
 
-
 # 3. Loading data
-pheno_file <- "data/Phenotype_African.txt"
-hmp_file <- "data/African_SNPs.hmp.txt"
+# Please make sure that the following files are uploaded and placed in the "data" folder:
+# - Phenotype_African.txt (mandatory)
+# - African_SNPs.hmp.txt (mandatory)
+# - Kinship matrix file (optional, if you have it)
+# - PCA matrix file (optional, if you have it)
+# If you do not have the kinship or PCA files, the script will automatically generate them.
 
-# Load and modify the phenotype
+pheno_file <- "data/Phenotype_African.txt"  # File with phenotype data (mandatory)
+hmp_file <- "data/African_SNPs.hmp.txt"  # File with genotype data (mandatory)
 
-#3.1 Loading phenotypic data
-pheno <- read.table(pheno_file, , sep = "\t", header = TRUE) 
+# Optional files:
+#kin_file <- "data/kinship.txt"  # Kinship file (optional)
+#pca_file <- "data/pca.txt"  # PCA file (optional)
+
+# 3.1. Loading phenotypic data
+pheno <- read.table(pheno_file, sep = "\t", header = TRUE)  # Loading phenotype data
 str(pheno)
 head(pheno)
 
-geno <- read.csv(hmp_file, sep = "\t", header = TRUE, check.names = FALSE)
+# 3.2. Loading genotype data
+geno <- read.csv(hmp_file, sep = "\t", header = TRUE, check.names = FALSE)  # Loading genotype data
 str(geno)
 head(geno)
-
-
 
 # 4. Filtering SNPs with too low MAF (default <5%), as well as rows containing too many NAs (default >10%)
 # 4.1. For hapmap genotype file format
