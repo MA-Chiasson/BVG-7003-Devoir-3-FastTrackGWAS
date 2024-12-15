@@ -11,6 +11,7 @@ if (!requireNamespace("purrr", quietly = TRUE)) install.packages("purrr")
 if (!requireNamespace("mgsub", quietly = TRUE)) install.packages("mgsub")
 if (!requireNamespace("bigmemory", quietly = TRUE)) install.packages("bigmemory")
 if (!requireNamespace("vcfR", quietly = TRUE)) install.packages("vcfR")
+if (!requireNamespace("outliers", quietly = TRUE)) install.packages("outliers")
 
 # 1.2. Load the libraries
 library(rMVP)
