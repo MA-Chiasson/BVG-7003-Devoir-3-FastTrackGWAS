@@ -27,9 +27,12 @@ library(vcfR)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
-# 2.1. Print the working directory to confirm it's set correctly
+# Print the working directory to confirm it's set correctly
 cat("Working directory has been set to:\n")
 cat(getwd(), "\n")
+
+
+
 
 # 3. Loading data
 # Please make sure that the following files are uploaded and placed in the "data" folder:
@@ -42,10 +45,6 @@ cat(getwd(), "\n")
 pheno_file <- "data/Phenotype_African.txt"  # File with phenotype data (mandatory)
 hmp_file <- "data/African_SNPs.hmp.txt"  # File with genotype data (mandatory)
 
-# Optional files:
-#kin_file <- "data/kinship.txt"  # Kinship file (optional)
-#pca_file <- "data/pca.txt"  # PCA file (optional)
-
 # 3.1. Loading phenotypic data
 pheno <- read.table(pheno_file, sep = "\t", header = TRUE)  # Loading phenotype data
 str(pheno)
@@ -55,6 +54,14 @@ head(pheno)
 geno <- read.csv(hmp_file, sep = "\t", header = TRUE, check.names = FALSE)  # Loading genotype data
 str(geno)
 head(geno)
+
+## 3.3 Optional files:
+# If you do not have the kinship or PCA files, the script will automatically generate them.
+# read from file and convert my result kin
+MVP.Data.Kin("data/mvp.kin.txt", out="mvp", maxLine=1e4) # Kinship file (optional)
+# read from file and convert my result PCA 
+MVP.Data.PC("data/mvp.pc.txt", out='mvp', sep='\t') # PCA file (optional)
+
 
 # 4. Filtering SNPs with too low MAF (default <5%), as well as rows containing too many NAs (default >10%)
 # 4.1. For hapmap genotype file format
