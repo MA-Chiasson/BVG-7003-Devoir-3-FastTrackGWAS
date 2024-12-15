@@ -226,7 +226,7 @@ MVP.Data(
   fileHMP = "data/filtered_hmp.txt",  # Filtered HapMap file
   filePhe = "data/filtered_pheno.txt",  # Filtered phenotypic data file
   fileKin = TRUE,   # Set to TRUE if kinship file is not available, otherwise set to FALSE
-  filePC = TRUE,    # Set to TRUE if PCA file is not available, otherwise set to FALSE
+  filePC = FALSE,    # Set to TRUE if PCA file is not available, otherwise set to FALSE
   out = "data/mvp_hmp"  # Output in MVP format
 )
 
@@ -241,7 +241,7 @@ genotype <- attach.big.matrix("data/mvp_hmp.geno.desc")
 phenotype <- read.table("data/mvp_hmp.phe",head=TRUE)
 map <- read.table("data/mvp_hmp.geno.map" , head = TRUE)
 Kinship <- attach.big.matrix("data/mvp_hmp.kin.desc")
-Covariates_PC <- bigmemory::as.matrix(attach.big.matrix("data/"))
+#Covariates_PC <- bigmemory::as.matrix(attach.big.matrix("data/mvp.hmp.pc.desc"))
 
 
 # 8. GWAS Analysis for Single and Multiple Traits
