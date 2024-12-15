@@ -67,7 +67,7 @@ This analysis is based on the dataset provided in the paper:
 **"Genome-Wide Association Analyses Reveal the Genetic Basis of Symbiotic Nitrogen Fixation in African Soybean"**
 - **DOI:** [10.1007/s00122-019-03499-7](https://link.springer.com/article/10.1007/s00122-019-03499-7)
 - **Data link:** [Figshare Dataset](https://figshare.com/projects/GenomeWide_Association_Analyses_Reveal_the_Genetic_Basis_of_Symbiotic_Nitrogen_Fixation_in_African_Soybean/65885)
-### Test Data Used
+### 2.1. Test Data Used
 
 For the test data in this analysis, the following were selected:
 
@@ -82,7 +82,16 @@ For the test data in this analysis, the following were selected:
 
   File `Phenotype_African.txt`, in .txt format, can be found in the data directory of this repository.
 
-  Note that phenotype data could be provided in other table formats, as long as the first column represents the genetic ID, and the other columns represent trait values. See h[ttps://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#phenotype](url) for more detailed information.
+  Note that phenotype data could be provided in other table formats, as long as the first column represents the genetic ID, and the other columns represent trait values. See [https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#phenotype]([url](https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#phenotype)) for more detailed information.
+
+### 2.2. Other data recommandations
+
+**Missing genotype data imputation** :
+We recommend the users to impute missing data **before** importing their data into the pipeline. Data imputation methods relying on inference from haplotypes are very accurate and should preferentially be used. Unfortunately, this can not be done through the rMVP package, but it can be done using external software such as LD-kNNi, FILLIN, FSHAP or BEAGLE. 
+
+rMVP provides an alternative option for data imputation for which an example is available in the **Quality control** section below.
+***Remove this if we do not manage to make the example***
+
 --- 
 
 ## 3. **Dependencies**
@@ -158,8 +167,6 @@ cat("Working directory has been set to:\n")
 cat(getwd(), "\n")
 ```
 
-***Adjust as the script gets final***
-
 ---
 
 ### 5. Loading data in R
@@ -186,10 +193,10 @@ Explanation of the parameters:
 ### 6. Data Preprocessing
 In this section, we guide users through the following steps for data preprocessing. These steps are crucial for ensuring the quality and integrity of the data used in the analysis. Preprocessing helps to clean, format, and structure the data properly, minimizing errors and biases in the final results.
 
-#### 6.1. Formatting Genotype and Phenotype Files
-**IMPORTANT NOTE:** Before starting, it is important to note that a genotype data file cannot be easily modified directly in R, as it is a special file format. Therefore, any necessary modifications to harmonize the datasets should be made to the phenotype data file, as we will see below.
+#### 6.1. Useful tools for inspecting data structure
+**IMPORTANT NOTE:** Before starting, it is important to note that genotype data files are sometimes complex to modify directly in R, as they have special file formats. Therefore, it is sometimes preferable that any necessary modifications to harmonize the datasets be made to the phenotype data file, as we will see below.
 
-To check if the format of our data is correct, we can use two commonly used commands in R: `str()` and `head()`. These functions are useful for quickly exploring the structure and content of our data before proceeding with more complex analyses.
+To check if the data is properly formatted, we can use two commonly used commands in R: `str()` and `head()`. These functions are useful for quickly exploring the structure and content of our data before proceeding with more complex analyses.
 
 ##### 6.1.1. `str()`
 The str() (structure) function is used to display the internal structure of an object in R. It provides a quick overview of the data structure, including the type of each column (e.g., numeric, factor, etc.), the number of missing values, and a sample of the first few values in each column.
@@ -221,8 +228,6 @@ head(pheno)
 ```
 This allows you to view the first few rows of the phenotype data and check everything is in order before continuing with the analysis.
 
-**Conclusion**
-These two commands are essential tools for quickly inspecting the structure and content of your data. They help identify potential problems before the analysis process, saving a lot of time and effort upfront. Using str() and head() before starting any detailed analysis ensures that the data is properly formatted and ready to be processed.
 
 ##### 6.1.3. Example of formatting
 As observed in the phenotypic data (Figure 1), sample names often begin with "TGx," whereas this is not the case in the genotypic data (Figure 2). If we were to run the MVP function as is, only 18 matching samples would be identified between the two datasets, as shown in Figure 3 below.
@@ -255,7 +260,7 @@ A second quality control step is also to eliminate loci with an important propor
 
 Loci with too much missing data can potentially induce statistical errors.
 
-The final quality control step implemented in this pipeline is that of missing data imputation. We recommend the users to impute missing data before importing their data into the pipeline, for example using LD-kNNi, FILLIN, FSHAP or BEAGLE software.  ***MAYBE THIS SHOULD BE MOVED TO THE DATA PREPROCESSING PART***
+The final quality control step implemented in this pipeline is that of missing data imputation. **Show an example or remove this sentence**
 
 ##### 6.2.1. Genotype data : Filtering out SNPs with MAF < 0.05 or with too much missing data (10% or more of missing data)
 
