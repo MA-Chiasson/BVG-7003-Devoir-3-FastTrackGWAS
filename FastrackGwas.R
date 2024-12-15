@@ -56,11 +56,11 @@ str(geno)
 head(geno)
 
 ## 3.3 Optional input:
-# If you do not have the kinship or PCA files, the script will automatically generate them.
+# If you do not have the kinship or PCA files, the script will automatically generate them!
 # read from file and convert my result kin
-MVP.Data.Kin("data/mvp.kin.txt", out="data/mvp", maxLine=1e4) # Kinship file (optional)
+MVP.Data.Kin("data/mvp.kin.txt", out="mvp", maxLine=1e4) # Kinship file (optional)
 # read from file and convert my result PCA 
-MVP.Data.PC("data/mvp.pc.txt", out='data/mvp', sep='\t') # PCA file (optional)
+#rMVP.Data.PC("data/mvp.pc.txt", out='data/mvp', sep='\t') # PCA file (optional)
 
 
 # 4. Filtering SNPs with too low MAF (default <5%), as well as rows containing too many NAs (default >10%)
@@ -119,7 +119,7 @@ filtered_hmp <- filter_hapmap(geno)
 write.table(filtered_hmp, "data/filtered_hmp.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 
 
-#####OR
+############OR#################
 # 4.2. For VCF genotype file format
 # 4.2.1. Function to filter VCF genotype data
 filter_vcfmap <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
@@ -160,7 +160,7 @@ filter_vcfmap <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
 filtered_vcf <- filter_vcfmap(geno)
 
 write.table(filtered_vcf, "data/filtered_vcf.txt", sep = "\t", row.names = FALSE, quote = FALSE)
-
+##################
 
 
 # 5. Phenotypic Data Filtering
@@ -225,8 +225,8 @@ head(filtered_pheno)  # Display the first few rows of the filtered data
 MVP.Data(
   fileHMP = "data/filtered_hmp.txt",  # Filtered HapMap file
   filePhe = "data/filtered_pheno.txt",  # Filtered phenotypic data file
-  fileKin = TRUE,   # Set to TRUE if kinship file is not available, otherwise set to FALSE
-  filePC = TRUE,    # Set to TRUE if PCA file is not available, otherwise set to FALSE
+  fileKin = FALSE,   # Set to TRUE if kinship file is not available, otherwise set to FALSE
+  filePC = FALSE,    # Set to TRUE if PCA file is not available, otherwise set to FALSE
   
   out = "data/mvp_hmp"  # Output in MVP format
 )
@@ -235,8 +235,16 @@ MVP.Data(
 # If you already have the kinship and PCA files (e.g., "data/mvp.kin.txt" and "data/mvp.pc.txt"),
 # set these parameters to FALSE to avoid regenerating them.
 # If the files are not available, leave these as TRUE, and the script will create them automatically.
-
-
+MVP.Data(fileHMP="data/filtered_hmp.txt",
+         filePhe="data/filtered_pheno.txt",
+         sep.hmp="\t",
+         sep.phe="\t",
+         SNP.effect="Add",
+         fileKin=FALSE,
+         filePC=FALSE,
+         #maxLine=10000,
+         out="data/mvp.hmp"
+)
 
 # 7. Input file if want Gwas
 genotype <- attach.big.matrix("data/mvp.hmp.geno.desc")
