@@ -265,3 +265,29 @@ imMVP <- MVP(
   file.output = c("pmap", "pmap.signal", "plot", "log")
 )
 
+# 9. GWAS for multiple traits
+for (i in 2:ncol(phenotype)) {
+  imMVP <- MVP(
+    phe = phenotype[, c(1, i)],
+    geno = genotype,
+    map = map,
+    # K = Kinship,             # Uncomment if you have pre-computed GRM
+    # CV.GLM = Covariates,     # Uncomment if you have environmental covariates
+    # CV.MLM = Covariates,
+    # CV.FarmCPU = Covariates,
+    nPC.GLM = 5,
+    nPC.MLM = 3,
+    nPC.FarmCPU = 3,
+    maxLine = 10000,
+    # ncpus = 10,              # Uncomment if you want to use multiple CPUs
+    vc.method = "BRENT",
+    method.bin = "static",
+    threshold = 0.05,
+    method = c("GLM", "MLM", "FarmCPU"),
+    file.output = c("pmap", "pmap.signal", "plot", "log")
+  )
+  gc()  # Clean up memory after each iteration
+}
+
+
+
