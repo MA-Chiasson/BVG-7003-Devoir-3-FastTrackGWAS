@@ -243,3 +243,25 @@ map <- read.table("data/mvp_hmp.geno.map" , head = TRUE)
 Kinship <- attach.big.matrix("data/mvp_hmp.kin.desc")
 Covariates_PC <- bigmemory::as.matrix(attach.big.matrix("data/"))
 
+
+# 8. GWAS for a single trait
+imMVP <- MVP(
+  phe = phenotype,          # NA is acceptable in phenotype
+  geno = genotype,
+  map = map,
+  # K = Kinship,             # Uncomment if you have pre-computed GRM
+  # CV.GLM = Covariates,     # Uncomment if you have environmental covariates
+  # CV.MLM = Covariates,
+  # CV.FarmCPU = Covariates,
+  nPC.GLM = 5,              # Number of PCs for GLM
+  nPC.MLM = 3,              # Number of PCs for MLM
+  nPC.FarmCPU = 3,          # Number of PCs for FarmCPU
+  maxLine = 10000,          # Smaller value reduces memory cost
+  # ncpus = 10,              # Uncomment if you want to use multiple CPUs
+  vc.method = "BRENT",      # Method for MLM
+  method.bin = "static",    # "FaST-LMM", "static" (only works for FarmCPU)
+  threshold = 0.05,
+  method = c("GLM", "MLM", "FarmCPU"),
+  file.output = c("pmap", "pmap.signal", "plot", "log")
+)
+

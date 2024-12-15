@@ -1,0 +1,76 @@
+====================== Welcome to MVP ======================
+      A Memory-efficient, Visualization-enhanced, and       
+             Parallel-accelerated Tool For GWAS             
+                    __  __  __   __  ___                    
+                   |  \/  | \ \ / / | _ \                   
+                   | |\/| |  \ V /  |  _/                   
+                   |_|  |_|   \_/   |_|     Version: 1.1.1  
+  Designed and Maintained by Lilin Yin, Haohao Zhang, and   
+  Xiaolei Liu                                               
+  Contributors: Zhenshuang Tang, Jingya Xu, Dong Yin,       
+  Zhiwu Zhang, Xiaohui Yuan, Mengjin Zhu, Shuhong Zhao,     
+  Xinyun Li                                                 
+  Contact: xiaoleiliu@mail.hzau.edu.cn                      
+============================================================
+Start: 2024-12-15 00:15:53.644887 
+The log has been output to the file: /project/dator3/users/mebab12/BVGGWAS/BVG-7003-Devoir-3-FastTrackGWAS/MVP.20241215_001553.log 
+Input data has 298 individuals, 37140 markers 
+Analyzed trait: SDWi.SDWf 
+Number of threads used: 288 
+Total 47 individuals removed due to missings 
+Computing GRM for 251 individuals with a step of 10000 
+Deriving relationship matrix successfully 
+Eigen Decomposition on GRM 
+Deriving PCs successfully 
+Number of PCs included in GLM: 5 
+Number of PCs included in MLM: 3 
+Number of PCs included in FarmCPU: 3 
+-------------------------GWAS Start------------------------- 
+General Linear Model (GLM) Start... 
+scanning...
+Genomic inflation factor (lambda): 0.7886 
+Writing results to local file 
+Mixed Linear Model (MLM) Start... 
+Variance components using: BRENT 
+Estimated Vg and Ve: 0.000003 0.042792 
+scanning...
+Genomic inflation factor (lambda): 0.7971 
+Writing results to local file 
+FarmCPU Start... 
+Current loop: 1 out of maximum of 10 
+seqQTN: 
+NULL 
+number of covariates in current loop is: 
+3 
+scanning... 
+Current loop: 2 out of maximum of 10 
+Optimizing Pseudo QTNs... 
+Top snps have little effect, set seqQTN to NULL! 
+Genomic inflation factor (lambda): 0.7951 
+Writing results to local file 
+Significant level: 1.35e-06 
+---------------------Visualization Start-------------------- 
+Phenotype distribution Plotting 
+PCA plot2d 
+SNP_Density Plotting 
+Circular_Manhattan Plotting SDWi.SDWf.GLM 
+Circular_Manhattan Plotting SDWi.SDWf.MLM 
+Circular_Manhattan Plotting SDWi.SDWf.FarmCPU 
+Rectangular_Manhattan Plotting SDWi.SDWf.GLM 
+Rectangular_Manhattan Plotting SDWi.SDWf.MLM 
+Rectangular_Manhattan Plotting SDWi.SDWf.FarmCPU 
+Q_Q Plotting SDWi.SDWf.GLM 
+Q_Q Plotting SDWi.SDWf.MLM 
+Q_Q Plotting SDWi.SDWf.FarmCPU 
+Multracks_Rectangular Plotting SDWi.SDWf.GLM 
+Multracks_Rectangular Plotting SDWi.SDWf.MLM 
+Multracks_Rectangular Plotting SDWi.SDWf.FarmCPU 
+Multracks_QQ Plotting SDWi.SDWf.GLM 
+Multracks_QQ Plotting SDWi.SDWf.MLM 
+Multracks_QQ Plotting SDWi.SDWf.FarmCPU 
+Multraits_QQ Plotting SDWi.SDWf.GLM 
+Multraits_QQ Plotting SDWi.SDWf.MLM 
+Multraits_QQ Plotting SDWi.SDWf.FarmCPU 
+Results are stored at Working Directory: /project/dator3/users/mebab12/BVGGWAS/BVG-7003-Devoir-3-FastTrackGWAS 
+End: 2024-12-15 00:16:22.080987 
+===================== MVP ACCOMPLISHED ===================== 
