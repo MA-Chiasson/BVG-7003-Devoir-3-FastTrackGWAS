@@ -262,61 +262,82 @@ if (!dir.exists("output/multi_trait_results")) {
   dir.create("output/multi_trait_results")
 }
 
+# Verify directories were created
+cat("Directories created successfully:\n")
+print(list.dirs("output"))
 
-# # 8.1 GWAS for a Single Trait
-# In this section, we perform GWAS for a single trait and store the results in a folder named "single_trait_results".
+# 8.1 GWAS for a Single Trait
+cat("Performing GWAS for a single trait:\n")
+setwd("output/single_trait_results")  
 
-imMVP <- MVP(
-  phe = phenotype,          # NA is acceptable in phenotype
-  geno = genotype,
-  map = map,
-  # K = Kinship,             # Uncomment if you have pre-computed GRM
-  # CV.GLM = Covariates,     # Uncomment if you have environmental covariates
-  # CV.MLM = Covariates,
-  # CV.FarmCPU = Covariates,
-  nPC.GLM = 5,              # Number of PCs for GLM
-  nPC.MLM = 3,              # Number of PCs for MLM
-  nPC.FarmCPU = 3,          # Number of PCs for FarmCPU
-  maxLine = 10000,          # Smaller value reduces memory cost
-  # ncpus = 10,              # Uncomment if you want to use multiple CPUs
-  vc.method = "BRENT",      # Method for MLM
-  method.bin = "static",    # "FaST-LMM", "static" (only works for FarmCPU)
-  threshold = 0.05,
-  method = c("GLM", "MLM", "FarmCPU"),
-  file.output = c("output/single_trait_results/pmap", 
-                  "output/single_trait_results/pmap.signal", 
-                  "output/single_trait_results/plot", 
-                  "output/single_trait_results/log")
-)
-
-
-# 8.2 GWAS for Multiple Traits
-# In this section, we perform GWAS for multiple traits simultaneously and store the results in a folder named "multi_trait_results".
-
-# Perform GWAS for each trait in the columns 2 to the last of the phenotype data
-for (i in 2:ncol(phenotype)) {
-  imMVP <- MVP(
-    phe = phenotype[, c(1, i)],
+imMVP_single_trait <- tryCatch({
+  MVP(
+    phe = phenotype,          # NA is acceptable in phenotype
     geno = genotype,
     map = map,
-    K = Kinship,             # Uncomment if you have pre-computed GRM
-    # CV.GLM = Covariates,     # Uncomment if you have environmental covariates
-    # CV.MLM = Covariates,
-    # CV.FarmCPU = Covariates,
-    nPC.GLM = 5,
-    nPC.MLM = 3,
-    nPC.FarmCPU = 3,
-    maxLine = 10000,
-    # ncpus = 10,              # Uncomment if you want to use multiple CPUs
-    vc.method = "BRENT",
-    method.bin = "static",
+    nPC.GLM = 5,              # Number of PCs for GLM
+    nPC.MLM = 3,              # Number of PCs for MLM
+    nPC.FarmCPU = 3,          # Number of PCs for FarmCPU
+    maxLine = 10000,          # Smaller value reduces memory cost
+    vc.method = "BRENT",      # Method for MLM
+    method.bin = "static",    # "FaST-LMM", "static" (only works for FarmCPU)
     threshold = 0.05,
     method = c("GLM", "MLM", "FarmCPU"),
-    file.output = c("output/multi_trait_results/pmap", 
-                    "output/multi_trait_results/pmap.signal", 
-                    "output/multi_trait_results/plot", 
-                    "output/multi_trait_results/log")
+    file.output = c("pmap", "pmap.signal", "plot", "log")  
   )
-  gc()  # Clean up memory after each iteration
+}, error = function(e) {
+  cat("Error during single trait GWAS: ", e$message, "\n")
+  NULL
+})
+
+setwd("../../")
+cat("Checking if single trait results were saved:\n")
+if (!is.null(imMVP_single_trait)) {
+  cat("Single trait results files:\n")
+  print(list.files("output/single_trait_results"))
+} else {
+  cat("No results generated for single trait GWAS.\n")
 }
+
+# 8.2 GWAS for Multiple Traits
+cat("Performing GWAS for multiple traits:\n")
+setwd("output/multi_trait_results") 
+
+for (i in 2:ncol(phenotype)) {
+  imMVP_multi_trait <- tryCatch({
+    MVP(
+      phe = phenotype[, c(1, i)],  # Using the first column as trait identifier and i-th trait
+      geno = genotype,
+      map = map,
+      nPC.GLM = 5,
+      nPC.MLM = 3,
+      nPC.FarmCPU = 3,
+      maxLine = 10000,
+      vc.method = "BRENT",
+      method.bin = "static",
+      threshold = 0.05,
+      method = c("GLM", "MLM", "FarmCPU"),
+      file.output = c("pmap", "pmap.signal", "plot", "log")  
+    )
+  }, error = function(e) {
+    cat("Error during multiple trait GWAS (trait ", i, "): ", e$message, "\n")
+    NULL
+  })
+  
+  # Check if output files are generated for multiple traits
+  cat("Checking if results for trait ", i, " were saved:\n")
+  if (!is.null(imMVP_multi_trait)) {
+    cat("Multiple trait results files for trait ", i, ":\n")
+    print(list.files("."))
+  } else {
+    cat("No results generated for trait ", i, ".\n")
+  }
+  
+  # Clean up memory after each iteration
+  gc()
+}
+
+# Return to main directory after processing
+setwd("../../")
+cat("GWAS for multiple traits completed.\n")
 
