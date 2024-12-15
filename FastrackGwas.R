@@ -58,6 +58,7 @@ head(geno)
 
 # 4. Filtering SNPs with too low MAF (default <5%), as well as rows containing too many NAs (default >10%)
 # 4.1. For hapmap genotype file format
+# 4.1.1. Function to filter hapmap genotype data
 filter_hapmap <- function(hapmap_data, freq_threshold = 5, na_threshold = 10) {
   # Function to calculate the frequency of each letter
   calculate_frequencies <- function(genotypes) {
@@ -100,17 +101,18 @@ filter_hapmap <- function(hapmap_data, freq_threshold = 5, na_threshold = 10) {
   return(filtered_hmp)
 }
 
-# Apply the function to your hapmap genotype file
+
+# 4.1.2. Apply the function to your hapmap genotype file
 filtered_hmp <- filter_hapmap(geno)
 
 write.table(filtered_hmp, "data/filtered_hmp.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 
 
 
-#OR
+#####OR
 # 4.2. For VCF genotype file format
-
-filter_vcf <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
+# 4.2.1. Function to filter VCF genotype data
+filter_vcfmap <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
   # Calculate the MAF for each variant
   maf_values <- maf(geno_vcf)
   
@@ -144,8 +146,14 @@ filter_vcf <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
   return(filtered_vcf)
 }
 
+# 4.1.2. Apply the function to your VCF genotype file
+filtered_vcf <- filter_vcfmap(geno)
 
-# Conversion HapMap -> format MVP
+write.table(filtered_vcf, "data/filtered_vcf.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+
+
+
+# 5. Conversion HapMap -> format MVP
 MVP.Data(
   fileHMP = "data/filtered_hmp.txt",
   filePhe = "data/Phenotype_African.txt",
