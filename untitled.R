@@ -21,54 +21,35 @@ library(purrr)
 library(mgsub)
 library(bigmemory)
 library(vcfR)
-library(outliers)
 
-# 2. Set the working directory to the directory where the script is located
-# This automatically sets the working directory to the folder where the script is located, no need for modification.
-
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-
-# Print the working directory to confirm it's set correctly
-cat("Working directory has been set to:\n")
-cat(getwd(), "\n")
-
+# Define the working directory
+setwd("C:/Users/tony7/OneDrive/Git/BVG-7003-Devoir-3-FastTrackGWAS") # Replace with the actual working directory
 
 # 3. Loading data
-# Please make sure that the following files are uploaded and placed in the "data" folder:
-# - Phenotype_African.txt (mandatory)
-# - African_SNPs.hmp.txt (mandatory)
-# - Kinship matrix file (optional, if you have it)
-# - PCA matrix file (optional, if you have it)
-# If you do not have the kinship or PCA files, the script will automatically generate them.
+pheno_file <- "data/Phenotype_African.txt"
+hmp_file <- "data/African_SNPs.hmp.txt"
 
-pheno_file <- "data/Phenotype_African.txt"  # File with phenotype data (mandatory)
-hmp_file <- "data/African_SNPs.hmp.txt"  # File with genotype data (mandatory)
+# Load and modify the phenotype
 
-# 3.1. Loading phenotypic data
-pheno <- read.table(pheno_file, sep = "\t", header = TRUE)  # Loading phenotype data
+# 3.1 Loading phenotypic data
+pheno <- read.table(pheno_file, sep = "\t", header = TRUE)
 str(pheno)
 head(pheno)
 
-# 3.2. Loading genotype data
-geno <- read.csv(hmp_file, sep = "\t", header = TRUE, check.names = FALSE)  # Loading genotype data
+# 3.2 Loading genotype data
+geno <- read.csv(hmp_file, sep = "\t", header = TRUE)
 str(geno)
 head(geno)
 
-## 3.3 Optional input:
-# If you do not have the kinship or PCA files, the script will automatically generate them.
-# read from file and convert my result kin
-MVP.Data.Kin("data/mvp.kin.txt", out="data/mvp", maxLine=1e4) # Kinship file (optional)
-# read from file and convert my result PCA 
-MVP.Data.PC("data/mvp.pc.txt", out='data/mvp', sep='\t') # PCA file (optional)
+# Modify phenotype sample names (if necessary)
+pheno$Sample <- gsub("TGx ", "", pheno$Sample)
+
+# Saving modified phenotype table
+write.table(pheno, "data/pheno_modified.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 
 
 # 4. Filtering SNPs with too low MAF (default <5%), as well as rows containing too many NAs (default >10%)
-# This filtering process is performed separately for different input formats:
-# - HapMap format
-# - VCF format
-
-# 4.1. For hapmap genotype file format
-# 4.1.1. Function to filter hapmap genotype data
+# 4.1 For hapmap genotype file format
 filter_hapmap <- function(hapmap_data, freq_threshold = 5, na_threshold = 10) {
   # Function to calculate the frequency of each letter
   calculate_frequencies <- function(genotypes) {
@@ -111,18 +92,16 @@ filter_hapmap <- function(hapmap_data, freq_threshold = 5, na_threshold = 10) {
   return(filtered_hmp)
 }
 
-
-# 4.1.2. Apply the function to your hapmap genotype file
+# Apply the function to your hapmap genotype file
 filtered_hmp <- filter_hapmap(geno)
 
 write.table(filtered_hmp, "data/filtered_hmp.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 
 
 
-#####OR
-# 4.2. For VCF genotype file format
-# 4.2.1. Function to filter VCF genotype data
-filter_vcfmap <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
+# 4.2 For VCF genotype file format
+
+filter_vcf <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
   # Calculate the MAF for each variant
   maf_values <- maf(geno_vcf)
   
@@ -151,40 +130,52 @@ filter_vcfmap <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
   
   # Subset the original VCF object to keep only the filtered rows
   filtered_vcf <- geno_vcf[geno_vcf@fix[, "CHROM"] %in% filtered_variants$CHROM & 
-                           as.numeric(geno_vcf@fix[, "POS"]) %in% filtered_variants$POS, ]
+                             as.numeric(geno_vcf@fix[, "POS"]) %in% filtered_variants$POS, ]
   
   return(filtered_vcf)
 }
 
-# 4.2.2. Apply the function to your VCF genotype file
-filtered_vcf <- filter_vcfmap(geno)
+# Example usage
+# Assuming geno_vcf is your VCF object
+# filtered_vcf <- filter_vcf(geno_vcf, freq_threshold = 5, na_threshold = 10)
 
-write.table(filtered_vcf, "data/filtered_vcf.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+# 4.3. Should we create a MAF filtering function for other formats as well?
+# For PLINK and binary formats however this would mean building entirely new functions
+# However if we do not provide any function for other formats, we simply need to specify that this pipeline only supports hmp and maybe vcf formats.
 
-
-
-#########PHENO filtering
-#########
-
-
-
-
-
-# 5. Conversion HapMap -> format MVP
+# Conversion HapMap -> format MVP
 MVP.Data(
-  fileHMP = "data/filtered_hmp.txt",
+  fileHMP = filtered_hmp,
   filePhe = "data/Phenotype_African.txt",
-  fileKin=TRUE,
-  filePC=TRUE,
-  out = "data/mvp_hmp"
+  fileKin = TRUE,
+  filePC = TRUE,
+  out = "mvp_hmp"
 )
 
+# 4. Filtering SNPs with MAF < 0.05  
+# Load the genotype data
+genotype_data <- attach.big.matrix("mvp_hmp.geno.desc")
 
+# Calculate MAF using the bigmemory object
+maf_data <- apply(as.matrix(genotype_data), 2, function(x) {
+  table_x <- table(x)  # Count the alleles
+  maf <- min(table_x) / sum(table_x)  # Calculate the minor allele frequency
+  return(maf)
+})
+
+# Print the first few values of maf_data to inspect
+print(head(maf_data))
+
+# Filter out the SNPs with MAF < 0.05
+filtered_genotype_data <- genotype_data[, maf_data >= 0.05]
+
+# Check the size of the data after filtering
+print(dim(filtered_genotype_data))
 
 # 5. Running the GWAS analysis
-genotype <- attach.big.matrix("data/mvp_hmp.geno.desc")
-phenotype <- read.table("data/mvp_hmp.phe", header = TRUE)
-map <- read.table("data/mvp_hmp.geno.map", header = TRUE)
+genotype <- attach.big.matrix("mvp_hmp.geno.desc")
+phenotype <- read.table("mvp_hmp.phe", header = TRUE)
+map <- read.table("mvp_hmp.geno.map", header = TRUE)
 
 # Running a simple GWAS with GLM
 results <- MVP(
@@ -205,11 +196,4 @@ combined_results <- cbind(map, glm_results)
 write.table(combined_results, "Test_GWAS_results.txt", sep = "\t", row.names = FALSE, col.names = TRUE)
 
 # Prepare the data for visualization
-vis_data <- combined_results[, c("SNP", "CHROM", "POS", "P.value")]
-colnames(vis_data) <- c("SNP", "Chromosome", "Position", "P.value")
-
-MVP.Report(
-  vis_data,
-  plot.type = c("qq", "manhattan"),
-  threshold = 0.05 / nrow(vis_data) # Bonferroni threshold
-)
+vis_data <- combined_results[, c("SNP
