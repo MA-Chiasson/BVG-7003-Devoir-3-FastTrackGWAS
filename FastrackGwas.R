@@ -211,9 +211,7 @@ process_phenotypic_data <- function(phenotypic_data, na_threshold = 10) {
   return(phenotypic_data)
 }
 
-# 5.2 Example usage
-
-# Process the phenotypic data for all numeric columns (except the first column)
+# 5.2 Process the phenotypic data for all numeric columns (except the first column)
 filtered_pheno <- process_phenotypic_data(pheno)  # Automatically filters all numeric columns
 
 # Save the filtered data to a file
@@ -223,25 +221,24 @@ write.table(filtered_pheno, "data/filtered_pheno.txt", sep = "\t", row.names = F
 head(filtered_pheno)  # Display the first few rows of the filtered data
 
 
-
-
-
-
-
-
-
-
-# 5. Conversion HapMap -> format MVP
+# 6. Conversion HapMap -> format MVP
 MVP.Data(
-  fileHMP = "data/filtered_hmp.txt",
-  filePhe = "data/filtered_pheno.txt",
-  fileKin=TRUE,
-  filePC=TRUE,
-  out = "data/mvp_hmp"
+  fileHMP = "data/filtered_hmp.txt",  # Filtered HapMap file
+  filePhe = "data/filtered_pheno.txt",  # Filtered phenotypic data file
+  fileKin = TRUE,   # Set to TRUE if kinship file is not available, otherwise set to FALSE
+  filePC = TRUE,    # Set to TRUE if PCA file is not available, otherwise set to FALSE
+  
+  out = "data/mvp_hmp"  # Output in MVP format
 )
 
+# Note: The fileKin and filePC parameters are related to step 3.3. 
+# If you already have the kinship and PCA files (e.g., "data/mvp.kin.txt" and "data/mvp.pc.txt"),
+# set these parameters to FALSE to avoid regenerating them.
+# If the files are not available, leave these as TRUE, and the script will create them automatically.
 
-# Input file if want Gwas
+
+
+# 7. Input file if want Gwas
 genotype <- attach.big.matrix("data/mvp.hmp.geno.desc")
 phenotype <- read.table("data/mvp.hmp.phe",head=TRUE)
 map <- read.table("data/mvp.hmp.geno.map" , head = TRUE)
