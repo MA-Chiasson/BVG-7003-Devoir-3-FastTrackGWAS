@@ -257,30 +257,23 @@ Loci with too much missing data can potentially induce statistical errors.
 
 The final quality control step implemented in this pipeline is that of missing data imputation. We recommend the users to impute missing data before importing their data into the pipeline, for example using LD-kNNi, FILLIN, FSHAP or BEAGLE software.  ***MAYBE THIS SHOULD BE MOVED TO THE DATA PREPROCESSING PART***
 
-##### 6.2.1. Filtering out SNPs with MAF < 0.05
+##### 6.2.1. Genotype data : Filtering out SNPs with MAF < 0.05 or with too much missing data (10% or more of missing data)
 
-We calculate the MAF for each SNP and filter out those with a MAF below 0.05. At the same time, this is filtering out monomorphic loci that would not be useful for a GWAS analysis. Below is the R code used for this process:
+Using `filter_hapmap()` or `filter_vcfmap()` functions, we can filter SNPs with too low MAF, with a MAF threshold modifiable, but set by default at 5%. At the same time, these functions filter out monomorphic loci that would not be useful for a GWAS analysis. The same functions allow for filtering SNPs with too much missing data, with the threshold modifiable, but set at 10% as default option. Below is the R code used for this process:
 
-***THIS PART OF THE CODE DOESN'T WORK FOR ME, I have created a new function to do this MAF filtering (as well as data completeness filtering) for hapmap format, I think it is better to do this filtering step before moving on to the MVP format which is quite complex.***
-***NOTE TO NOT FORGET TO UPDATE THIS PART OF CODE ONCE THE FILTERING FUNCTION IS DONE***
+For Hapmap data
 ```r
-# Load genotype data
-genotype_data <- attach.big.matrix("mvp_hmp.geno.desc")
-
-# Calculate the allele frequency for each SNP
-# Each column represents a SNP, and each row represents an individual
-maf_data <- apply(genotype_data, 2, function(x) {
-  # Count the alleles
-  table_x <- table(x)  
-  maf <- min(table_x) / sum(table_x)  # Calculate the minor allele frequency
-  return(maf)
-})
-
-# Filter out SNPs with MAF < 0.05
-filtered_genotype_data <- genotype_data[, maf_data >= 0.05]
+filtered_hmp <- filter_hapmap(geno, freq_threshold = 5, na_threshold = 10)
 ```
+Or for VCF data
+```r
+filtered_hmp <- filter_vcfmap(geno,  freq_threshold = 5, na_threshold = 10)
+```
+In both cases, thresholds can be either left out to use the default options, or modified with the threshold expressed in percentage.
 
-This code filters out SNPs with a MAF lower than 0.05, ensuring only those with a sufficient minor allele frequency are retained for further analysis.
+##### 6.2.1. Phenotype data : Explain the phenotype filtering process
+
+**Explain phenotype filtering function usage**
 
 #### 6.3. Generating Covariates
 ***This step can be done automatically when doing the gwas analysis (see 6.3. below). It can also be done separately with other functions from the rMVP package but it seems to me less efficient to do so. Maybe we can still document this as a separate step, but otherwise this section should go in the 6.2. or 6.3. sections below for better consistency I think.***
