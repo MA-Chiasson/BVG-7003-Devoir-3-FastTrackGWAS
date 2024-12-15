@@ -241,6 +241,16 @@ MVP.Data(
 )
 
 
+# Input file if want Gwas
+genotype <- attach.big.matrix("data/mvp.hmp.geno.desc")
+phenotype <- read.table("data/mvp.hmp.phe",head=TRUE)
+map <- read.table("data/mvp.hmp.geno.map" , head = TRUE)
+Kinship <- attach.big.matrix("data/mvp.hmp.kin.desc")
+Covariates_PC <- bigmemory::as.matrix(attach.big.matrix("data/mvp.hmp.pc.desc"))
+
+
+
+
 
 # 5. Running the GWAS analysis
 genotype <- attach.big.matrix("data/mvp_hmp.geno.desc")
