@@ -244,7 +244,7 @@ Kinship <- attach.big.matrix("data/mvp_hmp.kin.desc")
 Covariates_PC <- bigmemory::as.matrix(attach.big.matrix("data/"))
 
 
-# # GWAS Analysis for Single and Multiple Traits
+# 8. GWAS Analysis for Single and Multiple Traits
 # In this section, we perform two GWAS models simultaneously: one for a single trait and another for multiple traits.
 # The key difference between these two is that the single-trait model analyzes one trait at a time, 
 # whereas the multiple-trait model analyzes several traits simultaneously.
@@ -263,23 +263,9 @@ if (!dir.exists("output/multi_trait_results")) {
 }
 
 
-# # 8. GWAS for a Single Trait
+# # 8.1 GWAS for a Single Trait
 # In this section, we perform GWAS for a single trait and store the results in a folder named "single_trait_results".
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# 8. GWAS for a single trait
 imMVP <- MVP(
   phe = phenotype,          # NA is acceptable in phenotype
   geno = genotype,
@@ -297,16 +283,23 @@ imMVP <- MVP(
   method.bin = "static",    # "FaST-LMM", "static" (only works for FarmCPU)
   threshold = 0.05,
   method = c("GLM", "MLM", "FarmCPU"),
-  file.output = c("pmap", "pmap.signal", "plot", "log")
+  file.output = c("output/single_trait_results/pmap", 
+                  "output/single_trait_results/pmap.signal", 
+                  "output/single_trait_results/plot", 
+                  "output/single_trait_results/log")
 )
 
-# 9. GWAS for multiple traits
+
+# 8.2 GWAS for Multiple Traits
+# In this section, we perform GWAS for multiple traits simultaneously and store the results in a folder named "multi_trait_results".
+
+# Perform GWAS for each trait in the columns 2 to the last of the phenotype data
 for (i in 2:ncol(phenotype)) {
   imMVP <- MVP(
     phe = phenotype[, c(1, i)],
     geno = genotype,
     map = map,
-    # K = Kinship,             # Uncomment if you have pre-computed GRM
+    K = Kinship,             # Uncomment if you have pre-computed GRM
     # CV.GLM = Covariates,     # Uncomment if you have environmental covariates
     # CV.MLM = Covariates,
     # CV.FarmCPU = Covariates,
@@ -319,10 +312,11 @@ for (i in 2:ncol(phenotype)) {
     method.bin = "static",
     threshold = 0.05,
     method = c("GLM", "MLM", "FarmCPU"),
-    file.output = c("pmap", "pmap.signal", "plot", "log")
+    file.output = c("output/multi_trait_results/pmap", 
+                    "output/multi_trait_results/pmap.signal", 
+                    "output/multi_trait_results/plot", 
+                    "output/multi_trait_results/log")
   )
   gc()  # Clean up memory after each iteration
 }
-
-
 
