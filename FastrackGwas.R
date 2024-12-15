@@ -22,8 +22,7 @@ library(mgsub)
 library(bigmemory)
 library(vcfR)
 library(outliers)
-library(moments)
-library(rpart)
+
 
 # 2. Set the working directory to the directory where the script is located
 # This automatically sets the working directory to the folder where the script is located, no need for modification.
@@ -120,7 +119,6 @@ filtered_hmp <- filter_hapmap(geno)
 write.table(filtered_hmp, "data/filtered_hmp.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 
 
-
 #####OR
 # 4.2. For VCF genotype file format
 # 4.2.1. Function to filter VCF genotype data
@@ -165,8 +163,73 @@ write.table(filtered_vcf, "data/filtered_vcf.txt", sep = "\t", row.names = FALSE
 
 
 
-#########PHENO filtering
-#########
+# 5. Phenotypic Data Filtering
+# 5.1. Function to remove outliers using IQR
+process_phenotypic_data <- function(phenotypic_data, na_threshold = 10) {
+  # Identify numeric columns (excluding the first column which is assumed to be the sample identifier)
+  numeric_cols <- names(phenotypic_data)[sapply(phenotypic_data, is.numeric)]
+  
+  # If there are no numeric columns, return the original data
+  if (length(numeric_cols) == 0) {
+    stop("No numeric columns found in the dataset.")
+  }
+  
+  # Process each numeric column
+  for (column_name in numeric_cols) {
+    # Remove rows with NA values in the specific column
+    phenotypic_data <- phenotypic_data[!is.na(phenotypic_data[[column_name]]), ]
+    
+    # Calculate NA percentage for numeric columns
+    phenotypic_data <- phenotypic_data %>%
+      rowwise() %>%
+      mutate(
+        na_percentage = (sum(is.na(c_across(all_of(numeric_cols)))) / length(numeric_cols)) * 100
+      ) %>%
+      ungroup()
+    
+    # Filter rows with NA percentage less than the threshold
+    phenotypic_data <- phenotypic_data %>% 
+      filter(na_percentage < na_threshold)
+    
+    # Remove outliers using IQR for the current column
+    Q1 <- quantile(phenotypic_data[[column_name]], 0.25, na.rm = TRUE)
+    Q3 <- quantile(phenotypic_data[[column_name]], 0.75, na.rm = TRUE)
+    IQR_value <- Q3 - Q1
+    
+    # Define lower and upper bounds
+    lower_bound <- Q1 - 1.5 * IQR_value
+    upper_bound <- Q3 + 1.5 * IQR_value
+    
+    # Filter data within bounds for the current column
+    phenotypic_data <- phenotypic_data %>%
+      filter(!!sym(column_name) >= lower_bound & !!sym(column_name) <= upper_bound)
+  }
+  
+  # Drop temporary columns
+  phenotypic_data <- phenotypic_data %>% select(-na_percentage)
+  
+  return(phenotypic_data)
+}
+
+# 5.2 Example usage
+
+# Load phenotypic data
+pheno_file <- "path/to/phenotypic_data.txt"  # Specify the path to your phenotypic data file
+pheno <- read.table(pheno_file, sep = "\t", header = TRUE)  # Load the phenotype data
+
+# Process the phenotypic data for all numeric columns (except the first column)
+filtered_pheno <- process_phenotypic_data(pheno)  # Automatically filters all numeric columns
+
+# Save the filtered data to a file
+write.table(filtered_pheno, "data/filtered_pheno.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+
+# Check the results
+head(filtered_pheno)  # Display the first few rows of the filtered data
+
+
+
+
+
 
 
 
@@ -175,7 +238,7 @@ write.table(filtered_vcf, "data/filtered_vcf.txt", sep = "\t", row.names = FALSE
 # 5. Conversion HapMap -> format MVP
 MVP.Data(
   fileHMP = "data/filtered_hmp.txt",
-  filePhe = "data/Phenotype_African.txt",
+  filePhe = "data/filtered_pheno.txt",
   fileKin=TRUE,
   filePC=TRUE,
   out = "data/mvp_hmp"
