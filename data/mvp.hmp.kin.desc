@@ -1,5 +1,0 @@
-new("big.matrix.descriptor", description = list(sharedType = "FileBacked", 
-    filename = "mvp.hmp.kin.bin", dirname = "data/", totalRows = 298L, 
-    totalCols = 298L, rowOffset = c(0, 298), colOffset = c(0, 
-    298), nrow = 298, ncol = 298, rowNames = NULL, colNames = NULL, 
-    type = "double", separated = FALSE))

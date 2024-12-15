@@ -237,45 +237,9 @@ MVP.Data(
 
 
 # 7. Input file if want Gwas
-genotype <- attach.big.matrix("data/mvp.hmp.geno.desc")
-phenotype <- read.table("data/mvp.hmp.phe",head=TRUE)
-map <- read.table("data/mvp.hmp.geno.map" , head = TRUE)
-Kinship <- attach.big.matrix("data/mvp.hmp.kin.desc")
-Covariates_PC <- bigmemory::as.matrix(attach.big.matrix("data/mvp.hmp.pc.desc"))
-
-
-
-
-
-# 5. Running the GWAS analysis
 genotype <- attach.big.matrix("data/mvp_hmp.geno.desc")
-phenotype <- read.table("data/mvp_hmp.phe", header = TRUE)
-map <- read.table("data/mvp_hmp.geno.map", header = TRUE)
+phenotype <- read.table("data/mvp_hmp.phe",head=TRUE)
+map <- read.table("data/mvp_hmp.geno.map" , head = TRUE)
+Kinship <- attach.big.matrix("data/mvp_hmp.kin.desc")
+Covariates_PC <- bigmemory::as.matrix(attach.big.matrix("data/"))
 
-# Running a simple GWAS with GLM
-results <- MVP(
-  phe = phenotype,
-  geno = genotype,
-  map = map,
-  method = c("GLM"),
-  nPC.GLM = 3,  # Number of principal components for GLM
-  threshold = 0.05
-)
-
-# Extract results and save them
-map <- results$map
-glm_results <- as.data.frame(results$glm.results)
-colnames(glm_results) <- c("Effect", "SE", "P.value")
-
-combined_results <- cbind(map, glm_results)
-write.table(combined_results, "Test_GWAS_results.txt", sep = "\t", row.names = FALSE, col.names = TRUE)
-
-# Prepare the data for visualization
-vis_data <- combined_results[, c("SNP", "CHROM", "POS", "P.value")]
-colnames(vis_data) <- c("SNP", "Chromosome", "Position", "P.value")
-
-MVP.Report(
-  vis_data,
-  plot.type = c("qq", "manhattan"),
-  threshold = 0.05 / nrow(vis_data) # Bonferroni threshold
-)
