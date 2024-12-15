@@ -244,6 +244,41 @@ Kinship <- attach.big.matrix("data/mvp_hmp.kin.desc")
 Covariates_PC <- bigmemory::as.matrix(attach.big.matrix("data/"))
 
 
+# # GWAS Analysis for Single and Multiple Traits
+# In this section, we perform two GWAS models simultaneously: one for a single trait and another for multiple traits.
+# The key difference between these two is that the single-trait model analyzes one trait at a time, 
+# whereas the multiple-trait model analyzes several traits simultaneously.
+# The outputs for each will be saved in separate folders.
+
+
+# Create output folders if they don't exist
+if (!dir.exists("output")) {
+  dir.create("output")
+}
+if (!dir.exists("output/single_trait_results")) {
+  dir.create("output/single_trait_results")
+}
+if (!dir.exists("output/multi_trait_results")) {
+  dir.create("output/multi_trait_results")
+}
+
+
+# # 8. GWAS for a Single Trait
+# In this section, we perform GWAS for a single trait and store the results in a folder named "single_trait_results".
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # 8. GWAS for a single trait
 imMVP <- MVP(
   phe = phenotype,          # NA is acceptable in phenotype
