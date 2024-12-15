@@ -45,15 +45,15 @@ cat(getwd(), "\n")
 pheno_file <- "data/Phenotype_African.txt"  # File with phenotype data (mandatory)
 hmp_file <- "data/African_SNPs.hmp.txt"  # File with genotype data (mandatory)
 
-# 3.1. Loading phenotypic data
-pheno <- read.table(pheno_file, sep = "\t", header = TRUE)  # Loading phenotype data
-str(pheno)
-head(pheno)
-
-# 3.2. Loading genotype data
+# 3.1. Loading genotype data
 geno <- read.csv(hmp_file, sep = "\t", header = TRUE, check.names = FALSE)  # Loading genotype data
 str(geno)
 head(geno)
+
+# 3.2. Loading phenotypic data
+pheno <- read.table(pheno_file, sep = "\t", header = TRUE)  # Loading phenotype data
+str(pheno)
+head(pheno)
 
 ## 3.3 Optional input:
 # If you do not have the kinship or PCA files, the script will automatically generate them.
