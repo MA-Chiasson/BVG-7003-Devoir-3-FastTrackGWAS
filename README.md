@@ -139,7 +139,7 @@ Check the current working directory with getwd():
 getwd()
 ```
 **Do we want to do something more like Adrian exemple?** 
-***My take is we don't need to, and it is more steps where the user has to change info in the script. I'd leave it as you did up here ! -Edouard***
+***Adjust as the script gets final***
 
 #### Conclusion
 Defining a working directory streamlines file management reduces errors, and helps organize your project efficiently.
@@ -330,7 +330,26 @@ Once you have correctly imported your data in the R environment (see step 4) and
 The sample code below shows a simple way to load hmp format genotypic data, using the attach.big.matrix() function.
 If you have a genotype map, you can also add it here.
 
+In order to generate rMVP usable files, we first need to use the `MVP.Data()` function from the rMVP package. Two of the most common types of data used in genomics are HapMap and VCF formats. We load each type of data with different parameters.
+
+1. **Generating rMVP readable files, VCF data version**: If the genotypic data is in VCF (Variant Call Format), we use the following command:
+```r
+MVP.Data(fileVCF = vcf_file, filePhe = pheno_file, out = "mvp_vcf")
 ```
+- `fileVCF`: The file path to the VCF file.
+- `filePhe`: The file path to the phenotypic data.
+- `out` = "mvp_vcf": The output file name (the data will be saved in this format).
+
+2. **Generating rMVP readable files, HapMap data version**: If the genotypic data is in HapMap format, we use the following command:
+``` r
+MVP.Data(fileHMP = hmp_file, filePhe = pheno_file, out = "mvp_hmp")
+```
+- `fileHMP`: The file path to the HapMap file.
+- `filePhe`: The file path to the phenotypic data.
+- `out` = "mvp_hmp": The output file name.
+
+3. **Loading the data in rMVP environment** : Once the rMVP readable files have been generated, we use the following commands to import them in the rMVP environment:
+``` r
 genotype <- attach.big.matrix("mvp_hmp.geno.desc")
 phenotype <- read.table("mvp_hmp.phe", header = TRUE)
 map <- read.table("mvp_hmp.geno.map", header = TRUE)
@@ -381,11 +400,11 @@ imMVP <- MVP(
 ### 7. Example of results obtained from MVP
 
 #### 7.1. QQ plots 
-
+**Add some sample plots when script is final**
 #### 7.2. Manhattan plots (association strength between individual loci and the studied phenotype)
-
+**Add some sample plots when script is final**
 #### 7.3. Filtering significant SNPs from the analysis
-
+**Does the presence of this requirement in the assignment instructions mean we need to filter the genotype file as a final step of the pipeline ?**
 ---
 
 ### 8. Interpretation of results
@@ -409,7 +428,7 @@ Threshold Line: The horizontal line represents the significance threshold set by
 
 To link significant loci to candidate genes:
 
-Identify Significant SNPs: Extract the SNPs that surpass the significance threshold.
+Identify Significant SNPs: Extract the SNPs that surpass the significance threshold. **See 7.3. as a starting step if we decide to complete the bonus requirement**
 
 Gene Annotation: Use gene annotation tools or databases (e.g., Ensembl, NCBI) to find genes located near these SNPs.
 
