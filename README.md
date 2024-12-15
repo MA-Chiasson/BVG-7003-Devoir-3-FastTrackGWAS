@@ -162,7 +162,7 @@ cat(getwd(), "\n")
 There are several good ways to load data into R, depending on the data format. Below, we explain how to load both phenotypic and genotypic data in the R environment using specific commands.
 
 #### 5.1. Loading genotype and phenotype data
-To load dat in R, we typically use `read.csv()` or `read.table()` functions to import the data. The key difference is that `read.csv()` is used when the data is separated by commas, while `read.table()` is more general and allows specifying different delimiters (e.g., tab-separated data). 
+To load data in R, we typically use `read.csv()` or `read.table()` functions to import the data. The key difference is that `read.csv()` is used when the data is separated by commas, while `read.table()` is more general and allows specifying different delimiters (e.g., tab-separated data). 
 
 In our case, we use the following commands to load the phenotypic data:
 ```r
