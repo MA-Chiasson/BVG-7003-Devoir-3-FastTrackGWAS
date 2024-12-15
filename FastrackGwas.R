@@ -213,10 +213,6 @@ process_phenotypic_data <- function(phenotypic_data, na_threshold = 10) {
 
 # 5.2 Example usage
 
-# Load phenotypic data
-pheno_file <- "path/to/phenotypic_data.txt"  # Specify the path to your phenotypic data file
-pheno <- read.table(pheno_file, sep = "\t", header = TRUE)  # Load the phenotype data
-
 # Process the phenotypic data for all numeric columns (except the first column)
 filtered_pheno <- process_phenotypic_data(pheno)  # Automatically filters all numeric columns
 
