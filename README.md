@@ -72,17 +72,21 @@ This analysis is based on the dataset provided in the paper:
 For the test data in this analysis, the following were selected:
 
 - **Genotypic data:** Information for all chromosomes.
+
+
+  File `African_SNPs.hmp.txt` , of HapMap format, can be found in the data directory of this repository.
+
+  Note that genotype data of VCF format could also be used with the example script if this was your case. 
+  
 - **Phenotypic data:** The trait SDWi/SDWf (SDW ratio) represents shoot dry weight in inoculated (SDWi) and fertilized (SDWf).
+
+  File `Phenotype_African.txt`, in .txt format, can be found in the data directory of this repository.
+
+  Note that phenotype data could be provided in other table formats, as long as the first column represents the genetic ID, and the other columns represent trait values. See h[ttps://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#phenotype](url) for more detailed information.
 --- 
 
-## 3. Script execution
-### 3.1. Input and Output File Formats
-#### 3.1.1. Input
-#### 3.1.2. Output
-**REPLACE BY THE RESULT THE USER SHOULD HAVE**
-
-### 3.2. **Dependencies**
-#### 3.2.1. Installation of the packages
+## 3. **Dependencies**
+### 3.1. Installation of the packages
 Open the script and start to install the following R packages which are required to execute this analysis:
 - **rMVP**: A memory-efficient, visualization-enhanced, and parallel-accelerated tool for GWAS.
 - **ggplot2**: For creating high-quality graphics.
@@ -111,7 +115,7 @@ install.packages(c("rMVP", "ggplot2", "data.table", "dplyr", "mgsub", "bigmemory
 ```
 This would lead to the installation of packages every time the script is run, even if they are already installed, which is inefficient. The if condition ensures that packages are only installed when required, avoiding unnecessary installation.
 
-#### 3.2.2. Loading the packages
+### 3.2. Loading the packages
 Once they've been installed, it's time to load them. To do this, use the library() command, inserting the package name between the brackets, as in the example below. 
 ```r
 library(rMVP)
