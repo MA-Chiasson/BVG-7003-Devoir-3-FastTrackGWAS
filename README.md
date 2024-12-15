@@ -88,9 +88,12 @@ Open the script and start to install the following R packages which are required
 - **ggplot2**: For creating high-quality graphics.
 - **data.table**: For fast and flexible data manipulation.
 - **dplyr**: For data manipulation with a consistent grammar.
+- **purrr**: For working with functions and vectors.
 - **mgsub**: For multiple, simultaneous string substitutions.
-- **vcfR** : For pre-treatment of VCF format genotype data
-- **Adjust the remainder of this list once code is final**
+- **bigmemory**: For managing massive matrices.
+- **vcfR**: For pre-treatment of VCF format genotype data.
+- **outliers**: For outlier identification.
+  **Adjust the remainder of this list once code is final**
 
 Dependencies for these packages will be automatically installed when executing the script, ensuring a smooth setup process.
 For this purpose, the installation of packages is conditional using the following function:
@@ -117,7 +120,7 @@ library(rMVP)
 ### 4. Define working directory
 **Defining a working directory in R offers several key benefits:**
 
-- File Management: It helps centralize project files (data, scripts, results) in one location, avoiding confusion.
+- **File Management**: It helps centralize project files (data, scripts, results) in one location, avoiding confusion.
 
 - **Simplified File Access**: With a set working directory, you can use relative file paths (e.g., read.csv("data.csv")) instead of full paths.
 
@@ -129,62 +132,50 @@ library(rMVP)
 
 #### How to Set a Working Directory
 Usually, the WD is the folder where our script and data are stored, and where we want to add the results of our analyses.
-You can define a working directory using setwd():
+A very basic way of setting a working directory is using setwd():
 
 ```r
-setwd("C:/Users/YourName/Documents/Project")
+setwd("C:/Users/YourPath/ToYour/Folder")
 ```
 Check the current working directory with getwd():
 ```r
 getwd()
 ```
-**Do we want to do something more like Adrian exemple?** 
-***My take is we don't need to, and it is more steps where the user has to change info in the script. I'd leave it as you did up here ! -Edouard***
 
-#### Conclusion
-Defining a working directory streamlines file management reduces errors, and helps organize your project efficiently.
+To simplify the use of the demo script, we have automated this step to set the working directory to the folder where you have placed the script with the following commands:
+
+```r
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+```
+And also an interactive way to verify it has been done correctly :
+
+```r
+cat("Working directory has been set to:\n")
+cat(getwd(), "\n")
+```
+
+***Adjust as the script gets final***
 
 ---
 
 ### 5. Loading data in R
 There are several good ways to load data into R, depending on the data format. Below, we explain how to load both phenotypic and genotypic data in the R environment using specific commands.
 
-#### 5.1. Loading phenotypic data
-For phenotypic data, we typically use `read.csv()` or `read.table()` to import the data. The key difference is that `read.csv()` is used when the data is separated by commas, while `read.table()` is more general and allows specifying different delimiters (e.g., tab-separated data).
+#### 5.1. Loading genotype and phenotype data
+To load data in R, we typically use `read.csv()` or `read.table()` functions to import the data. The key difference is that `read.csv()` is used when the data is separated by commas, while `read.table()` is more general and allows specifying different delimiters (e.g., tab-separated data). 
 
-In our case, we use the following code to load the phenotypic data:
+In our case, we use the following commands to load the phenotypic data:
+```r
+geno <- read.csv(hmp_file, sep = "\t", header = TRUE, check.names = FALSE)
+```
 ```r
 pheno <- read.table(pheno_file, sep = "\t", header = TRUE)
 ```
 Explanation of the parameters:
-- `pheno_file`: The file path to the phenotypic data.
+- `hmp_file` or `pheno_file`: The file paths to the genotype and phenotype data.
 - `sep = "\t"`: This specifies that the data is tab-separated.
 - `header = TRUE`: This indicates that the first row contains column names.
-
-#### 5.2. Loading Genotypic Data
-For genotypic data, we use the `MVP.Data()` function from the rMVP package. There are two types of genotypic data commonly used: HapMap and VCF. We load each type of data with different parameters.
-
-1. **Loading VCF Data**: If the genotypic data is in VCF (Variant Call Format), we use the following command:
-```r
-MVP.Data(fileVCF = vcf_file, filePhe = pheno_file, out = "mvp_vcf")
-```
-- `fileVCF`: The file path to the VCF file.
-- `filePhe`: The file path to the phenotypic data.
-- `out` = "mvp_vcf": The output file name (the data will be saved in this format).
-
-2. **Loading HapMap Data**: If the genotypic data is in HapMap format, we use the following command:
-``` r
-MVP.Data(fileHMP = hmp_file, filePhe = pheno_file, out = "mvp_hmp")
-```
-- `fileHMP`: The file path to the HapMap file.
-- `filePhe`: The file path to the phenotypic data.
-- `out` = "mvp_hmp": The output file name.
-  
-**However, in many cases the MVP function won't work perfectly the first time, as you need to ensure that the data is formatted in the right way (see section 5).**
-
-#### Conclusion
-- **Phenotypic data** is loaded using `read.csv()` (or `read.table()`) with parameters like `sep` (separator) and `header` (column names).
-- **Genotypic data** is loaded using the `MVP.Data()` function, which handles different formats (VCF or HapMap) by specifying the appropriate file parameter (`fileVCF` or `fileHMP`). The output can be saved in the specified format using the `out` parameter.
+- `check.names = FALSE`: This prevents R from altering column names to make them syntactically valid.
 
 ---
 
@@ -196,7 +187,7 @@ In this section, we guide users through the following steps for data preprocessi
 
 To check if the format of our data is correct, we can use two commonly used commands in R: `str()` and `head()`. These functions are useful for quickly exploring the structure and content of our data before proceeding with more complex analyses.
 
-##### 5.1.1. `str()`
+##### 6.1.1. `str()`
 The str() (structure) function is used to display the internal structure of an object in R. It provides a quick overview of the data structure, including the type of each column (e.g., numeric, factor, etc.), the number of missing values, and a sample of the first few values in each column.
 
 **Usefulness of `str()`:**
@@ -211,7 +202,7 @@ str(pheno)
 ```
 This allows you to check that the phenotype data is in the correct format before using it in the analysis.
 
-##### 5.1.2. `head()`
+##### 6.1.2. `head()`
 The `head()` function displays the first few rows of a dataset. By default, it shows the first six rows, but this number can be adjusted. This function gives a quick look at the actual values in the first rows, which is useful for checking the quality of the data and ensuring that they have been imported correctly.
 
 **Usefulness of `head()`**:
@@ -229,7 +220,7 @@ This allows you to view the first few rows of the phenotype data and check every
 **Conclusion**
 These two commands are essential tools for quickly inspecting the structure and content of your data. They help identify potential problems before the analysis process, saving a lot of time and effort upfront. Using str() and head() before starting any detailed analysis ensures that the data is properly formatted and ready to be processed.
 
-##### 5.1.3. Example of formatting
+##### 6.1.3. Example of formatting
 As observed in the phenotypic data (Figure 1), sample names often begin with "TGx," whereas this is not the case in the genotypic data (Figure 2). If we were to run the MVP function as is, only 18 matching samples would be identified between the two datasets, as shown in Figure 3 below.
 **Name of the sample in the phenotypic data:**  
 ![image](https://github.com/user-attachments/assets/3e01bf96-879e-4a7c-90ad-50e8acc23228)
@@ -250,7 +241,7 @@ Although the genotypic data uses a different naming convention, where it include
 ![image](https://github.com/user-attachments/assets/6b18b186-145f-4939-8d67-4b8352ea95d1)
 
 
-#### 5.2. Quality Control
+#### 6.2. Quality Control
 
 The quality control step involves filtering loci, for instance SNPs (Single Nucleotide Polymorphisms), based on their Minor Allele Frequency (MAF). We suggest removing loci with a MAF lower than 0.05 to ensure that only common variants are included in the analysis, but other tresholds may be used. 
 
@@ -262,7 +253,7 @@ Loci with too much missing data can potentially induce statistical errors.
 
 The final quality control step implemented in this pipeline is that of missing data imputation. We recommend the users to impute missing data before importing their data into the pipeline, for example using LD-kNNi, FILLIN, FSHAP or BEAGLE software.  ***MAYBE THIS SHOULD BE MOVED TO THE DATA PREPROCESSING PART***
 
-##### 5.2.1. Filtering out SNPs with MAF < 0.05
+##### 6.2.1. Filtering out SNPs with MAF < 0.05
 
 We calculate the MAF for each SNP and filter out those with a MAF below 0.05. At the same time, this is filtering out monomorphic loci that would not be useful for a GWAS analysis. Below is the R code used for this process:
 
@@ -287,12 +278,13 @@ filtered_genotype_data <- genotype_data[, maf_data >= 0.05]
 
 This code filters out SNPs with a MAF lower than 0.05, ensuring only those with a sufficient minor allele frequency are retained for further analysis.
 
-#### 5.3. Generating Covariates
+#### 6.3. Generating Covariates
 ***This step can be done automatically when doing the gwas analysis (see 6.3. below). It can also be done separately with other functions from the rMVP package but it seems to me less efficient to do so. Maybe we can still document this as a separate step, but otherwise this section should go in the 6.2. or 6.3. sections below for better consistency I think.***
 To account for population structure or relatedness in the data, you may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness (kinship) matrix. These covariates are used to adjust for the potential confounding factors in the GWAS analysis that are kinship or population structure. Indeed, population structure and relatedness may induce non-random distribution of alleles in the sampling pool. GWAS analysis over phenotypes that happen to covary with the population structure would then result in non-relevant associations with these non-randomly distributed alleles. Including a kinship matrix or a a PCA can help reduce this risk.
 
-```
-# generating a kinship matrix on its own
+Generating a kinship matrix on its own
+
+``` r
 MVP.K.VanRaden(
 M,
 maxLine = 5000,
@@ -301,7 +293,11 @@ cpu = 1,
 verbose = TRUE,
 checkNA = TRUE
 )
-#generating a pca for population structure on its own
+```
+
+Generating a pca for population structure on its own
+
+``` r
 MVP.PCA(
 M = NULL,
 K = NULL,
@@ -311,37 +307,58 @@ pcs.keep = 5,
 cpu = 1,
 verbose = TRUE
 )
+```
 
-# or generating both as part of the MVP.DATA() function at the same time as when generating MVP compatible genotype and phenotype files
+Or generating both as part of the MVP.DATA() function at the same time as when generating MVP compatible genotype and phenotype files, done through setting the arguments `fileKin` and `filePC` as true.
 
+``` r
 MVP.DATA(fileKin=TRUE, filePC=TRUE)
-
-This section explains how we preprocess the data, including formatting the files, performing quality control, and generating covariates for the analysis.
-
 ```
 ---
 
-### 6. Execution of the GWAS analysis
+### 7. Execution of the GWAS analysis
 
-#### 6.1. Loading genotype and phenotype data in the rMVP environment 
+#### 7.1. Loading genotype and phenotype data in the rMVP environment 
 The first step of running the GWAS analysis is to load properly the genotypic and phenotypic data
 
 Once you have correctly imported your data in the R environment (see step 4) and preprocessed it (see step 5), you are ready to load it in the rMVP environment.
 The sample code below shows a simple way to load hmp format genotypic data, using the attach.big.matrix() function.
 If you have a genotype map, you can also add it here.
 
+In order to generate rMVP usable files, we first need to use the `MVP.Data()` function from the rMVP package. Two of the most common types of data used in genomics are HapMap and VCF formats. We load each type of data with different parameters.
+
+##### 7.1.1. Generating rMVP readable files, VCF data version: 
+If the genotypic data is in VCF (Variant Call Format), we use the following command:
+```r
+MVP.Data(fileVCF = vcf_file, filePhe = pheno_file, out = "mvp_vcf")
 ```
+- `fileVCF`: The file path to the VCF file.
+- `filePhe`: The file path to the phenotypic data.
+- `out` = "mvp_vcf": The output file name (the data will be saved in this format).
+
+##### 7.1.2. Generating rMVP readable files, HapMap data version: 
+If the genotypic data is in HapMap format, we use the following command:
+``` r
+MVP.Data(fileHMP = hmp_file, filePhe = pheno_file, out = "mvp_hmp")
+```
+- `fileHMP`: The file path to the HapMap file.
+- `filePhe`: The file path to the phenotypic data.
+- `out` = "mvp_hmp": The output file name.
+
+##### 7.1.3. Loading the data in rMVP environment:
+Once the rMVP readable files have been generated, we use the following commands to import them in the rMVP environment:
+``` r
 genotype <- attach.big.matrix("mvp_hmp.geno.desc")
 phenotype <- read.table("mvp_hmp.phe", header = TRUE)
 map <- read.table("mvp_hmp.geno.map", header = TRUE)
 
 ```
-#### 6.2. Loading covariates in MVP function (optional)
-***see 6.3.?***
+#### 7.2. Loading covariates in MVP function (optional)
+***see 7.3.?***
 
 Although not covered in the example code, it is possible to also include other environmental variables or covariates as fixed effects to account for various experimental designs (for example, breed, sex, weight, age, diet, socioeconomic status, batch effects, genotyping platform, etc.). The inclusion of such factors is done through the arguments CV.GLM, CV.MLM, CV.FarmCPU. See [https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#advanced](url) for more details.
 
-#### 6.3. Running MVP function
+#### 7.3. Running MVP function
 
 Executing the GWAS analysis is done with the MVP() function. In addition to handling the genotype, phenotype, and mapping data, the MVP() function allows to :
 
@@ -378,26 +395,26 @@ imMVP <- MVP(
 
 ---
 
-### 7. Example of results obtained from MVP
+### 8. Example of results obtained from MVP
 
-#### 7.1. QQ plots 
-
-#### 7.2. Manhattan plots (association strength between individual loci and the studied phenotype)
-
-#### 7.3. Filtering significant SNPs from the analysis
-
+#### 8.1. QQ plots 
+**Add some sample plots when script is final**
+#### 8.2. Manhattan plots (association strength between individual loci and the studied phenotype)
+**Add some sample plots when script is final**
+#### 8.3. Filtering significant SNPs from the analysis
+**Does the presence of this requirement in the assignment instructions mean we need to filter the genotype file as a final step of the pipeline ?**
 ---
 
-### 8. Interpretation of results
+### 9. Interpretation of results
 
-#### 8.1. Interpreting QQ plots
+#### 9.1. Interpreting QQ plots
 
 QQ plots are generally produced to help assess the quality of the GWAS analysis. They can help identify if there are deviations from the expected distribution, which can indicate potential issues such as population stratification, genotyping errors, or true genetic associations.
 
 If the points on the QQ plot follow the diagonal line, it suggests that the observed p-values match the expected distribution, indicating no systematic bias.
 Deviations above the line, especially at the tail, suggest an excess of small p-values, which could indicate true associations or potential confounding factors.
 
-#### 8.2. Identifying significant SNPs from Manhattan plots
+#### 9.2. Identifying significant SNPs from Manhattan plots
 
 Manhattan plots display the p-values of SNPs across the genome:
 
@@ -405,11 +422,11 @@ Peaks: Tall peaks indicate SNPs with low p-values, suggesting significant associ
 
 Threshold Line: The horizontal line represents the significance threshold set by the user (e.g., ( p < 0.05 )) that is usually adjusted for multiple testing. Due to the fact multiple testing increases the probability of false positive discoveries, the significance threshold is generally adjusted using multiple comparison p-value adjustment methods, such as Bonferonni's. SNPs above this significant threshold line are considered significant.
 
-#### 8.3. Linking significant loci to candidate genes (bonus)
+#### 9.3. Linking significant loci to candidate genes (bonus)
 
 To link significant loci to candidate genes:
 
-Identify Significant SNPs: Extract the SNPs that surpass the significance threshold.
+Identify Significant SNPs: Extract the SNPs that surpass the significance threshold. **See 8.3. as a starting step if we decide to complete the bonus requirement**
 
 Gene Annotation: Use gene annotation tools or databases (e.g., Ensembl, NCBI) to find genes located near these SNPs.
 
