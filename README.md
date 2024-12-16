@@ -296,7 +296,32 @@ filtered_pheno <- process_phenotypic_data(pheno)
 ***This step can be done automatically when doing the gwas analysis (see 6.3. below). It can also be done separately with other functions from the rMVP package but it seems to me less efficient to do so. Maybe we can still document this as a separate step, but otherwise this section should go in the 6.2. or 6.3. sections below for better consistency I think.***
 To account for population structure or relatedness in the data, you may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness (kinship) matrix. These covariates are used to adjust for the potential confounding factors in the GWAS analysis that are kinship or population structure. Indeed, population structure and relatedness may induce non-random distribution of alleles in the sampling pool. GWAS analysis over phenotypes that happen to covary with the population structure would then result in non-relevant associations with these non-randomly distributed alleles. Including a kinship matrix or a a PCA can help reduce this risk.
 
+The recommended option if you don't already have your own kinship matrix or PCA of population structure, is to directly do it in the GWAS analysis part which is done when using the function MVP(), through the arguments `K`and `nPC`. Closing the argument `K`with a # will make the function generate it automatically. Setting the `nPC`arguments (depending on which method(s) you are using) with the number of principal components you would like to use for each will compute them automatically.
+
+``` r
+MVP(#K=kinship,        
+    nPC.GLM=5,   
+    nPC.MLM=3,             
+    nPC.FarmCPU=3)
+```
+
+``` r
+MVP.Data(fileHMP="hapmap.txt",
+         filePhe="Phenotype.txt",
+         sep.hmp="\t",
+         sep.phe="\t",
+         SNP.effect="Add",
+         fileKin=FALSE,
+         filePC=FALSE,
+         #maxLine=10000,
+         out="mvp.hmp"
+         )
+```
+
 Generating a kinship matrix on its own
+
+# calculate from mvp_geno_file
+MVP.Data.Kin(TRUE, mvp_prefix='mvp.vcf', out='mvp')
 
 ``` r
 MVP.K.VanRaden(
