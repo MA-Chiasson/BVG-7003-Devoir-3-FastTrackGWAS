@@ -370,7 +370,7 @@ map <- read.table("mvp_hmp.geno.map", header = TRUE)
 #### 7.2. Loading covariates in MVP function (optional)
 ***see 7.3.?***
 
-Although not covered in the example code, it is possible to also include other environmental variables or covariates as fixed effects to account for various experimental designs (for example, breed, sex, weight, age, diet, socioeconomic status, batch effects, genotyping platform, etc.). The inclusion of such factors is done through the arguments CV.GLM, CV.MLM, CV.FarmCPU. See [https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#advanced](url) for more details.
+Although not covered in the example code, it is possible to also include other environmental variables or covariates as fixed effects to account for various experimental designs (for example, breed, sex, weight, age, diet, socioeconomic status, batch effects, genotyping platform, etc.). The inclusion of such factors is done through the arguments CV.GLM, CV.MLM, CV.FarmCPU. See [https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#advanced]([url](https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#advanced)) for more details.
 
 #### 7.3. Running MVP function
 
