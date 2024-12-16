@@ -252,17 +252,19 @@ Although the genotypic data uses a different naming convention, where it include
 
 #### 6.2. Quality Control
 
-The quality control step involves filtering loci, for instance SNPs (Single Nucleotide Polymorphisms), based on their Minor Allele Frequency (MAF). We suggest removing loci with a MAF lower than 0.05 to ensure that only common variants are included in the analysis, but other tresholds may be used. 
+The final quality control step implemented in this pipeline is that of missing data imputation. **Show an example or remove this sentence**
+
+##### 6.2.1. Genotype data quality control
+
+1. **Filtering loci based on their Minor Allele Frequency (MAF).** We suggest removing loci with a MAF lower than 0.05 to ensure that only common variants are included in the analysis, but other tresholds may be used. 
 
 Loci with low MAF (for example, lower than 0.05) carry an elevated risk of having genotyping errors (i.e. the minor allele may be a genotyping error and not even exist in reality). Further, loci with alleles present at very low frequencies are more prone to statistical errors, whether false positives or false negatives. Therefore, including them doesn't contribute significantly to the discovery of meaningful associations.
 
-A second quality control step is also to eliminate loci with an important proportion of missing data. We suggest removing loci with 10% or more missing data, but other thresholds may be used.
+2. **Filtering loci with an important proportion of missing data.**  We suggest removing loci with 10% or more missing data, but other thresholds may be used.
 
-Loci with too much missing data can potentially induce statistical errors.
+A high level of missing data suggests lower genotyping quality for that loci and, even if missing data is imputed, lowers accuracy to some degree. Loci with too much missing data can additionally induce statistical errors.
 
-The final quality control step implemented in this pipeline is that of missing data imputation. **Show an example or remove this sentence**
 
-##### 6.2.1. Genotype data : Filtering out SNPs with MAF < 0.05 or with too much missing data (10% or more of missing data)
 
 Using `filter_hapmap()` or `filter_vcfmap()` functions, we can filter SNPs with too low MAF, with a MAF threshold modifiable, but set by default at 5%. At the same time, these functions filter out monomorphic loci that would not be useful for a GWAS analysis. The same functions allow for filtering SNPs with too much missing data, with the threshold modifiable, but set at 10% as default option. Below is the R code used for this process:
 
@@ -276,10 +278,20 @@ filtered_hmp <- filter_vcfmap(geno,  freq_threshold = 5, na_threshold = 10)
 ```
 In both cases, thresholds can be either left out to use the default options, or modified with the threshold expressed in percentage.
 
-##### 6.2.1. Phenotype data : Explain the phenotype filtering process
-
+##### 6.2.1. Phenotype data quality control 
+**Complete title following what tests we decide**
 **Explain phenotype filtering function usage**
 
+1. **Verifying or removing outliers.** There is some debate concerning whether or not outlier observations should be removed from the analysis. Outliers can skew the results and lead to false associations in GWAS. By removing them, we ensure that the data accurately represents the population and improves the reliability of the findings. However, if you are dealing with your own experimental dataset, we suggest verifying if these outliers are true measures or result from measuring errors for example, to help you take a decision about removing them or not. For the sake of this example, and in the absence of real experimental information, we filter outlier data based on quantile distribution. 
+
+2. **Verifying normality of distribution.** Many statistical tests used in GWAS assume that the data follows a normal distribution. Verifying and transforming the data to meet this assumption helps in obtaining valid and interpretable results. ***IF WE HAVE TIME, IMPLEMENT THIS STEP IN THE PIPELINE, OTHERWISE DELETE THIS POINT***
+
+3. **Handling missing data.** Missing data can reduce the power of the study and introduce bias. Properly addressing missing data through imputation or exclusion ensures that the analysis is robust and the results are not compromised. Here we will not discuss imputation of missing phenotypic data, as there are many different methods, which are outside the scope of this pipeline. We must however make sure the analysis doesn't get blocked by missing data, and we can even apply more severe quality tresholds by eliminating genetic elements with too much missing phenotype data. Indeed, an individual or a variety showing many missing values may have been assessed under inappropriate experimental conditions, which leads to question its entire phenotype data.
+
+```r
+filtered_pheno <- process_phenotypic_data(pheno)
+```
+***
 #### 6.3. Generating Covariates
 ***This step can be done automatically when doing the gwas analysis (see 6.3. below). It can also be done separately with other functions from the rMVP package but it seems to me less efficient to do so. Maybe we can still document this as a separate step, but otherwise this section should go in the 6.2. or 6.3. sections below for better consistency I think.***
 To account for population structure or relatedness in the data, you may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness (kinship) matrix. These covariates are used to adjust for the potential confounding factors in the GWAS analysis that are kinship or population structure. Indeed, population structure and relatedness may induce non-random distribution of alleles in the sampling pool. GWAS analysis over phenotypes that happen to covary with the population structure would then result in non-relevant associations with these non-randomly distributed alleles. Including a kinship matrix or a a PCA can help reduce this risk.
