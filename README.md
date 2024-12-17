@@ -455,13 +455,13 @@ Although not covered in the example code, it is possible to also include other e
 Executing the GWAS analysis is done with the MVP() function. In addition to handling the genotype, phenotype, and mapping data, the MVP() function allows to :
 
 1. Include covariates.
-       If you do not provide your own kinship matrix, population structure data, or other covariates, the MVP() function can compute them for you while running its analysis. See parameters K, CV.GLM, CV.MLM, CV.FarmCPU, nPC.GLM, nPC.MLM=3, nPC.FarmCPU.
+       If you do not provide your kinship matrix, population structure data, or other covariates, the MVP() function can compute them for you while running its analysis. See parameters K, CV.GLM, CV.MLM, CV.FarmCPU, nPC.GLM, nPC.MLM=3, nPC.FarmCPU.
 2. Choose the analytical method and the significance threshold.
        Three analytical methods can be used for the GWAS analysis, each with their pros ans cons. They are the following : "GLM", "MLM", "FarmCPU". Note that you can execute the function with all three methods and examine the quality of each.
        The default singificance threshold (before p-value adjustment for multiple testing) is set at 0.05 
 3. And others
 
-***The chunk of code and its comments below comes from rMVP github. Not sure how much we should change this as it is already pretty clear and straigthforward... Or how we should notify that it is directly from rMVP github***
+***This code was adapted from the rMVP GitHub repository, and we acknowledge the developers for providing this implementation.***
 ```
 imMVP <- MVP(
   phe=phenotype,          #NA is acceptable in phenotype
