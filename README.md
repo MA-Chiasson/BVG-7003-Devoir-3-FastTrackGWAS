@@ -418,7 +418,7 @@ Once you have correctly imported your data in the R environment (see step 4) and
 The sample code below shows a simple way to load hmp format genotypic data, using the attach.big.matrix() function.
 If you have a genotype map, you can also add it here.
 
-In order to generate rMVP usable files, we first need to use the `MVP.Data()` function from the rMVP package. Two of the most common types of data used in genomics are HapMap and VCF formats. We load each type of data with different parameters.
+To generate rMVP usable files, we first need to use the `MVP.Data()` function from the rMVP package. Two of the most common types of data used in genomics are HapMap and VCF formats. We load each type of data with different parameters.
 
 ##### 7.1.1. Generating rMVP readable files, VCF data version: 
 If the genotypic data is in VCF (Variant Call Format), we use the following command:
@@ -458,7 +458,7 @@ Executing the GWAS analysis is done with the MVP() function. In addition to hand
        If you do not provide your kinship matrix, population structure data, or other covariates, the MVP() function can compute them for you while running its analysis. See parameters K, CV.GLM, CV.MLM, CV.FarmCPU, nPC.GLM, nPC.MLM=3, nPC.FarmCPU.
 2. Choose the analytical method and the significance threshold.
        Three analytical methods can be used for the GWAS analysis, each with their pros ans cons. They are the following : "GLM", "MLM", "FarmCPU". Note that you can execute the function with all three methods and examine the quality of each.
-       The default singificance threshold (before p-value adjustment for multiple testing) is set at 0.05 
+       The default significance threshold (before p-value adjustment for multiple testing) is set at 0.05 
 3. And others
 
 ***This code was adapted from the rMVP GitHub repository, and we acknowledge the developers for providing this implementation.***
@@ -512,7 +512,7 @@ Peaks: Tall peaks indicate SNPs with low p-values, suggesting significant associ
 Threshold Line: The horizontal line represents the significance threshold set by the user (e.g., ( p < 0.05 )) that is usually adjusted for multiple testing. Due to the fact multiple testing increases the probability of false positive discoveries, the significance threshold is generally adjusted using multiple comparison p-value adjustment methods, such as Bonferonni's. SNPs above this significant threshold line are considered significant.
 
 #### 8.3. Filtering significant SNPs from the analysis
-**Does the presence of this requirement in the assignment instructions mean we need to filter the genotype file as a final step of the pipeline ?**
+Once the GWAS is completed, the `pmap.signal` file automatically contains the significant SNPs that pass the specified threshold (e.g., p < 0.05). These are the markers that show a significant association with the phenotype of interest. There's no need to manually filter the genotype file, as rMVP provides the filtered markers directly in this file.
 
 ---
 
