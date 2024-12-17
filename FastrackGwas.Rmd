@@ -66,6 +66,7 @@ cat(getwd(), "\n")
 # If you do not have the kinship or PCA files, the script will automatically generate them.
 
 ```{r}
+
 pheno_file <- "data/Phenotype_African.txt"  # File with phenotype data (mandatory)
 hmp_file <- "data/African_SNPs.hmp.txt"  # File with genotype data (mandatory)
 ```
@@ -73,6 +74,7 @@ hmp_file <- "data/African_SNPs.hmp.txt"  # File with genotype data (mandatory)
 # 3.1. Loading genotype data
 
 ```{r}
+
 geno <- read.csv(hmp_file, sep = "\t", header = TRUE, check.names = FALSE)  # Loading genotype data
 str(geno)
 head(geno)
@@ -81,6 +83,7 @@ head(geno)
 # 3.2. Loading phenotypic data
 
 ```{r}
+
 pheno <- read.table(pheno_file, sep = "\t", header = TRUE)  # Loading phenotype data
 str(pheno)
 head(pheno)
@@ -94,10 +97,12 @@ head(pheno)
 ```{r}
 
 MVP.Data.Kin("data/mvp.kin.txt", out="data/mvp", maxLine=1e4) 
+
 ```
 # read from file and convert my result PCA 
 
 ```{r}
+
 #rMVP.Data.PC("data/mvp.pc.txt", out='data/mvp', sep='\t') # PCA file (optional)
 ```
 
@@ -123,6 +128,7 @@ MVP.Data.Kin("data/mvp.kin.txt", out="data/mvp", maxLine=1e4)
 # 4.1.1. Function to filter hapmap genotype data
 
 ```{r}
+
 filter_hapmap <- function(hapmap_data, freq_threshold = 5, na_threshold = 10) {
   # Function to calculate the frequency of each letter
   calculate_frequencies <- function(genotypes) {
@@ -231,7 +237,9 @@ write.table(filtered_vcf, "data/filtered_vcf.txt", sep = "\t", row.names = FALSE
 #Following this, the code applies the IQR method to remove outliers in each numeric column. The first and third quartiles (Q1 and Q3) are calculated using the quantile() function, and the IQR is determined by subtracting Q1 from Q3. The lower and upper bounds for valid data are defined as 1.5 times the IQR below Q1 and above Q3. The data is then filtered to keep only rows that fall within these bounds for each column, using the filter() function again.
 
 #Finally, the normality of each numeric column is tested using the Shapiro-Wilk test (shapiro.test()) if the column has more than three values. The results of the normality tests are stored in a list and printed for review. The temporary na_percentage column, which was created for filtering purposes, is then dropped from the dataset using select(). The filtered data is returned, and it is saved to a file using write.table() for further use. The first few rows of the filtered data are displayed using head() to allow users to inspect the results.
+
 ```{r}
+
 # 5.1. Function to remove outliers using IQR
 
 process_phenotypic_data <- function(phenotypic_data, na_threshold = 10) {
