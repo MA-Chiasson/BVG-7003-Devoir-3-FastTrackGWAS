@@ -39,7 +39,7 @@ library(outliers)
 ```
 
 # 2. Set the working directory to the directory where the script is located
-# This automatically sets the working directory to the folder where the script is located, no need for modification.
+# This section ensures that the working directory in R is automatically set to the folder where the script is located. This eliminates the need for manual adjustments and ensures that all file paths within the script are relative to the script's location.
 
 ```{r}
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
