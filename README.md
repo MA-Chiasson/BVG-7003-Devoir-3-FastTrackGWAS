@@ -369,7 +369,7 @@ filtered_pheno <- process_phenotypic_data(pheno, na_threshold = 10)
 
 To account for population structure or relatedness in the data, you may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness (kinship) matrix. These covariates are used to adjust for the potential confounding factors in the GWAS analysis that are kinship or population structure. Indeed, population structure and relatedness may induce a non-random distribution of alleles in the sampling pool. GWAS analysis over phenotypes that happen to covary with the population structure would then result in non-relevant associations with these non-randomly distributed alleles. Including a kinship matrix or a PCA can help reduce this risk.
 
-The recommended option if you don't already have your kinship matrix or PCA of population structure, is to directly do it in the GWAS analysis part which is done when using the function MVP(), through the arguments `K`and `nPC` (see section 7 below for complete analysis). Closing the argument `K`with a # will make the function generate it automatically. Setting the `nPC`arguments (depending on which method(s) you are using) with the number of principal components you would like to use for each will compute them automatically.
+The recommended option if you don't already have your kinship matrix or PCA of population structure, is to directly do it in the GWAS analysis part which is done when using the function `MVP()`, through the arguments `K`and `nPC` (see section 7 below for complete analysis). Closing the argument `K`with a # will make the function generate it automatically. Setting the `nPC`arguments (depending on which method(s) you are using) with the number of principal components you would like to use for each will compute them automatically.
 
 ``` r
 MVP(
@@ -420,7 +420,7 @@ Once you have correctly imported your data in the R environment (see step 4) and
 The sample code below shows a simple way to load hmp format genotypic data, using the attach.big.matrix() function.
 If you have a genotype map, you can also add it here.
 
-To generate rMVP usable files, we first need to use the `MVP.Data()` function from the rMVP package. Two of the most common types of data used in genomics are HapMap and VCF formats. We load each type of data with different parameters.
+To generate rMVP usable files, we first need to use the `MVP.Data()` function from the rMVP package. Two of the most common types of data used in genomics are HapMap and VCF formats, and although rMVP can deal with other formats as well, our sample code will focus on the two former ones. We load each type of data with different parameters.
 
 ##### 7.1.1. Generating rMVP readable files, VCF data version: 
 If the genotypic data is in VCF (Variant Call Format), we use the following command:
@@ -450,20 +450,20 @@ map <- read.table("mvp_hmp.geno.map", header = TRUE)
 ```
 #### 7.2. Loading covariates in MVP function (optional)
 
-Although not covered in the example code, it is possible to also include other environmental variables or covariates as fixed effects to account for various experimental designs (for example, breed, sex, weight, age, diet, socioeconomic status, batch effects, genotyping platform, etc.). The inclusion of such factors is done through the arguments CV.GLM, CV.MLM, CV.FarmCPU. See [https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#advanced]([url](https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#advanced)), as the original creators of this package, for more details.
+Although not covered in the example code, it is possible to also include other environmental variables or covariates as fixed effects to account for various experimental designs (for example, breed, sex, weight, age, diet, socioeconomic status, batch effects, genotyping platform, etc.). The inclusion of such factors is done through the arguments `CV.GLM`, `CV.MLM`, `CV.FarmCPU`. See [https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#advanced](https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#advanced), as the original creators of this package, for more details.
 
 #### 7.3. Running MVP function
 
-Executing the GWAS analysis is done with the MVP() function. In addition to handling the genotype, phenotype, and mapping data, the MVP() function allows to :
+Executing the GWAS analysis is done with the `MVP()` function. In addition to handling the genotype, phenotype, and mapping data, the `MVP()` function allows to :
 
 1. Include covariates.
-       If you do not provide your kinship matrix, population structure data, or other covariates, the MVP() function can compute them for you while running its analysis. See parameters K, CV.GLM, CV.MLM, CV.FarmCPU, nPC.GLM, nPC.MLM=3, nPC.FarmCPU.
+       If you do not provide your kinship matrix, population structure data, or other covariates, the MVP() function can compute them for you while running its analysis. See parameters `K`, `CV.GLM`, `CV.MLM`, `CV.FarmCPU`, `nPC.GLM`, `nPC.MLM`, `nPC.FarmCPU`.
 2. Choose the analytical method and the significance threshold.
        Three analytical methods can be used for the GWAS analysis, each with their pros ans cons. They are the following : "GLM", "MLM", "FarmCPU". Note that you can execute the function with all three methods and examine the quality of each.
        The default significance threshold (before p-value adjustment for multiple testing) is set at 0.05 
 3. And others
 
-***This code and its comments below were adapted from the rMVP GitHub repository, and we acknowledge the developers for providing this implementation and its concise description.***
+***This code and its comments below were adapted from the [rMVP GitHub repository](https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#start-gwas), and we acknowledge the developers for providing this implementation and its concise description.***
 ``` r
 imMVP <- MVP(
   phe=phenotype,          #NA is acceptable in phenotype
@@ -491,7 +491,7 @@ imMVP <- MVP(
 
 ### 8. Example of results obtainable from MVP and their interpretation
 
-`MVP()` function automatically outputs visuals from the GWAS analysis if you add the option `"plot"` to the vector of `file.output` argument (see above). Plots can also be viewed separately and customized with many options, see rMVP original github for more details [https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#output]([url](https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#output)).
+`MVP()` function automatically outputs visuals from the GWAS analysis if you add the option `"plot"` to the vector of `file.output` argument (see above). Plots can also be viewed separately and customized with many options, see rMVP original github for more details [https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#output](https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#output).
 
 #### 8.1. Q-Q plots 
 
