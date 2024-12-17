@@ -224,15 +224,16 @@ The `geno` dataset consists of various columns, including:
 - `alleles`: The genotype information for each SNP.
 - `chrom`: The chromosome number.
 - `pos`: The position of the SNP on the chromosome.
-- Other columns represent sample genotypes across individuals.
+- Other technical information about reference genome assembly, sequencing center, genotyping assay ID, etc.
+- Columns from the 12th represent sample genotypes across individuals.
 
 For example, the first few rows of the dataset might look like this:
 
-| rs#   | alleles | chrom | pos   | strand | 1970-4F | SantaRosa | 1990-2F | ... |
-|-------|---------|-------|-------|--------|---------|-----------|---------|-----|
-| 30403 | G/T     | 1     | 30403 | +      | G       | G         | G       | ... |
-| 30404 | T/C     | 1     | 30404 | +      | T       | T         | T       | ... |
-| 30405 | G/T     | 1     | 30405 | +      | G       | G         | G       | ... |
+| rs#   | alleles | chrom | pos   | strand | ... | 1970-4F | SantaRosa | 1990-2F | ... |
+|-------|---------|-------|-------|--------|-----|---------|-----------|---------|-----|
+| 30403 | G/T     | 1     | 30403 | +      | ... | G       | G         | G       | ... |
+| 30404 | T/C     | 1     | 30404 | +      | ... | T       | T         | T       | ... |
+| 30405 | G/T     | 1     | 30405 | +      | ... | G       | G         | G       | ... |
 
 #### Loading Phenotype Data (mandatory)
 For loading phenotype data, we use the `read.table()` function, also specifying a tab-separated format. As with the genotype data, we can use `str()` and `head()` to inspect the loaded data.
