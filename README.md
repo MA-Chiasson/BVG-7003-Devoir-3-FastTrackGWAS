@@ -438,32 +438,42 @@ imMVP <- MVP(
 
 ---
 
-### 8. Example of results obtained from MVP
+### 8. Example of results obtainable from MVP and their interpretation
 
 #### 8.1. QQ plots 
-**Add some sample plots when script is final**
-#### 8.2. Manhattan plots (association strength between individual loci and the studied phenotype)
-**Add some sample plots when script is final**
-#### 8.3. Filtering significant SNPs from the analysis
-**Does the presence of this requirement in the assignment instructions mean we need to filter the genotype file as a final step of the pipeline ?**
----
-
-### 9. Interpretation of results
-
-#### 9.1. Interpreting QQ plots
 
 QQ plots are generally produced to help assess the quality of the GWAS analysis. They can help identify if there are deviations from the expected distribution, which can indicate potential issues such as population stratification, genotyping errors, or true genetic associations.
 
+![Sample_QQplots_combined](https://github.com/user-attachments/assets/150fcbe7-7740-471e-a6b7-e6c258a64e24)
+
 If the points on the QQ plot follow the diagonal line, it suggests that the observed p-values match the expected distribution, indicating no systematic bias.
 Deviations above the line, especially at the tail, suggest an excess of small p-values, which could indicate true associations or potential confounding factors.
+So for instance, in the above sample QQ plots, the middle QQ plot would indicate better that the method used may be the best suited out of the three shown.
 
-#### 9.2. Identifying significant SNPs from Manhattan plots
+#### 8.2. Manhattan plots (association strength between individual loci and the studied phenotype)
 
 Manhattan plots display the p-values of SNPs across the genome:
+
+![Sample_ManhattanPlot](https://github.com/user-attachments/assets/5f911087-1cab-4ac9-9057-a57990ddf4c5)
 
 Peaks: Tall peaks indicate SNPs with low p-values, suggesting significant associations.
 
 Threshold Line: The horizontal line represents the significance threshold set by the user (e.g., ( p < 0.05 )) that is usually adjusted for multiple testing. Due to the fact multiple testing increases the probability of false positive discoveries, the significance threshold is generally adjusted using multiple comparison p-value adjustment methods, such as Bonferonni's. SNPs above this significant threshold line are considered significant.
+
+#### 8.3. Filtering significant SNPs from the analysis
+**Does the presence of this requirement in the assignment instructions mean we need to filter the genotype file as a final step of the pipeline ?**
+
+---
+
+### 9. Expected results from this pipeline with the example data
+
+#### 9.1. Interpreting QQ plots
+
+**Add actual QQplots from our pipeline + our example datasets**
+
+#### 9.2. Identifying significant SNPs from Manhattan plots
+
+**Add actual Manhattan plots from our pipeline + our example datasets**
 
 #### 9.3. Linking significant loci to candidate genes (bonus)
 
