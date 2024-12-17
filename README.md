@@ -517,15 +517,15 @@ Once the GWAS is completed, the `pmap.signal` file automatically contains the si
 ---
 
 ### 9. Expected results from this pipeline with the example data
-## 9.1. Single vs. Multi-Trait Results
+## 9.1. Single- vs. Multi-Trait Results
 
 In this section, two main types of output are available for the analysis results:
 
-### Single Trait Results
+### Single-Trait Results
 
 This output is used for analyzing individual traits separately. In this case, each trait is analyzed independently. The output files are saved in the `output/single_trait_results` folder and include the results of individual analyses for each trait, such as Q-Q plots, Manhattan plots, and the filtering of significant SNPs for each trait.
 
-### Multi Trait Results
+### Multi-Trait Results
 
 This output combines the results for multiple traits at once, helping to explore relationships between multiple traits simultaneously. The results are saved in the `output/multi_trait_results` folder and include similar analyses (such as Q-Q plots and Manhattan plots) for the combination of traits.
 
