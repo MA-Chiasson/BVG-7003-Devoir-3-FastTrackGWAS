@@ -42,10 +42,12 @@ library(outliers)
 # This section ensures that the working directory in R is automatically set to the folder where the script is located. This eliminates the need for manual adjustments and ensures that all file paths within the script are relative to the script's location.
 
 ```{r}
+
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 ```
 
 # Print the working directory to confirm it's set correctly
+#This code prints the current working directory to confirm that it has been set correctly. The getwd() function retrieves the current working directory, and cat() is used to display it in the console.
 
 ```{r}
 cat("Working directory has been set to:\n")
@@ -53,6 +55,9 @@ cat(getwd(), "\n")
 ```
 
 # 3. Loading data
+#This section of the script is used to load various types of data files that are essential for the analysis.
+
+
 # Please make sure that the following files are uploaded and placed in the "data" folder:
 # - Phenotype_African.txt (mandatory)
 # - African_SNPs.hmp.txt (mandatory)
@@ -87,6 +92,7 @@ head(pheno)
 # Kinship file (optional)
 
 ```{r}
+
 MVP.Data.Kin("data/mvp.kin.txt", out="data/mvp", maxLine=1e4) 
 ```
 # read from file and convert my result PCA 
@@ -95,16 +101,29 @@ MVP.Data.Kin("data/mvp.kin.txt", out="data/mvp", maxLine=1e4)
 #rMVP.Data.PC("data/mvp.pc.txt", out='data/mvp', sep='\t') # PCA file (optional)
 ```
 
-# 4. Filtering SNPs with too low MAF (default <1%), as well as rows containing too many NAs (default >10%)
-# This filtering process is performed separately for different input formats:
-# - HapMap format
-# - VCF format
+# 4. Filtering SNPs with too low MAF (default <5%), as well as rows containing too many NAs (default >10%)
+
+#This section performs filtering of Single Nucleotide Polymorphisms (SNPs) based on two important criteria:
+
+#Minor Allele Frequency (MAF) Filter: SNPs with a Minor Allele Frequency (MAF) lower than a specified threshold (default is 5%) are excluded from the analysis. This step is important because SNPs with very low MAF are often less informative for genetic association studies, as they may not exhibit significant variation within the population.
+
+#Missing Data Filter: SNPs and individuals with a high percentage of missing data are also filtered out. The default threshold for missing data is set to more than 10% missing values. This ensures that the analysis only includes SNPs and individuals with sufficient data, improving the robustness and accuracy of subsequent analyses.
+
+#The filtering is done separately for different input formats to accommodate various types of data:
+
+#HapMap format: This is a commonly used format for SNP genotype data. The filtering process removes low-frequency and incomplete SNPs from this format.
+
+#VCF format: Variant Call Format (VCF) is another widely used format for storing SNP and genetic variation data. The same filtering logic applies to VCF files.
+
+#By applying these filters, the dataset is refined, ensuring that the remaining SNPs are both informative (with a sufficient MAF) and complete (with minimal missing data), which leads to more reliable and interpretable results in downstream analyses.
+
+#Note: It is recommended to use BEAGLE software for imputing missing genotypic data before filtering. BEAGLE is a widely used tool for handling missing data, and imputing missing values can improve the quality of your dataset.
 
 # 4.1. For hapmap genotype file format
 # 4.1.1. Function to filter hapmap genotype data
 
 ```{r}
-filter_hapmap <- function(hapmap_data, freq_threshold = 1, na_threshold = 10) {
+filter_hapmap <- function(hapmap_data, freq_threshold = 5, na_threshold = 10) {
   # Function to calculate the frequency of each letter
   calculate_frequencies <- function(genotypes) {
     # Remove NA values
@@ -202,9 +221,19 @@ write.table(filtered_vcf, "data/filtered_vcf.txt", sep = "\t", row.names = FALSE
 
 
 # 5. Phenotypic Data Filtering
+
+#The function is designed to process and filter phenotypic data. It includes several steps such as identifying and removing outliers using IQR (Interquartile Range) and conducting a normality test (Shapiro-Wilk test) for each numeric column.
+
+#First, the code identifies the numeric columns in the dataset. This is done using the sapply() function to check the data type of each column. It assumes that the first column is a sample identifier and should not be included in the analysis. If no numeric columns are found, the function stops with an error message. Next, for each numeric column, rows with missing values (NA) are removed using the !is.na() function to ensure that only valid data remains.
+
+#After handling missing data, the code calculates the percentage of missing values for each row using the mutate() and rowwise() functions from the dplyr package. This percentage is then used to filter out rows where the missing data percentage exceeds the specified threshold (na_threshold). The filtering is done using the filter() function, which retains only rows with a missing data percentage below the threshold.
+
+#Following this, the code applies the IQR method to remove outliers in each numeric column. The first and third quartiles (Q1 and Q3) are calculated using the quantile() function, and the IQR is determined by subtracting Q1 from Q3. The lower and upper bounds for valid data are defined as 1.5 times the IQR below Q1 and above Q3. The data is then filtered to keep only rows that fall within these bounds for each column, using the filter() function again.
+
+#Finally, the normality of each numeric column is tested using the Shapiro-Wilk test (shapiro.test()) if the column has more than three values. The results of the normality tests are stored in a list and printed for review. The temporary na_percentage column, which was created for filtering purposes, is then dropped from the dataset using select(). The filtered data is returned, and it is saved to a file using write.table() for further use. The first few rows of the filtered data are displayed using head() to allow users to inspect the results.
+```{r}
 # 5.1. Function to remove outliers using IQR
 
-```{r}
 process_phenotypic_data <- function(phenotypic_data, na_threshold = 10) {
   # Identify numeric columns (excluding the first column which is assumed to be the sample identifier)
   numeric_cols <- names(phenotypic_data)[sapply(phenotypic_data, is.numeric)]
@@ -277,7 +306,9 @@ head(filtered_pheno)  # Display the first few rows of the filtered data
 
 # 6. Conversion HapMap -> format MVP
 
+#This code is for preparing the required data files for analysis using the MVP package, which is a common tool used in genetic association studies. By converting your HapMap and phenotypic data into the MVP format, along with optional kinship and PCA files, you can proceed with various statistical analyses using MVP. The key idea is to ensure that the data is in the correct format and to control the generation of additional files (kinship and PCA) based on what is available.
 ```{r}
+
 MVP.Data(
   fileHMP = "data/filtered_hmp.txt",  # Filtered HapMap file
   filePhe = "data/filtered_pheno.txt",  # Filtered phenotypic data file
@@ -293,8 +324,10 @@ MVP.Data(
 ```
 
 # 7. Input file if want Gwas
+#This code prepares all the necessary input files (genotype, phenotype, map, kinship, and optionally PCA covariates) to perform a GWAS analysis using the MVP framework. It ensures that large datasets are efficiently loaded into R using the bigmemory package, which allows for handling large-scale data typically encountered in GWAS.
 
 ```{r}
+
 genotype <- attach.big.matrix("data/mvp_hmp.geno.desc")
 phenotype <- read.table("data/mvp_hmp.phe",head=TRUE)
 map <- read.table("data/mvp_hmp.geno.map" , head = TRUE)
@@ -312,6 +345,7 @@ Kinship <- attach.big.matrix("data/mvp_hmp.kin.desc")
 # Create output folders if they don't exist
 
 ```{r}
+
 if (!dir.exists("output")) {
   dir.create("output")
 }
@@ -328,6 +362,7 @@ print(list.dirs("output"))
 ```
 
 # 8.1 GWAS for a Single Trait
+#This code performs a GWAS for a single trait using the MVP package, applying three different statistical models: Generalized Linear Model (GLM), Mixed Linear Model (MLM), and FarmCPU. The process begins by setting the working directory to save the results. The tryCatch function is used to handle potential errors during the analysis, ensuring the script doesn't stop unexpectedly. The GWAS is conducted with specified parameters for each model, including the number of Principal Components (PCs) to account for population structure. The analysis uses the "BRENT" method for MLM and the "static" method for FarmCPU. The output includes phenotype maps, signal maps, plots, and log files, which are saved in the output directory. After the analysis, the script checks if the results were successfully generated and lists the output files. If there are no results, it indicates that the GWAS for the single trait did not generate any output.
 
 ```{r}
 cat("Performing GWAS for a single trait:\n")
@@ -364,6 +399,11 @@ if (!is.null(imMVP_single_trait)) {
 ```
 
 # 8.2 GWAS for Multiple Traits
+#This code conducts a GWAS for multiple traits using the MVP package in an iterative manner. It begins by setting the working directory to store the results. For each trait, starting from the second column of the phenotype dataset (where the first column is assumed to contain sample identifiers), the script extracts the relevant trait data and performs GWAS using three statistical models: Generalized Linear Model (GLM), Mixed Linear Model (MLM), and FarmCPU. Key parameters, such as the number of Principal Components (PCs), memory constraints, and method configurations, are specified for each model.
+
+#The tryCatch function ensures robust error handling, allowing the script to continue processing subsequent traits even if an error occurs during the analysis of a particular trait. After each iteration, the script checks whether results were successfully generated and lists the corresponding output files, including phenotype maps, signal maps, plots, and logs. Memory is cleared after processing each trait to optimize performance using garbage collection (gc()).
+
+#Upon completion of the GWAS for all traits, the script reverts to the main directory and outputs a message indicating the end of the analysis. This iterative approach enables efficient GWAS for multiple traits while ensuring the process remains resilient to potential errors and memory limitations.
 
 ```{r}
 cat("Performing GWAS for multiple traits:\n")
