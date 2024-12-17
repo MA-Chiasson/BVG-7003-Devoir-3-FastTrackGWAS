@@ -469,7 +469,7 @@ Threshold Line: The horizontal line represents the significance threshold set by
 
 ### 9. Expected results from this pipeline with the example data
 
-#### 9.1. Interpreting QQ plots
+#### 9.1. Interpreting Q-Q plots
 
 **Add actual QQplots from our pipeline + our example datasets**
 
