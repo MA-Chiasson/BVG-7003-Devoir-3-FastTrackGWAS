@@ -529,7 +529,7 @@ This output is used for analyzing individual traits separately. In this case, ea
 
 This output combines the results for multiple traits at once, helping to explore relationships between multiple traits simultaneously. The results are saved in the `output/multi_trait_results` folder and include similar analyses (such as Q-Q plots and Manhattan plots) for the combination of traits.
 
-## 9.2. Output Files Generated and Expected Results from this Pipeline
+## 9.2. Output Files Generated
 
 For both single- and multi-trait outputs, the following files will be generated:
 
