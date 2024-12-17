@@ -599,4 +599,4 @@ This data is typically saved into a file, such as `significant_snps.csv` or `sig
 #### Linking Significant Loci to Candidate Genes (Bonus)
 
 To link significant SNPs to candidate genes, first extract the SNPs that pass the significance threshold. Then, use gene annotation tools (e.g., Ensembl, NCBI) to identify genes located near these SNPs. Investigate the biological functions of these genes to understand their potential role in the trait of interest.
-```
+
