@@ -142,7 +142,7 @@ On the other hand, if a single line of code was used to install all the packages
 ```r
 install.packages(c("rMVP", "ggplot2", "data.table", "dplyr", "mgsub", "bigmemory"))
 ```
-This would lead to the installation of packages every time the script is run, even if they are already installed, which is inefficient. The if condition ensures that packages are only installed when required, avoiding unnecessary installation.
+This would lead to installing packages every time the script is run, even if they are already installed, which is inefficient. The if condition ensures that packages are only installed when required, avoiding unnecessary installation.
 
 ### 3.2. Loading the packages
 Once they've been installed, it's time to load them. To do this, use the library() command, inserting the package name between the brackets, as in the example below. 
@@ -157,11 +157,11 @@ library(rMVP)
 
 - **Simplified File Access**: With a set working directory, you can use relative file paths (e.g., read.csv("data.csv")) instead of full paths.
 
-- **Easier Data Import/Export**: Files can be easily imported or exported without needing to specify full file paths.
+- **Easier Data Import/Export**: Files can be easily imported or exported without specifying full file paths.
 
 - **Reduced Path Errors**: Setting a working directory minimizes errors related to incorrect file paths, especially in team projects.
 
-- **Project Organization**: It encourages better project structure, making it easier to manage and maintain files.
+- **Project Organization**: It encourages better project structure, making managing and maintaining files easier.
 
 #### How to Set a Working Directory
 Usually, the WD is the folder where our script and data are stored, and where we want to add the results of our analyses.
