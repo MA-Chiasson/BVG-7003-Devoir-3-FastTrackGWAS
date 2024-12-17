@@ -104,13 +104,10 @@ For the test data in this analysis, the following were selected:
 
   Note that phenotype data could be provided in other table formats, as long as the first column represents the genetic ID, and the other columns represent trait values. See [https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#phenotype]([url](https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#phenotype)) for more detailed information.
 
-### 2.2. Other data recommandations
+### 2.2. Other data recommendations
 
 **Missing genotype data imputation** :
-We recommend the users to impute missing data **before** importing their data into the pipeline. Data imputation methods relying on inference from haplotypes are very accurate and should preferentially be used. Unfortunately, this can not be done through the rMVP package, but it can be done using external software such as LD-kNNi, FILLIN, FSHAP or BEAGLE. 
-
-rMVP provides an alternative option for data imputation for which an example is available in the **Quality control** section below.
-***Remove this if we do not manage to make the example***
+We recommend the users impute missing data **before** importing their data into the pipeline. Data imputation methods relying on inference from haplotypes are very accurate and should preferentially be used. Unfortunately, this can not be done through the rMVP package, but it can be done using external software such as LD-kNNi, FILLIN, FSHAP, or BEAGLE. 
 
 --- 
 
@@ -126,7 +123,7 @@ Open the script and start to install the following R packages which are required
 - **bigmemory**: For managing massive matrices.
 - **vcfR**: For pre-treatment of VCF format genotype data.
 - **outliers**: For outlier identification.
-  **Adjust the remainder of this list once code is final**
+  
 
 Dependencies for these packages will be automatically installed when executing the script, ensuring a smooth setup process.
 For this purpose, the installation of packages is conditional using the following function:
@@ -140,7 +137,7 @@ This checks whether each package is already installed before attempting to insta
 On the other hand, if a single line of code was used to install all the packages at once, like this:
 
 ```r
-install.packages(c("rMVP", "ggplot2", "data.table", "dplyr", "mgsub", "bigmemory"))
+install.packages(c("rMVP", "ggplot2", "data.table", "dplyr", "purrr", "mgsub", "bigmemory", "vcfR", "outliers"))
 ```
 This would lead to installing packages every time the script is run, even if they are already installed, which is inefficient. The if condition ensures that packages are only installed when required, avoiding unnecessary installation.
 
