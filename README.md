@@ -2,13 +2,13 @@
 
 ## Table of Contents
 - [1. Installation of R and RStudio](#1-installation-of-r-and-rstudio)
-  * [1.1. **Installing R**](#11---installing-r--)
-  * [1.2. **Installing RStudio**](#12---installing-rstudio--)
-  * [1.3. **Launching RStudio**](#13---launching-rstudio--)
-- [2. **Data Download and Preparation**](#2---data-download-and-preparation--)
+  * [1.1. Installing R](#11---installing-r--)
+  * [1.2. Installing RStudio](#12---installing-rstudio--)
+  * [1.3. Launching RStudio](#13---launching-rstudio--)
+- [2. Data Download and Preparation](#2---data-download-and-preparation--)
   * [2.1. Test Data Used](#21-test-data-used)
   * [2.2. Other data recommandations](#22-other-data-recommandations)
-- [3. **Dependencies**](#3---dependencies--)
+- [3. Dependencies](#3---dependencies--)
   * [3.1. Installation of the packages](#31-installation-of-the-packages)
   * [3.2. Loading the packages](#32-loading-the-packages)
   * [4. Define working directory](#4-define-working-directory)
@@ -61,7 +61,7 @@ The guide is designed to help users of all experience levels replicate the analy
 
 To perform a GWAS analysis using R, follow the steps below to install R and RStudio on your computer:
 
-### 1.1. **Installing R**
+### 1.1. Installing R
 R is the programming language required for the analysis:
 1. Visit the official R website: [https://cran.r-project.org/](https://cran.r-project.org/).
 2. Click on **Download R for [your operating system]** (Windows, macOS, or Linux).
@@ -71,18 +71,18 @@ R is the programming language required for the analysis:
    - For Linux: Follow the instructions specific to your distribution.
 4. Run the downloaded file and follow the installation instructions.
 
-### 1.2. **Installing RStudio**
+### 1.2. Installing RStudio
 RStudio is a user-friendly interface for R:
 1. Go to the RStudio website: [https://posit.co/download/rstudio-desktop/](https://posit.co/download/rstudio-desktop/).
 2. Click on **RStudio Desktop** (free version).
 3. Download the installer for your operating system.
 4. Install RStudio by running the downloaded file.
 
-### 1.3. **Launching RStudio**
+### 1.3. Launching RStudio
 1. Once installed, open RStudio.
 2. Ensure that R is correctly configured with RStudio (RStudio automatically detects R if it is installed).
 ---
-## 2. **Data Download and Preparation**
+## 2. Data Download and Preparation
 This analysis is based on the dataset provided in the paper:
 **"Genome-Wide Association Analyses Reveal the Genetic Basis of Symbiotic Nitrogen Fixation in African Soybean"**
 - **DOI:** [10.1007/s00122-019-03499-7](https://link.springer.com/article/10.1007/s00122-019-03499-7)
@@ -114,7 +114,7 @@ rMVP provides an alternative option for data imputation for which an example is 
 
 --- 
 
-## 3. **Dependencies**
+## 3. Dependencies
 ### 3.1. Installation of the packages
 Open the script and start to install the following R packages which are required to execute this analysis:
 - **rMVP**: A memory-efficient, visualization-enhanced, and parallel-accelerated tool for GWAS.
