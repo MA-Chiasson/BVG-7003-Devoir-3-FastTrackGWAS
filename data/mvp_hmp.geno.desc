@@ -1,5 +1,0 @@
-new("big.matrix.descriptor", description = list(sharedType = "FileBacked", 
-    filename = "mvp_hmp.geno.bin", dirname = "data/", totalRows = 52585L, 
-    totalCols = 298L, rowOffset = c(0, 52585), colOffset = c(0, 
-    298), nrow = 52585, ncol = 298, rowNames = NULL, colNames = NULL, 
-    type = "char", separated = FALSE))
