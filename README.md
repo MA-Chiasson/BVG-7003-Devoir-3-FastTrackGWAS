@@ -300,63 +300,46 @@ filtered_pheno <- process_phenotypic_data(pheno, na_threshold = 10)
 ***This step can be done automatically when doing the gwas analysis (see 6.3. below). It can also be done separately with other functions from the rMVP package but it seems to me less efficient to do so. Maybe we can still document this as a separate step, but otherwise this section should go in the 6.2. or 6.3. sections below for better consistency I think.***
 To account for population structure or relatedness in the data, you may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness (kinship) matrix. These covariates are used to adjust for the potential confounding factors in the GWAS analysis that are kinship or population structure. Indeed, population structure and relatedness may induce non-random distribution of alleles in the sampling pool. GWAS analysis over phenotypes that happen to covary with the population structure would then result in non-relevant associations with these non-randomly distributed alleles. Including a kinship matrix or a a PCA can help reduce this risk.
 
-The recommended option if you don't already have your own kinship matrix or PCA of population structure, is to directly do it in the GWAS analysis part which is done when using the function MVP(), through the arguments `K`and `nPC`. Closing the argument `K`with a # will make the function generate it automatically. Setting the `nPC`arguments (depending on which method(s) you are using) with the number of principal components you would like to use for each will compute them automatically.
+The recommended option if you don't already have your own kinship matrix or PCA of population structure, is to directly do it in the GWAS analysis part which is done when using the function MVP(), through the arguments `K`and `nPC` (see section 7 below for complete analysis). Closing the argument `K`with a # will make the function generate it automatically. Setting the `nPC`arguments (depending on which method(s) you are using) with the number of principal components you would like to use for each will compute them automatically.
 
 ``` r
-MVP(#K=kinship,        
+MVP(
+    #K=kinship,        
     nPC.GLM=5,   
     nPC.MLM=3,             
-    nPC.FarmCPU=3)
+    nPC.FarmCPU=3
+    )
 ```
+Alternatively, kinship matrices and population structure PCAs can be generated at the data conversion step, with the function `MVP.Data()`, by setting the arguments `fileKin` or `filePC` as `TRUE`. This is not covered in the sample script.
 
 ``` r
-MVP.Data(fileHMP="hapmap.txt",
-         filePhe="Phenotype.txt",
-         sep.hmp="\t",
-         sep.phe="\t",
-         SNP.effect="Add",
-         fileKin=FALSE,
-         filePC=FALSE,
-         #maxLine=10000,
-         out="mvp.hmp"
+MVP.Data(
+         fileKin=TRUE,
+         filePC=TRUE,
          )
 ```
 
-Generating a kinship matrix on its own
-
-# calculate from mvp_geno_file
-MVP.Data.Kin(TRUE, mvp_prefix='mvp.vcf', out='mvp')
+There is also the possibility of generating a kinship matrix from an already rMVP imported genotype file using the `MVP.Data.Kin()` function. This is not covered in the sample script.
 
 ``` r
-MVP.K.VanRaden(
-M,
-maxLine = 5000,
-ind_idx = NULL,
-cpu = 1,
-verbose = TRUE,
-checkNA = TRUE
-)
+MVP.Data.Kin(
+             fileKin = TRUE,
+             mvp_prefix = "mvp",
+             out = NULL
+             )
 ```
 
-Generating a pca for population structure on its own
+And even the possibility of generating a PCA for population structure, also from from an already rMVP imported genotype file, using the `MVP.Data.PC()` function. This is not covered in the sample script.
 
 ``` r
-MVP.PCA(
-M = NULL,
-K = NULL,
-maxLine = 10000,
-ind_idx = NULL,
-pcs.keep = 5,
-cpu = 1,
-verbose = TRUE
-)
+MVP.Data.PC(
+            filePC = TRUE,
+            mvp_prefix = "mvp",
+            out = NULL,
+            pcs.keep = 5, # this number representing the number of PCs to keep
+            )
 ```
 
-Or generating both as part of the MVP.DATA() function at the same time as when generating MVP compatible genotype and phenotype files, done through setting the arguments `fileKin` and `filePC` as true.
-
-``` r
-MVP.DATA(fileKin=TRUE, filePC=TRUE)
-```
 ---
 
 ### 7. Execution of the GWAS analysis
