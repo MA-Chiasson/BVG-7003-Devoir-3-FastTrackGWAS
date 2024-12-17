@@ -500,8 +500,7 @@ Q-Q plots are generally produced to help assess the quality of the GWAS analysis
 ![Sample_QQplots_combined](https://github.com/user-attachments/assets/150fcbe7-7740-471e-a6b7-e6c258a64e24)
 
 If the points on the Q-Q plot follow the diagonal line, it suggests that the observed p-values match the expected distribution, indicating no systematic bias.
-Deviations above the line, especially at the tail, suggest an excess of small p-values, which could indicate true associations or potential confounding factors.
-So for instance, in the above sample Q-Q plots, the middle Q-Q plot would indicate that the method used may be the best suited out of the three shown. 
+Deviations above the line, especially at the tail, suggest an excess of small p-values, which could indicate true associations or potential confounding factors. 
 
 #### 8.2. Manhattan plots (association strength between individual loci and the studied phenotype)
 
@@ -598,7 +597,7 @@ This data is typically saved into a file, such as `significant_snps.csv` or `sig
 
 <img src="https://imgur.com/2eOJ4zx.png" width="500"/>
 
-#### Linking Significant Loci to Candidate Genes (Bonus)
+#### Further Steps : Linking Significant Loci to Candidate Genes (Bonus)
 
 To link significant SNPs to candidate genes, first extract the SNPs that pass the significance threshold. Then, use gene annotation tools (e.g., Ensembl, NCBI) to identify genes located near these SNPs. Investigate the biological functions of these genes to understand their potential role in the trait of interest.
 
