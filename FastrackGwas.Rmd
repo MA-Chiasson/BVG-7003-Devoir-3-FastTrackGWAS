@@ -195,11 +195,14 @@ filter_vcfmap <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
 filtered_vcf <- filter_vcfmap(geno)
 
 write.table(filtered_vcf, "data/filtered_vcf.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+```
 ##################
 
 
 # 5. Phenotypic Data Filtering
 # 5.1. Function to remove outliers using IQR
+
+```{r}
 process_phenotypic_data <- function(phenotypic_data, na_threshold = 10) {
   # Identify numeric columns (excluding the first column which is assumed to be the sample identifier)
   numeric_cols <- names(phenotypic_data)[sapply(phenotypic_data, is.numeric)]
@@ -254,9 +257,11 @@ write.table(filtered_pheno, "data/filtered_pheno.txt", sep = "\t", row.names = F
 
 # Check the results
 head(filtered_pheno)  # Display the first few rows of the filtered data
-
+```
 
 # 6. Conversion HapMap -> format MVP
+
+```{r}
 MVP.Data(
   fileHMP = "data/filtered_hmp.txt",  # Filtered HapMap file
   filePhe = "data/filtered_pheno.txt",  # Filtered phenotypic data file
@@ -269,15 +274,17 @@ MVP.Data(
 # If you already have the kinship and PCA files (e.g., "data/mvp.kin.txt" and "data/mvp.pc.txt"),
 # set these parameters to FALSE to avoid regenerating them.
 # If the files are not available, leave these as TRUE, and the script will create them automatically.
-
+```
 
 # 7. Input file if want Gwas
+
+```{r}
 genotype <- attach.big.matrix("data/mvp_hmp.geno.desc")
 phenotype <- read.table("data/mvp_hmp.phe",head=TRUE)
 map <- read.table("data/mvp_hmp.geno.map" , head = TRUE)
 Kinship <- attach.big.matrix("data/mvp_hmp.kin.desc")
 #Covariates_PC <- bigmemory::as.matrix(attach.big.matrix("data/mvp.hmp.pc.desc"))
-
+```
 
 # 8. GWAS Analysis for Single and Multiple Traits
 # In this section, we perform two GWAS models simultaneously: one for a single trait and another for multiple traits.
@@ -287,6 +294,8 @@ Kinship <- attach.big.matrix("data/mvp_hmp.kin.desc")
 
 
 # Create output folders if they don't exist
+
+```{r}
 if (!dir.exists("output")) {
   dir.create("output")
 }
@@ -300,8 +309,11 @@ if (!dir.exists("output/multi_trait_results")) {
 # Verify directories were created
 cat("Directories created successfully:\n")
 print(list.dirs("output"))
+```
 
 # 8.1 GWAS for a Single Trait
+
+```{r}
 cat("Performing GWAS for a single trait:\n")
 setwd("output/single_trait_results")  
 
@@ -333,8 +345,11 @@ if (!is.null(imMVP_single_trait)) {
 } else {
   cat("No results generated for single trait GWAS.\n")
 }
+```
 
 # 8.2 GWAS for Multiple Traits
+
+```{r}
 cat("Performing GWAS for multiple traits:\n")
 setwd("output/multi_trait_results") 
 
@@ -375,4 +390,4 @@ for (i in 2:ncol(phenotype)) {
 # Return to main directory after processing
 setwd("../../")
 cat("GWAS for multiple traits completed.\n")
-
+```
