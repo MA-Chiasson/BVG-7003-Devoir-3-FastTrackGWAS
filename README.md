@@ -517,47 +517,47 @@ Once the GWAS is completed, the `pmap.signal` file automatically contains the si
 ---
 
 ### 9. Expected results from this pipeline with the example data
-## 9.1. Single- vs. Multi-Trait Results
+#### 9.1. Single- vs. Multi-Trait Results
 
 In this section, two main types of output are available for the analysis results:
 
-### Single-Trait Results
+##### Single-Trait Results
 
 This output is used for analyzing individual traits separately. In this case, each trait is analyzed independently. The output files are saved in the `output/single_trait_results` folder and include the results of individual analyses for each trait, such as Q-Q plots, Manhattan plots, and the filtering of significant SNPs for each trait.
 
-### Multi-Trait Results
+##### Multi-Trait Results
 
 This output combines the results for multiple traits at once, helping to explore relationships between multiple traits simultaneously. The results are saved in the `output/multi_trait_results` folder and include similar analyses (such as Q-Q plots and Manhattan plots) for the combination of traits.
 
-## 9.2. Output Files Generated
+#### 9.2. Output Files Generated
 
 For both single- and multi-trait outputs, the following files will be generated:
 
-### Q-Q Plots
+#### Q-Q Plots
 
 These plots help assess the quality of the GWAS analysis and check if the p-values deviate from the expected distribution. These plots will automatically be generated for each trait or combination of traits.
 
-#### Single Trait Q-Q Plot:
+##### Single Trait Q-Q Plot:
 
 <img src="https://i.imgur.com/fXVhAUy.png" width="500"/>
 
-#### Multi Trait Q-Q Plot:
+##### Multi Trait Q-Q Plot:
 
 <img src="https://i.imgur.com/CkfQD1a.png" width="500"/>
 
-### Manhattan Plots:
+#### Manhattan Plots:
 
 These plots display the strength of the association between individual SNPs and the studied phenotype. High peaks indicate SNPs with low p-values, suggesting significant associations.
 
-#### Single Trait Manhattan Plot:
+##### Single Trait Manhattan Plot:
 
 <img src="https://i.imgur.com/pHWbhik.png" width="500"/>
 
-#### Multi Trait Manhattan Plot:
+##### Multi Trait Manhattan Plot:
 
 <img src="https://i.imgur.com/ufeEdpy.png" width="500"/>
 
-### Significant SNP Filtering:
+#### Significant SNP Filtering:
 
 After generating the Q-Q and Manhattan plots and identifying significant SNPs, these SNPs are typically extracted and saved in a file, usually a CSV or tab-delimited text file. This file includes information about the SNPs that have surpassed the significance threshold for further analysis. The extracted file often contains the following columns:
 
@@ -576,27 +576,27 @@ This data is typically saved into a file, such as `significant_snps.csv` or `sig
 | SNP_001 | Chr1       | 123456   | 0.004   | 0.5         | Yes          | GeneA, GeneB    |
 | SNP_002 | Chr2       | 789101   | 0.02    | -0.3        | Yes          | GeneC           |
 | SNP_003 | Chr3       | 567890   | 0.10    | 0.1         | No           | None            |
-```
 
-### Additional Output Files
 
-#### SNP-density Plot:
+#### Additional Output Files
 
-<img src="https://i.imgur.com/fXVhAUy.png" width="500"/>
+##### SNP-density Plot:
 
-#### Phenotype Distribution:
+  <img src="https://imgur.com/ucsyeth.png" width="500"/>
 
-<img src="https://i.imgur.com/fXVhAUy.png" width="500"/>
-
-#### PCA Plot:
+##### Phenotype Distribution:
 
 <img src="https://i.imgur.com/fXVhAUy.png" width="500"/>
 
-#### Manhattan Plot in Circular Fashion:
+##### PCA Plot:
 
 <img src="https://i.imgur.com/fXVhAUy.png" width="500"/>
 
-### Linking Significant Loci to Candidate Genes (Bonus)
+##### Manhattan Plot in Circular Fashion:
+
+<img src="https://i.imgur.com/fXVhAUy.png" width="500"/>
+
+#### Linking Significant Loci to Candidate Genes (Bonus)
 
 To link significant SNPs to candidate genes, first extract the SNPs that pass the significance threshold. Then, use gene annotation tools (e.g., Ensembl, NCBI) to identify genes located near these SNPs. Investigate the biological functions of these genes to understand their potential role in the trait of interest.
 ```
