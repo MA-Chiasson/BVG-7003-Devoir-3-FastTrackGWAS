@@ -1,27 +1,47 @@
 # BVG-7003-Assignment-3-FastTrackGWAS
 
 ## Table of Contents
-1. [Introduction](#introduction)
-2. [Installation of R and RStudio](#installation-of-r-and-rstudio)
-   1. [Installing R](#1-installing-r)
-   2. [Installing RStudio](#2-installing-rstudio)
-   3. [Launching RStudio](#3-launching-rstudio)
-3. [Script execution](#script-execution)
-   1. [Input and Output File Formats](#1-input-and-output-file-formats)
-   2. [Dependencies](#2-dependencies)
-      1. [Installation of the packages](#2-1-installation-of-the-packages)
-      2. [Loading the packages](#2-2-loading-the-packages)
-   3. [Define working directory](#3-define-working-directory)
-4. [Loading Data in R](#4-loading-data-in-r)
-   1. [Loading phenotypic data](#4-1-loading-phenotypic-data)
-   2. [Loading Genotypic Data](#4-2-loading-genotypic-data)
-5. [Data Preprocessing](#5-data-preprocessing)
-   1. [Formatting Genotype and Phenotype Files](#5-1-formatting-genotype-and-phenotype-files)
-   2. [Quality Control](#5-2-quality-control)
-      1. [SNP Filtering with MAF < 0.05](#5-2-1-snp-filtering-with-maf-005)
-   3. [Generating Covariates](#5-3-generating-covariates)
+- [1. Installation of R and RStudio](#1-installation-of-r-and-rstudio)
+  * [1.1. **Installing R**](#11---installing-r--)
+  * [1.2. **Installing RStudio**](#12---installing-rstudio--)
+  * [1.3. **Launching RStudio**](#13---launching-rstudio--)
+- [2. **Data Download and Preparation**](#2---data-download-and-preparation--)
+  * [2.1. Test Data Used](#21-test-data-used)
+  * [2.2. Other data recommandations](#22-other-data-recommandations)
+- [3. **Dependencies**](#3---dependencies--)
+  * [3.1. Installation of the packages](#31-installation-of-the-packages)
+  * [3.2. Loading the packages](#32-loading-the-packages)
+  * [4. Define working directory](#4-define-working-directory)
+    + [How to Set a Working Directory](#how-to-set-a-working-directory)
+  * [5. Loading data in R](#5-loading-data-in-r)
+    + [5.1. Loading genotype and phenotype data](#51-loading-genotype-and-phenotype-data)
+  * [6. Data Preprocessing](#6-data-preprocessing)
+    + [6.1. Useful tools for inspecting data structure](#61-useful-tools-for-inspecting-data-structure)
+      - [6.1.1. `str()`](#611--str---)
+      - [6.1.2. `head()`](#612--head---)
+      - [6.1.3. Example of formatting](#613-example-of-formatting)
+    + [6.2. Quality Control](#62-quality-control)
+      - [6.2.1. Genotype data quality control](#621-genotype-data-quality-control)
+      - [6.2.1. Phenotype data quality control](#621-phenotype-data-quality-control)
+    + [6.3. Generating Covariates](#63-generating-covariates)
+  * [7. Execution of the GWAS analysis](#7-execution-of-the-gwas-analysis)
+    + [7.1. Loading genotype and phenotype data in the rMVP environment](#71-loading-genotype-and-phenotype-data-in-the-rmvp-environment)
+      - [7.1.1. Generating rMVP readable files, VCF data version:](#711-generating-rmvp-readable-files--vcf-data-version-)
+      - [7.1.2. Generating rMVP readable files, HapMap data version:](#712-generating-rmvp-readable-files--hapmap-data-version-)
+      - [7.1.3. Loading the data in rMVP environment:](#713-loading-the-data-in-rmvp-environment-)
+    + [7.2. Loading covariates in MVP function (optional)](#72-loading-covariates-in-mvp-function--optional-)
+    + [7.3. Running MVP function](#73-running-mvp-function)
+  * [8. Example of results obtainable from MVP and their interpretation](#8-example-of-results-obtainable-from-mvp-and-their-interpretation)
+    + [8.1. Q-Q plots](#81-q-q-plots)
+    + [8.2. Manhattan plots (association strength between individual loci and the studied phenotype)](#82-manhattan-plots--association-strength-between-individual-loci-and-the-studied-phenotype-)
+    + [8.3. Filtering significant SNPs from the analysis](#83-filtering-significant-snps-from-the-analysis)
+  * [9. Expected results from this pipeline with the example data](#9-expected-results-from-this-pipeline-with-the-example-data)
+    + [9.1. Interpreting QQ plots](#91-interpreting-qq-plots)
+    + [9.2. Identifying significant SNPs from Manhattan plots](#92-identifying-significant-snps-from-manhattan-plots)
+    + [9.3. Linking significant loci to candidate genes (bonus)](#93-linking-significant-loci-to-candidate-genes--bonus-)
 
-***Complete table of contents once readme has its final structure***
+<small><i><a href='http://github.com/3kh0/readme-toc/'>Table of contents generated with readme-toc</a></i></small>
+
 
 ---
 ## Introduction
@@ -279,8 +299,6 @@ filtered_vcf <- filter_vcfmap(geno,  freq_threshold = 5, na_threshold = 10)
 In both cases, thresholds can be either left out to use the default options, or modified with the threshold expressed in percentage.
 
 ##### 6.2.1. Phenotype data quality control 
-**Complete title following what tests we decide**
-**Explain phenotype filtering function usage**
 
 1. **Verifying or removing outliers.** There is some debate concerning whether or not outlier observations should be removed from the analysis. Outliers can skew the results and lead to false associations in GWAS. By removing them, we ensure that the data accurately represents the population and improves the reliability of the findings. However, if you are dealing with your own experimental dataset, we suggest verifying if these outliers are true measures or result from measuring errors for example, to help you take a decision about removing them or not. For the sake of this example, and in the absence of real experimental information, we filter outlier data based on quantile distribution. 
 
@@ -297,7 +315,7 @@ filtered_pheno <- process_phenotypic_data(pheno, na_threshold = 10)
 ```
 ***
 #### 6.3. Generating Covariates
-***This step can be done automatically when doing the gwas analysis (see 6.3. below). It can also be done separately with other functions from the rMVP package but it seems to me less efficient to do so. Maybe we can still document this as a separate step, but otherwise this section should go in the 6.2. or 6.3. sections below for better consistency I think.***
+
 To account for population structure or relatedness in the data, you may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness (kinship) matrix. These covariates are used to adjust for the potential confounding factors in the GWAS analysis that are kinship or population structure. Indeed, population structure and relatedness may induce non-random distribution of alleles in the sampling pool. GWAS analysis over phenotypes that happen to covary with the population structure would then result in non-relevant associations with these non-randomly distributed alleles. Including a kinship matrix or a a PCA can help reduce this risk.
 
 The recommended option if you don't already have your own kinship matrix or PCA of population structure, is to directly do it in the GWAS analysis part which is done when using the function MVP(), through the arguments `K`and `nPC` (see section 7 below for complete analysis). Closing the argument `K`with a # will make the function generate it automatically. Setting the `nPC`arguments (depending on which method(s) you are using) with the number of principal components you would like to use for each will compute them automatically.
@@ -380,9 +398,8 @@ map <- read.table("mvp_hmp.geno.map", header = TRUE)
 
 ```
 #### 7.2. Loading covariates in MVP function (optional)
-***see 7.3.?***
 
-Although not covered in the example code, it is possible to also include other environmental variables or covariates as fixed effects to account for various experimental designs (for example, breed, sex, weight, age, diet, socioeconomic status, batch effects, genotyping platform, etc.). The inclusion of such factors is done through the arguments CV.GLM, CV.MLM, CV.FarmCPU. See [https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#advanced]([url](https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#advanced)) for more details.
+Although not covered in the example code, it is possible to also include other environmental variables or covariates as fixed effects to account for various experimental designs (for example, breed, sex, weight, age, diet, socioeconomic status, batch effects, genotyping platform, etc.). The inclusion of such factors is done through the arguments CV.GLM, CV.MLM, CV.FarmCPU. See [https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#advanced]([url](https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#advanced)), as the original creators of this package, for more details.
 
 #### 7.3. Running MVP function
 
@@ -423,15 +440,17 @@ imMVP <- MVP(
 
 ### 8. Example of results obtainable from MVP and their interpretation
 
-#### 8.1. QQ plots 
+`MVP()` function automatically outputs visuals from the GWAS analysis if you add the option `"plot"` to the vector of `file.output` argument (see above). Plots can also be viewed separately and customized with many options, see rMVP original github for more details [https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#output]([url](https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#output)).
 
-QQ plots are generally produced to help assess the quality of the GWAS analysis. They can help identify if there are deviations from the expected distribution, which can indicate potential issues such as population stratification, genotyping errors, or true genetic associations.
+#### 8.1. Q-Q plots 
+
+Q-Q plots are generally produced to help assess the quality of the GWAS analysis. They can help identify if there are deviations from the expected distribution, which can indicate potential issues such as population stratification, genotyping errors, or true genetic associations.
 
 ![Sample_QQplots_combined](https://github.com/user-attachments/assets/150fcbe7-7740-471e-a6b7-e6c258a64e24)
 
-If the points on the QQ plot follow the diagonal line, it suggests that the observed p-values match the expected distribution, indicating no systematic bias.
+If the points on the Q-Q plot follow the diagonal line, it suggests that the observed p-values match the expected distribution, indicating no systematic bias.
 Deviations above the line, especially at the tail, suggest an excess of small p-values, which could indicate true associations or potential confounding factors.
-So for instance, in the above sample QQ plots, the middle QQ plot would indicate better that the method used may be the best suited out of the three shown.
+So for instance, in the above sample Q-Q plots, the middle Q-Q plot would indicate that the method used may be the best suited out of the three shown. 
 
 #### 8.2. Manhattan plots (association strength between individual loci and the studied phenotype)
 
