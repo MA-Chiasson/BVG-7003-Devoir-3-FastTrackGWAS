@@ -41,10 +41,6 @@
     - [Additional Output Files](#additional-output-files)  
   - [9.3. Linking Significant Loci to Candidate Genes (Bonus)](#93-linking-significant-loci-to-candidate-genes-bonus)
 
-
-<small><i><a href='http://github.com/3kh0/readme-toc/'>Table of contents generated with readme-toc</a></i></small>
-
-
 ---
 ## Introduction
 
