@@ -335,7 +335,7 @@ lower_bound <- Q1 - 1.5 * IQR_value
 upper_bound <- Q3 + 1.5 * IQR_value
 ```
 
-2. **Verifying normality of distribution.** Many statistical tests used in GWAS assume that the data follows a normal distribution. Verifying and transforming the data to meet this assumption helps in obtaining valid and interpretable results. This step is not implemented in the pipeline currently as verifying normality should involve proper scientific judgment, especially with large datasets where many formal normality tests can be very sensitive. Further, when original data is not normally distributed, there are many possibilities regarding the transformations that can be applied and which need to consider experimental design. For example, one could wish to transform the phenotype data using logarithmic, square root, or inverse transformation, while the data may also be suited to add specific covariates and/or the transformation of these covariates. This step is therefore intentionally left out to the scientific judgment of the user.
+2. **Verifying normality of distribution.** Many statistical tests used in GWAS assume that the data follows a normal distribution. Verifying and transforming the data to meet this assumption helps in obtaining valid and interpretable results. This step is currently implemented in the pipeline through a fromal normality test (Shapiro-Wilk test). However, especially with large datasets typical of GWAS analysis, many formal normality tests can be very sensitive, reducing their relevance. Therefore, one should use their judgement and investigate their own data to do this quality control properly. Further, when original data is not normally distributed, there are many possibilities regarding the transformations that can be applied and which need to consider experimental design. For example, one could wish to transform the phenotype data using logarithmic, square root, or inverse transformation, while the data may also be suited to add specific covariates and/or the transformation of these covariates. This step is therefore intentionally left out to the scientific judgement of the user.
 
 The normality of each numeric column is tested using the Shapiro-Wilk test (`shapiro.test()`) if the column has more than three values. The results of the normality tests are stored in a list and printed for review. The temporary `na_percentage` column, which was created for filtering purposes, is then dropped from the dataset using `select()`. The filtered data is returned, and it is saved to a file using `write.table()` for further use. The first few rows of the filtered data are displayed using `head()` to allow users to inspect the results.
 
@@ -352,6 +352,9 @@ W = 0.9934, p-value = 0.3346
 ```
 
 3. **Handling missing data.** Missing data can reduce the power of the study and introduce bias. Properly addressing missing data through imputation or exclusion ensures that the analysis is robust and the results are not compromised. Here we will not discuss the imputation of missing phenotypic data, as there are many different methods, which are outside the scope of this pipeline. We must however make sure the analysis doesn't get blocked by missing data, and we can even apply more severe quality thresholds by eliminating entries with too much missing phenotype data. Indeed, an individual or a variety showing many missing values may have been assessed under inappropriate experimental conditions, which leads to questioning its entire phenotype data. Under circumstances where detailed experimental information is not known, it is cautious to remove such individuals or varieties.
+
+
+
 
 The `process_phenotypic_data()` is designed to remove outliers and to remove entries with too much missing data. Outliers are removed based on quantile distribution, and a threshold of 10% missing phenotype data for an entry gets it removed from the dataset. Note that individual missing data points can be handled directly by the `MVP()` function, so there is no need to preprocess those.
 
@@ -459,8 +462,8 @@ Executing the GWAS analysis is done with the MVP() function. In addition to hand
        The default significance threshold (before p-value adjustment for multiple testing) is set at 0.05 
 3. And others
 
-***This code was adapted from the rMVP GitHub repository, and we acknowledge the developers for providing this implementation.***
-```
+***This code and its comments below were adapted from the rMVP GitHub repository, and we acknowledge the developers for providing this implementation and its concise description.***
+``` r
 imMVP <- MVP(
   phe=phenotype,          #NA is acceptable in phenotype
   geno=genotype,
