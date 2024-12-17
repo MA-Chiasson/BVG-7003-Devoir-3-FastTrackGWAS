@@ -287,7 +287,7 @@ The PCA matrix file is used for the Principal Component Analysis (PCA) of the da
 ```r
 # Loading PCA matrix (optional)
 # Uncomment this line if you have a PCA file
-# rMVP.Data.PC("data/mvp.pc.txt", out='data/mvp', sep='\t')
+rMVP.Data.PC("data/mvp.pc.txt", out='data/mvp', sep='\t')
 ```
 
 **Explanation:**
@@ -300,68 +300,9 @@ If you do not have kinship or PCA files, the script will automatically generate 
 ### 6. Data Preprocessing
 In this section, we guide users through the following steps for data preprocessing. These steps are crucial for ensuring the quality and integrity of the data used in the analysis. Preprocessing helps to clean, format, and structure the data properly, minimizing errors and biases in the final results.
 
-#### 6.1. Useful tools for inspecting data structure
-**IMPORTANT NOTE:** Before starting, it is important to note that genotype data files are sometimes complex to modify directly in R, as they have special file formats. Therefore, it is sometimes preferable that any necessary modifications to harmonize the datasets be made to the phenotype data file, as we will see below.
+#### 6.1. Quality Control
 
-To check if the data is properly formatted, we can use two commonly used commands in R: `str()` and `head()`. These functions are useful for quickly exploring the structure and content of our data before proceeding with more complex analyses.
-
-##### 6.1.1. `str()`
-The str() (structure) function is used to display the internal structure of an object in R. It provides a quick overview of the data structure, including the type of each column (e.g., numeric, factor, etc.), the number of missing values, and a sample of the first few values in each column.
-
-**Usefulness of `str()`:**
-
-Chcking the data types in each column (e.g., whether it's a factor, character, numeric value).
-Helping detect any formatting errors, such as a numeric column being incorrectly read as a factor.
-Providing a summary of the data object, which is useful for verifying everything is in order before applying transformations or analyses.
-Example:
-
-```r
-str(pheno)
-```
-This allows you to check that the phenotype data is in the correct format before using it in the analysis.
-
-##### 6.1.2. `head()`
-The `head()` function displays the first few rows of a dataset. By default, it shows the first six rows, but this number can be adjusted. This function gives a quick look at the actual values in the first rows, which is useful for checking the quality of the data and ensuring that they have been imported correctly.
-
-**Usefulness of `head()`**:
-
-It allows you to quickly view the first rows of a dataset to verify that the values are consistent and correctly formatted.
-It provides a quick check for missing values or incorrect data in the first few rows.
-It is particularly useful for large files, as it allows you to examine a subset of the data without loading the entire file.
-
-**Example:**
-```r
-head(pheno)
-```
-This allows you to view the first few rows of the phenotype data and check everything is in order before continuing with the analysis.
-
-
-##### 6.1.3. Example of formatting
-As observed in the phenotypic data (Figure 1), sample names often begin with "TGx," whereas this is not the case in the genotypic data (Figure 2). If we were to run the MVP function as is, only 18 matching samples would be identified between the two datasets, as shown in Figure 3 below.
-**Name of the sample in the phenotypic data:**  
-![image](https://github.com/user-attachments/assets/3e01bf96-879e-4a7c-90ad-50e8acc23228)
-
-**Name of the sample in the genotypic data:**  
-![image](https://github.com/user-attachments/assets/eb3511ab-2b10-4182-9645-abac278ffaa2)
-
-**MVP without modifications:**  
-![image](https://github.com/user-attachments/assets/9220e96c-394f-4423-acf8-e065da1cb288)
-
-To address this, we will remove the "TGx" prefix from the phenotypic data using the following command:
-```r
-pheno$Sample <- gsub("TGx ", "", pheno$Sample)
-```
-Although the genotypic data uses a different naming convention, where it includes an "X" and replaces "-" with ".", it may seem intuitive to make similar changes in the phenotypic data for consistency. However, this step is unnecessary because RStudio automatically modifies column names when loading the data. Specifically, it prepends an "X" to column names starting with a number and replaces "-" with ".", ensuring compatibility with R’s column naming rules. As a result, if we run the MVP function now, we will have 281 matching samples between the two datasets.
-
-**MVP after modifications**  
-![image](https://github.com/user-attachments/assets/6b18b186-145f-4939-8d67-4b8352ea95d1)
-
-
-#### 6.2. Quality Control
-
-The final quality control step implemented in this pipeline is that of missing data imputation. **Show an example or remove this sentence**
-
-##### 6.2.1. Genotype data quality control
+##### 6.1.1. Genotype data quality control
 
 1. **Filtering loci based on their Minor Allele Frequency (MAF).** We suggest removing loci with a MAF lower than 0.05 to ensure that only common variants are included in the analysis, but other thresholds may be used. 
 
@@ -370,7 +311,6 @@ Loci with low MAF (for example, lower than 0.05) carry an elevated risk of havin
 2. **Filtering loci with an important proportion of missing data.**  We suggest removing loci with 10% or more missing data, but other thresholds may be used.
 
 A high level of missing data suggests lower genotyping quality for that loci and, even if missing data is imputed, lowers accuracy to some degree. Loci with too much missing data can additionally induce statistical errors.
-
 
 
 Using `filter_hapmap()` or `filter_vcfmap()` functions, we can filter SNPs with too low MAF, with a MAF threshold modifiable, but set by default at 5%. At the same time, these functions filter out monomorphic loci that would not be useful for a GWAS analysis. The same functions allow for filtering SNPs with too much missing data, with the threshold modifiable, but set at 10% as default option. Below is the R code used for this process:
@@ -385,27 +325,49 @@ filtered_vcf <- filter_vcfmap(geno,  freq_threshold = 5, na_threshold = 10)
 ```
 In both cases, thresholds can be either left out to use the default options, or modified with the threshold expressed in percentage.
 
-##### 6.2.2. Phenotype data quality control 
+##### 6.1.2. Phenotype data quality control 
 
-1. **Verifying or removing outliers.** There is some debate concerning whether or not outlier observations should be removed from the analysis. Outliers can skew the results and lead to false associations in GWAS. By removing them, we ensure that the data accurately represents the population and improves the reliability of the findings. However, if you are dealing with your own experimental dataset, we suggest verifying if these outliers are true measures or result from measuring errors for example, to help you take a decision about removing them or not. For the sake of this example, and in the absence of real experimental information, we filter outlier data based on quantile distribution. 
+1. **Verifying or removing outliers.** There is some debate concerning whether or not outlier observations should be removed from the analysis. Outliers can skew the results and lead to false associations in GWAS. By removing them, we ensure that the data accurately represents the population and improves the reliability of the findings. However, if you are dealing with your experimental dataset, we suggest verifying if these outliers are true measures or result from measuring errors for example, to help you decide on removing them or not. For the sake of this example, and in the absence of real experimental information, we filter outlier data based on quantile distribution.
 
-2. **Verifying normality of distribution.** Many statistical tests used in GWAS assume that the data follows a normal distribution. Verifying and transforming the data to meet this assumption helps in obtaining valid and interpretable results. This step is not implemented in the pipeline currently as verifying normality shoudl involve proper scientific judgement, especially with large datasets where many formal normality tests can be very sensitive. Further, when original data is not normally distributed, there are many possibilities regarding the transformations that can be applied and which need to consider experimental design. For example, one could wish to transform the phenotype data using logarithmic, square root or inverse transformation, while the data may also be suited to add specific covariates and/or the transformation of these covariates. This step is therefore intentionally left out to the scientific judgement of the user.
+### Following this, the code applies the IQR method to remove outliers in each numeric column. The first and third quartiles (Q1 and Q3) are calculated using the `quantile()` function, and the IQR is determined by subtracting Q1 from Q3. The lower and upper bounds for valid data are defined as 1.5 times the IQR below Q1 and above Q3. The data is then filtered to keep only rows that fall within these bounds for each column, using the `filter()` function again.
 
-3. **Handling missing data.** Missing data can reduce the power of the study and introduce bias. Properly addressing missing data through imputation or exclusion ensures that the analysis is robust and the results are not compromised. Here we will not discuss imputation of missing phenotypic data, as there are many different methods, which are outside the scope of this pipeline. We must however make sure the analysis doesn't get blocked by missing data, and we can even apply more severe quality tresholds by eliminating entries with too much missing phenotype data. Indeed, an individual or a variety showing many missing values may have been assessed under inappropriate experimental conditions, which leads to question its entire phenotype data. Under circumstances where detailed experimental information is not known, it is cautious to remove such individuals or varieties.
+```r
+# Define lower and upper bounds
+lower_bound <- Q1 - 1.5 * IQR_value
+upper_bound <- Q3 + 1.5 * IQR_value
+```
 
-The `process_phenotypic_data()` is designed to remove outliers and to remove entries with too much missing data. Outliers are removed based on quantile distribution, and a treshold of 10% missing phenotype data for an entry gets it removed from the dataset. Note that individual missing data points can be handled directly by the `MVP()` function, so there is no need to preprocess those.
+3. **Verifying normality of distribution.** Many statistical tests used in GWAS assume that the data follows a normal distribution. Verifying and transforming the data to meet this assumption helps in obtaining valid and interpretable results. This step is not implemented in the pipeline currently as verifying normality should involve proper scientific judgment, especially with large datasets where many formal normality tests can be very sensitive. Further, when original data is not normally distributed, there are many possibilities regarding the transformations that can be applied and which need to consider experimental design. For example, one could wish to transform the phenotype data using logarithmic, square root, or inverse transformation, while the data may also be suited to add specific covariates and/or the transformation of these covariates. This step is therefore intentionally left out to the scientific judgment of the user.
+
+### The normality of each numeric column is tested using the Shapiro-Wilk test (`shapiro.test()`) if the column has more than three values. The results of the normality tests are stored in a list and printed for review. The temporary `na_percentage` column, which was created for filtering purposes, is then dropped from the dataset using `select()`. The filtered data is returned, and it is saved to a file using `write.table()` for further use. The first few rows of the filtered data are displayed using `head()` to allow users to inspect the results.
+
+```r
+# Shapiro-Wilk normality test
+shapiro.test(phenotypic_data[[column_name]])
+```
+
+**Example Output:**
+
+```
+data:  phenotypic_data[[column_name]]
+W = 0.9934, p-value = 0.3346
+```
+
+4. **Handling missing data.** Missing data can reduce the power of the study and introduce bias. Properly addressing missing data through imputation or exclusion ensures that the analysis is robust and the results are not compromised. Here we will not discuss the imputation of missing phenotypic data, as there are many different methods, which are outside the scope of this pipeline. We must however make sure the analysis doesn't get blocked by missing data, and we can even apply more severe quality thresholds by eliminating entries with too much missing phenotype data. Indeed, an individual or a variety showing many missing values may have been assessed under inappropriate experimental conditions, which leads to questioning its entire phenotype data. Under circumstances where detailed experimental information is not known, it is cautious to remove such individuals or varieties.
+
+The `process_phenotypic_data()` is designed to remove outliers and to remove entries with too much missing data. Outliers are removed based on quantile distribution, and a threshold of 10% missing phenotype data for an entry gets it removed from the dataset. Note that individual missing data points can be handled directly by the `MVP()` function, so there is no need to preprocess those.
 
 Example usage of the `process_phenotypic_data()` function is shown below.
 
 ```r
 filtered_pheno <- process_phenotypic_data(pheno, na_threshold = 10)
 ```
-***
-#### 6.3. Generating Covariates
 
-To account for population structure or relatedness in the data, you may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness (kinship) matrix. These covariates are used to adjust for the potential confounding factors in the GWAS analysis that are kinship or population structure. Indeed, population structure and relatedness may induce non-random distribution of alleles in the sampling pool. GWAS analysis over phenotypes that happen to covary with the population structure would then result in non-relevant associations with these non-randomly distributed alleles. Including a kinship matrix or a a PCA can help reduce this risk.
+#### 6.2. Generating Covariates
 
-The recommended option if you don't already have your own kinship matrix or PCA of population structure, is to directly do it in the GWAS analysis part which is done when using the function MVP(), through the arguments `K`and `nPC` (see section 7 below for complete analysis). Closing the argument `K`with a # will make the function generate it automatically. Setting the `nPC`arguments (depending on which method(s) you are using) with the number of principal components you would like to use for each will compute them automatically.
+To account for population structure or relatedness in the data, you may generate covariates such as Principal Component Analysis (PCA) scores or a relatedness (kinship) matrix. These covariates are used to adjust for the potential confounding factors in the GWAS analysis that are kinship or population structure. Indeed, population structure and relatedness may induce a non-random distribution of alleles in the sampling pool. GWAS analysis over phenotypes that happen to covary with the population structure would then result in non-relevant associations with these non-randomly distributed alleles. Including a kinship matrix or a PCA can help reduce this risk.
+
+The recommended option if you don't already have your kinship matrix or PCA of population structure, is to directly do it in the GWAS analysis part which is done when using the function MVP(), through the arguments `K`and `nPC` (see section 7 below for complete analysis). Closing the argument `K`with a # will make the function generate it automatically. Setting the `nPC`arguments (depending on which method(s) you are using) with the number of principal components you would like to use for each will compute them automatically.
 
 ``` r
 MVP(
@@ -573,10 +535,3 @@ Identify Significant SNPs: Extract the SNPs that surpass the significance thresh
 Gene Annotation: Use gene annotation tools or databases (e.g., Ensembl, NCBI) to find genes located near these SNPs.
 
 Biological Relevance: Investigate the biological functions of these genes to understand their potential role in the trait of interest.
-
-
-
-
-
-
-
