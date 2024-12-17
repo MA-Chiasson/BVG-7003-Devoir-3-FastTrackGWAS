@@ -274,7 +274,7 @@ filtered_hmp <- filter_hapmap(geno, freq_threshold = 5, na_threshold = 10)
 ```
 Or for VCF data
 ```r
-filtered_hmp <- filter_vcfmap(geno,  freq_threshold = 5, na_threshold = 10)
+filtered_vcf <- filter_vcfmap(geno,  freq_threshold = 5, na_threshold = 10)
 ```
 In both cases, thresholds can be either left out to use the default options, or modified with the threshold expressed in percentage.
 
@@ -286,10 +286,14 @@ In both cases, thresholds can be either left out to use the default options, or 
 
 2. **Verifying normality of distribution.** Many statistical tests used in GWAS assume that the data follows a normal distribution. Verifying and transforming the data to meet this assumption helps in obtaining valid and interpretable results. This step is not implemented in the pipeline currently as verifying normality shoudl involve proper scientific judgement, especially with large datasets where many formal normality tests can be very sensitive. Further, when original data is not normally distributed, there are many possibilities regarding the transformations that can be applied and which need to consider experimental design. For example, one could wish to transform the phenotype data using logarithmic, square root or inverse transformation, while the data may also be suited to add specific covariates and/or the transformation of these covariates. This step is therefore intentionally left out to the scientific judgement of the user.
 
-3. **Handling missing data.** Missing data can reduce the power of the study and introduce bias. Properly addressing missing data through imputation or exclusion ensures that the analysis is robust and the results are not compromised. Here we will not discuss imputation of missing phenotypic data, as there are many different methods, which are outside the scope of this pipeline. We must however make sure the analysis doesn't get blocked by missing data, and we can even apply more severe quality tresholds by eliminating genetic elements with too much missing phenotype data. Indeed, an individual or a variety showing many missing values may have been assessed under inappropriate experimental conditions, which leads to question its entire phenotype data.
+3. **Handling missing data.** Missing data can reduce the power of the study and introduce bias. Properly addressing missing data through imputation or exclusion ensures that the analysis is robust and the results are not compromised. Here we will not discuss imputation of missing phenotypic data, as there are many different methods, which are outside the scope of this pipeline. We must however make sure the analysis doesn't get blocked by missing data, and we can even apply more severe quality tresholds by eliminating entries with too much missing phenotype data. Indeed, an individual or a variety showing many missing values may have been assessed under inappropriate experimental conditions, which leads to question its entire phenotype data. Under circumstances where detailed experimental information is not known, it is cautious to remove such individuals or varieties.
+
+The `process_phenotypic_data()` is designed to remove outliers and to remove entries with too much missing data. Outliers are removed based on quantile distribution, and a treshold of 10% missing phenotype data for an entry gets it removed from the dataset. Note that individual missing data points can be handled directly by the `MVP()` function, so there is no need to preprocess those.
+
+Example usage of the `process_phenotypic_data()` function is shown below.
 
 ```r
-filtered_pheno <- process_phenotypic_data(pheno)
+filtered_pheno <- process_phenotypic_data(pheno, na_threshold = 10)
 ```
 ***
 #### 6.3. Generating Covariates
