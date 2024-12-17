@@ -5,9 +5,11 @@ date: "2024-12-17"
 ---
 
 # Introduction
-# This GWAS analysis uses the rMVP package to identify SNPs associated with a given phenotypic trait. 
+# This document is designed for conducting a Genome-Wide Association Study (GWAS) using the rMVP package in R. The primary goal is to identify SNPs (Single Nucleotide Polymorphisms) associated with specific phenotypic traits. 
 
 # 1. Installation and loading of libraries
+# This section ensures the required libraries are installed and loaded into the R environment. These libraries provide essential tools for handling data, performing GWAS analyses, and visualizing results.
+
 # 1.1. Install the libraries if necessary
 
 ```{r}
@@ -37,7 +39,7 @@ library(outliers)
 ```
 
 # 2. Set the working directory to the directory where the script is located
-# This automatically sets the working directory to the folder where the script is located, no need for modification.
+# This section ensures that the working directory in R is automatically set to the folder where the script is located. This eliminates the need for manual adjustments and ensures that all file paths within the script are relative to the script's location.
 
 ```{r}
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
