@@ -22,7 +22,7 @@
       - [6.1.3. Example of formatting](#613-example-of-formatting)
     + [6.2. Quality Control](#62-quality-control)
       - [6.2.1. Genotype data quality control](#621-genotype-data-quality-control)
-      - [6.2.1. Phenotype data quality control](#621-phenotype-data-quality-control)
+      - [6.2.2. Phenotype data quality control](#622-phenotype-data-quality-control)
     + [6.3. Generating Covariates](#63-generating-covariates)
   * [7. Execution of the GWAS analysis](#7-execution-of-the-gwas-analysis)
     + [7.1. Loading genotype and phenotype data in the rMVP environment](#71-loading-genotype-and-phenotype-data-in-the-rmvp-environment)
@@ -298,7 +298,7 @@ filtered_vcf <- filter_vcfmap(geno,  freq_threshold = 5, na_threshold = 10)
 ```
 In both cases, thresholds can be either left out to use the default options, or modified with the threshold expressed in percentage.
 
-##### 6.2.1. Phenotype data quality control 
+##### 6.2.2. Phenotype data quality control 
 
 1. **Verifying or removing outliers.** There is some debate concerning whether or not outlier observations should be removed from the analysis. Outliers can skew the results and lead to false associations in GWAS. By removing them, we ensure that the data accurately represents the population and improves the reliability of the findings. However, if you are dealing with your own experimental dataset, we suggest verifying if these outliers are true measures or result from measuring errors for example, to help you take a decision about removing them or not. For the sake of this example, and in the absence of real experimental information, we filter outlier data based on quantile distribution. 
 
