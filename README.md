@@ -96,7 +96,7 @@ For the test data in this analysis, the following were selected:
 
   Note that genotype data of VCF format could also be used with the example script if this was your case. 
   
-- **Phenotypic data:** The trait SDWi/SDWf (SDW ratio) represents shoot dry weight in inoculated (SDWi) and fertilized (SDWf).
+- **Phenotypic data:** The trait SDWi/SDWf (SDW ratio), representing shoot dry weight in inoculated (SDWi) and fertilized (SDWf), has been selected for single-trait analysis.
 
   File `Phenotype_African.txt`, in .txt format, can be found in the data directory of this repository.
 
