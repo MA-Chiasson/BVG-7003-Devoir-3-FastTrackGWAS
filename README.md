@@ -517,21 +517,69 @@ Once the GWAS is completed, the `pmap.signal` file automatically contains the si
 ---
 
 ### 9. Expected results from this pipeline with the example data
+## 9.1. Single vs. Multi-Trait Results
 
-#### 9.1. Interpreting Q-Q plots
+In this section, two main types of output are available for the analysis results:
 
-**Add actual QQplots from our pipeline + our example datasets**
+### Single Trait Results
 
-#### 9.2. Identifying significant SNPs from Manhattan plots
+This output is used for analyzing individual traits separately. In this case, each trait is analyzed independently. The output files are saved in the `output/single_trait_results` folder and include the results of individual analyses for each trait, such as Q-Q plots, Manhattan plots, and the filtering of significant SNPs for each trait.
 
-**Add actual Manhattan plots from our pipeline + our example datasets**
+### Multi Trait Results
 
-#### 9.3. Linking significant loci to candidate genes (bonus)
+This output combines the results for multiple traits at once, helping to explore relationships between multiple traits simultaneously. The results are saved in the `output/multi_trait_results` folder and include similar analyses (such as Q-Q plots and Manhattan plots) for the combination of traits.
 
-To link significant loci to candidate genes:
+## 9.2. Output Files Generated and Expected Results from this Pipeline
 
-Identify Significant SNPs: Extract the SNPs that surpass the significance threshold. **See 8.3. as a starting step if we decide to complete the bonus requirement**
+For both single- and multi-trait outputs, the following files will be generated:
 
-Gene Annotation: Use gene annotation tools or databases (e.g., Ensembl, NCBI) to find genes located near these SNPs.
+### Q-Q Plots
 
-Biological Relevance: Investigate the biological functions of these genes to understand their potential role in the trait of interest.
+These plots help assess the quality of the GWAS analysis and check if the p-values deviate from the expected distribution. These plots will automatically be generated for each trait or combination of traits.
+
+#### Single Trait Q-Q Plot
+
+!Single Trait Q-Q Plot  <!-- Add your single trait Q-Q plot image here -->
+
+#### Multi Trait Q-Q Plot
+
+!Multi Trait Q-Q Plot  <!-- Add your multi trait Q-Q plot image here -->
+
+### Manhattan Plots
+
+These plots display the strength of the association between individual SNPs and the studied phenotype. High peaks indicate SNPs with low p-values, suggesting significant associations.
+
+#### Single Trait Manhattan Plot
+
+!Single Trait Manhattan Plot  <!-- Add your single trait Manhattan plot image here -->
+
+#### Multi Trait Manhattan Plot
+
+!Multi Trait Manhattan Plot  <!-- Add your multi trait Manhattan plot image here -->
+
+### Significant SNP Filtering
+
+After generating Q-Q and Manhattan plots, significant SNPs are extracted and filtered to only include those that surpass the significance threshold for further analysis.
+
+### Additional Output Files
+
+#### SNP-density Plot
+
+!SNP-density Plot  <!-- Add your SNP-density plot image here -->
+
+#### Phenotype Distribution
+
+!Phenotype Distribution  <!-- Add your phenotype distribution image here -->
+
+#### PCA Plot
+
+!PCA Plot  <!-- Add your PCA plot image here -->
+
+#### Manhattan Plot in Circular Fashion
+
+!Circular Manhattan Plot  <!-- Add your circular Manhattan plot image here -->
+
+### Linking Significant Loci to Candidate Genes (Bonus)
+
+To link significant SNPs to candidate genes, first extract the SNPs that pass the significance threshold. Then, use gene annotation tools (e.g., Ensembl, NCBI) to identify genes located near these SNPs. Investigate the biological functions of these genes to understand their potential role in the trait of interest.
+```
