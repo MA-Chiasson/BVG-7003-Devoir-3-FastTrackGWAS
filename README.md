@@ -537,47 +537,64 @@ For both single- and multi-trait outputs, the following files will be generated:
 
 These plots help assess the quality of the GWAS analysis and check if the p-values deviate from the expected distribution. These plots will automatically be generated for each trait or combination of traits.
 
-#### Single Trait Q-Q Plot
+#### Single Trait Q-Q Plot:
 
-!Single Trait Q-Q Plot  <!-- Add your single trait Q-Q plot image here -->
+<img src="https://i.imgur.com/fXVhAUy.png" width="500"/>
 
-#### Multi Trait Q-Q Plot
+#### Multi Trait Q-Q Plot:
 
-!Multi Trait Q-Q Plot  <!-- Add your multi trait Q-Q plot image here -->
+<img src="https://i.imgur.com/CkfQD1a.png" width="500"/>
 
-### Manhattan Plots
+### Manhattan Plots:
 
 These plots display the strength of the association between individual SNPs and the studied phenotype. High peaks indicate SNPs with low p-values, suggesting significant associations.
 
-#### Single Trait Manhattan Plot
+#### Single Trait Manhattan Plot:
 
-!Single Trait Manhattan Plot  <!-- Add your single trait Manhattan plot image here -->
+<img src="https://i.imgur.com/pHWbhik.png" width="500"/>
 
-#### Multi Trait Manhattan Plot
+#### Multi Trait Manhattan Plot:
 
-!Multi Trait Manhattan Plot  <!-- Add your multi trait Manhattan plot image here -->
+<img src="https://i.imgur.com/ufeEdpy.png" width="500"/>
 
-### Significant SNP Filtering
+### Significant SNP Filtering:
 
-After generating Q-Q and Manhattan plots, significant SNPs are extracted and filtered to only include those that surpass the significance threshold for further analysis.
+After generating the Q-Q and Manhattan plots and identifying significant SNPs, these SNPs are typically extracted and saved in a file, usually a CSV or tab-delimited text file. This file includes information about the SNPs that have surpassed the significance threshold for further analysis. The extracted file often contains the following columns:
+
+- **SNP ID**: The unique identifier for each SNP, which is typically based on its position in the genome.
+- **Chromosome**: The chromosome where the SNP is located.
+- **Position**: The physical location of the SNP on the chromosome (base pair position).
+- **p-value**: The p-value for the SNP, which represents the statistical significance of the association with the trait. SNPs with p-values below a certain threshold (e.g., p < 0.05) are considered significant.
+- **Effect Size**: The magnitude of the effect that the SNP has on the trait. This may include the direction (positive or negative) of the effect.
+- **Significance**: A flag or marker indicating whether the SNP passed the significance threshold (e.g., "Yes" or "No").
+- **Gene Annotation (optional)**: If available, this could include the names of genes or regions that are near or overlapping with the SNP, which could help in further functional interpretation.
+
+This data is typically saved into a file, such as `significant_snps.csv` or `significant_snps.txt`. Here's an example of what the file might look like:
+
+| SNP ID  | Chromosome | Position | p-value | Effect Size | Significance | Gene Annotation |
+|---------|------------|----------|---------|-------------|--------------|-----------------|
+| SNP_001 | Chr1       | 123456   | 0.004   | 0.5         | Yes          | GeneA, GeneB    |
+| SNP_002 | Chr2       | 789101   | 0.02    | -0.3        | Yes          | GeneC           |
+| SNP_003 | Chr3       | 567890   | 0.10    | 0.1         | No           | None            |
+```
 
 ### Additional Output Files
 
-#### SNP-density Plot
+#### SNP-density Plot:
 
-!SNP-density Plot  <!-- Add your SNP-density plot image here -->
+<img src="https://i.imgur.com/fXVhAUy.png" width="500"/>
 
-#### Phenotype Distribution
+#### Phenotype Distribution:
 
-!Phenotype Distribution  <!-- Add your phenotype distribution image here -->
+<img src="https://i.imgur.com/fXVhAUy.png" width="500"/>
 
-#### PCA Plot
+#### PCA Plot:
 
-!PCA Plot  <!-- Add your PCA plot image here -->
+<img src="https://i.imgur.com/fXVhAUy.png" width="500"/>
 
-#### Manhattan Plot in Circular Fashion
+#### Manhattan Plot in Circular Fashion:
 
-!Circular Manhattan Plot  <!-- Add your circular Manhattan plot image here -->
+<img src="https://i.imgur.com/fXVhAUy.png" width="500"/>
 
 ### Linking Significant Loci to Candidate Genes (Bonus)
 
