@@ -193,8 +193,8 @@ Make sure that the following files are placed in the "data" folder:
 
 - `Phenotype_African.txt` (mandatory)
 - `African_SNPs.hmp.txt` (mandatory)
-- Kinship matrix file (optional, if available)
-- PCA matrix file (optional, if available)
+- `mvp.kin.txt` Kinship matrix file (optional, if available)
+- `mvp.pc.txt` PCA matrix file (optional, if available)
 
 If the kinship or PCA files are not provided, the script will automatically generate them.
 
