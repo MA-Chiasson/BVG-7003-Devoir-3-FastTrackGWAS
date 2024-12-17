@@ -144,7 +144,7 @@ This would lead to installing packages every time the script is run, even if the
 ### 3.2. Loading the packages
 Once they've been installed, it's time to load them. To do this, use the library() command, inserting the package name between the brackets, as in the example below. 
 ```r
-library(rMVP)
+library(rMVP, ggplot2, data.table, dplyr, purrr, mgsub, bigmemory, vcfR, outliers)
 ```
 ---
 ### 4. Define working directory
