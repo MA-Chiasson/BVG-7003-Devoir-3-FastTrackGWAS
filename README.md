@@ -295,7 +295,7 @@ The PCA matrix file is used for the Principal Component Analysis (PCA) of the da
 The `rMVP.Data.PC()` function is used to load PCA data and store it in the specified output location.
 
 If you do not have kinship or PCA files, the script will automatically generate these files for use in further analyses.
-```
+
 
 ### 6. Data Preprocessing
 In this section, we guide users through the following steps for data preprocessing. These steps are crucial for ensuring the quality and integrity of the data used in the analysis. Preprocessing helps to clean, format, and structure the data properly, minimizing errors and biases in the final results.
