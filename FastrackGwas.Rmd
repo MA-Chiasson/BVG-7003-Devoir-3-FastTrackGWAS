@@ -219,9 +219,9 @@ filter_vcfmap <- function(geno_vcf, freq_threshold = 5, na_threshold = 10) {
 }
 
 # 4.2.2. Apply the function to your VCF genotype file
-filtered_vcf <- filter_vcfmap(geno)
+#filtered_vcf <- filter_vcfmap(geno)
 
-write.table(filtered_vcf, "data/filtered_vcf.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+#write.table(filtered_vcf, "data/filtered_vcf.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 ```
 ##################
 
