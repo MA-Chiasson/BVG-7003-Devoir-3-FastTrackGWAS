@@ -100,7 +100,7 @@ For the test data in this analysis, the following were selected:
 
   File `Phenotype_African.txt`, in .txt format, can be found in the data directory of this repository.
 
-  Note that phenotype data could be provided in other table formats, as long as the first column represents the genetic ID, and the other columns represent trait values. See [https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#phenotype]([url](https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#phenotype)) for more detailed information.
+  Note that phenotype data could be provided in other table formats, as long as the first column represents the genetic ID, and the other columns represent trait values. See [https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#phenotype](https://github.com/xiaolei-lab/rMVP?tab=readme-ov-file#phenotype) for more detailed information.
 
 ### 2.2. Other data recommendations
 
