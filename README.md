@@ -586,15 +586,15 @@ This data is typically saved into a file, such as `significant_snps.csv` or `sig
 
 ##### Phenotype Distribution:
 
-<img src="https://i.imgur.com/fXVhAUy.png" width="500"/>
+  <img src="https://imgur.com/QvwxVRT.png" width="500"/>
 
 ##### PCA Plot:
 
-<img src="https://i.imgur.com/fXVhAUy.png" width="500"/>
-
+  <img src="https://imgur.com/Vq4CwZG.png" width="500"/>
+  
 ##### Manhattan Plot in Circular Fashion:
 
-<img src="https://i.imgur.com/fXVhAUy.png" width="500"/>
+<img src="https://imgur.com/2eOJ4zx.png" width="500"/>
 
 #### Linking Significant Loci to Candidate Genes (Bonus)
 
