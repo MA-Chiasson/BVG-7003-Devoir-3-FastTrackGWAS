@@ -187,25 +187,115 @@ cat(getwd(), "\n")
 ---
 
 ### 5. Loading data in R
-There are several good ways to load data into R, depending on the data format. Below, we explain how to load both phenotypic and genotypic data in the R environment using specific commands.
+In this section, we explain how to load essential data files into the R environment for analysis. These files include phenotype and genotype data, as well as optional kinship and PCA matrix files. If the kinship or PCA files are not available, the script will generate them automatically.
 
+Make sure that the following files are placed in the "data" folder:
+
+- `Phenotype_African.txt` (mandatory)
+- `African_SNPs.hmp.txt` (mandatory)
+- Kinship matrix file (optional, if available)
+- PCA matrix file (optional, if available)
+
+If the kinship or PCA files are not provided, the script will automatically generate them.
+
+```r
+pheno_file <- "data/Phenotype_African.txt"  # File with phenotype data (mandatory)
+hmp_file <- "data/African_SNPs.hmp.txt"  # File with genotype data (mandatory)
+```
 #### 5.1. Loading genotype and phenotype data
 To load data in R, we typically use `read.csv()` or `read.table()` functions to import the data. The key difference is that `read.csv()` is used when the data is separated by commas, while `read.table()` is more general and allows specifying different delimiters (e.g., tab-separated data). 
 
-In our case, we use the following commands to load the phenotypic data:
+#### Loading Ghenotype Data (mandatory)
+In our case, we use the following commands to load the genotypic data:
 ```r
+# Loading genotype data
 geno <- read.csv(hmp_file, sep = "\t", header = TRUE, check.names = FALSE)
-```
-```r
-pheno <- read.table(pheno_file, sep = "\t", header = TRUE)
-```
-Explanation of the parameters:
-- `hmp_file` or `pheno_file`: The file paths to the genotype and phenotype data.
-- `sep = "\t"`: This specifies that the data is tab-separated.
-- `header = TRUE`: This indicates that the first row contains column names.
-- `check.names = FALSE`: This prevents R from altering column names to make them syntactically valid.
 
----
+# Check the structure of the genotype data
+str(geno)
+
+# Preview the first few rows of the genotype data
+head(geno)
+```
+
+**Explanation of the `str()` output:**
+
+The `geno` dataset consists of various columns, including:
+
+- `rs#`: The SNP identifier.
+- `alleles`: The genotype information for each SNP.
+- `chrom`: The chromosome number.
+- `pos`: The position of the SNP on the chromosome.
+- Other columns represent sample genotypes across individuals.
+
+For example, the first few rows of the dataset might look like this:
+
+| rs#   | alleles | chrom | pos   | strand | 1970-4F | SantaRosa | 1990-2F | ... |
+|-------|---------|-------|-------|--------|---------|-----------|---------|-----|
+| 30403 | G/T     | 1     | 30403 | +      | G       | G         | G       | ... |
+| 30404 | T/C     | 1     | 30404 | +      | T       | T         | T       | ... |
+| 30405 | G/T     | 1     | 30405 | +      | G       | G         | G       | ... |
+
+#### Loading Phenotype Data (mandatory)
+For loading phenotype data, we use the `read.table()` function, also specifying a tab-separated format. As with the genotype data, we can use `str()` and `head()` to inspect the loaded data.
+
+```r
+# Loading phenotype data
+pheno <- read.table(pheno_file, sep = "\t", header = TRUE)
+
+# Check the structure of the phenotype data
+str(pheno)
+
+# Preview the first few rows of the phenotype data
+head(pheno)
+```
+
+**Explanation of the `str()` output:**
+
+The `pheno` dataset contains information about the samples' phenotypes, such as phenotype measurements for different traits. For example:
+
+| Sample   | SDWi.SDWf |
+|----------|-----------|
+| 1951-9F  | NA        |
+| 1991-11F | 0.93      |
+| 1990-141F| 0.78      |
+| 1866-12F | 0.98      |
+| 1935-8F  | NA        |
+| 1990-67F | 0.94      |
+
+### 5.2 Optional Input: Kinship and PCA Data
+
+If you have kinship or PCA files, you can load them using the following commands. If these files are not available, the script will generate them automatically.
+
+#### Loading Kinship Data (Optional)
+
+The kinship matrix file is used to account for relatedness between individuals in the analysis. If available, load the kinship matrix using the `MVP.Data.Kin()` function.
+
+```r
+# Loading kinship matrix (optional)
+MVP.Data.Kin("data/mvp.kin.txt", out="data/mvp", maxLine=1e4)
+```
+
+**Explanation:**
+
+The `MVP.Data.Kin()` function loads the kinship data, storing it as an object of class "big.matrix."
+
+#### Loading PCA Data (Optional)
+
+The PCA matrix file is used for the Principal Component Analysis (PCA) of the dataset, which helps in visualizing genetic variation. If you have the PCA data, load it using the following command:
+
+```r
+# Loading PCA matrix (optional)
+# Uncomment this line if you have a PCA file
+# rMVP.Data.PC("data/mvp.pc.txt", out='data/mvp', sep='\t')
+```
+
+**Explanation:**
+
+The `rMVP.Data.PC()` function is used to load PCA data and store it in the specified output location.
+
+If you do not have kinship or PCA files, the script will automatically generate these files for use in further analyses.
+```
 
 ### 6. Data Preprocessing
 In this section, we guide users through the following steps for data preprocessing. These steps are crucial for ensuring the quality and integrity of the data used in the analysis. Preprocessing helps to clean, format, and structure the data properly, minimizing errors and biases in the final results.
@@ -273,7 +363,7 @@ The final quality control step implemented in this pipeline is that of missing d
 
 ##### 6.2.1. Genotype data quality control
 
-1. **Filtering loci based on their Minor Allele Frequency (MAF).** We suggest removing loci with a MAF lower than 0.05 to ensure that only common variants are included in the analysis, but other tresholds may be used. 
+1. **Filtering loci based on their Minor Allele Frequency (MAF).** We suggest removing loci with a MAF lower than 0.05 to ensure that only common variants are included in the analysis, but other thresholds may be used. 
 
 Loci with low MAF (for example, lower than 0.05) carry an elevated risk of having genotyping errors (i.e. the minor allele may be a genotyping error and not even exist in reality). Further, loci with alleles present at very low frequencies are more prone to statistical errors, whether false positives or false negatives. Therefore, including them doesn't contribute significantly to the discovery of meaningful associations.
 
