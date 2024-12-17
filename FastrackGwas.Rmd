@@ -93,7 +93,7 @@ MVP.Data.Kin("data/mvp.kin.txt", out="data/mvp", maxLine=1e4)
 #rMVP.Data.PC("data/mvp.pc.txt", out='data/mvp', sep='\t') # PCA file (optional)
 ```
 
-# 4. Filtering SNPs with too low MAF (default <5%), as well as rows containing too many NAs (default >10%)
+# 4. Filtering SNPs with too low MAF (default <1%), as well as rows containing too many NAs (default >10%)
 # This filtering process is performed separately for different input formats:
 # - HapMap format
 # - VCF format
@@ -102,7 +102,7 @@ MVP.Data.Kin("data/mvp.kin.txt", out="data/mvp", maxLine=1e4)
 # 4.1.1. Function to filter hapmap genotype data
 
 ```{r}
-filter_hapmap <- function(hapmap_data, freq_threshold = 5, na_threshold = 10) {
+filter_hapmap <- function(hapmap_data, freq_threshold = 1, na_threshold = 10) {
   # Function to calculate the frequency of each letter
   calculate_frequencies <- function(genotypes) {
     # Remove NA values
@@ -212,6 +212,9 @@ process_phenotypic_data <- function(phenotypic_data, na_threshold = 10) {
     stop("No numeric columns found in the dataset.")
   }
   
+  # Create an empty list to store normality test results
+  normality_results <- list()
+
   # Process each numeric column
   for (column_name in numeric_cols) {
     # Remove rows with NA values in the specific column
@@ -236,15 +239,25 @@ process_phenotypic_data <- function(phenotypic_data, na_threshold = 10) {
     
     # Define lower and upper bounds
     lower_bound <- Q1 - 1.5 * IQR_value
-    upper_bound <- Q3 + 1.5 * IQR_value
+    upper_bound <- Q3 + 1.5* IQR_value
     
     # Filter data within bounds for the current column
     phenotypic_data <- phenotypic_data %>%
       filter(!!sym(column_name) >= lower_bound & !!sym(column_name) <= upper_bound)
+    
+    # Perform normality test (Shapiro-Wilk test)
+    if(length(phenotypic_data[[column_name]]) > 3) {
+      normality_test <- shapiro.test(phenotypic_data[[column_name]])
+      normality_results[[column_name]] <- normality_test
+    }
   }
   
   # Drop temporary columns
   phenotypic_data <- phenotypic_data %>% select(-na_percentage)
+  
+  # Print the normality test results
+  print(normality_results)
+  
   
   return(phenotypic_data)
 }
@@ -257,6 +270,7 @@ write.table(filtered_pheno, "data/filtered_pheno.txt", sep = "\t", row.names = F
 
 # Check the results
 head(filtered_pheno)  # Display the first few rows of the filtered data
+
 ```
 
 # 6. Conversion HapMap -> format MVP
